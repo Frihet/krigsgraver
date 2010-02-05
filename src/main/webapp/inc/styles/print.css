@@ -1,0 +1,9 @@
+html, body {
+    font-family: Times, serif;
+    font-size: 12pt;
+}
+
+.print {
+	display: !important;
+}
+

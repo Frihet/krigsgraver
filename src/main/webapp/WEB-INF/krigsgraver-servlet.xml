@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:security="http://www.springframework.org/schema/security"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <context:annotation-config />
+
+    <security:global-method-security secured-annotations="enabled" />
+
+<!--
+    <import resource="classpath:applicationContext-mail.xml" />
+-->
+
+    <context:property-placeholder location="classpath:krigsgraver.properties" />
+
+    <!--  Scan for application @Components to deploy. -->
+    <context:component-scan base-package="no.freecode.krigsgraver.web" />
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- Message source for this context, loaded from localized "messages_xx" files. -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
+<!-- To avoid trouble, we'll force the 'en' locale for now.
+ -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
+        <property name="defaultLocale" value="en" />
+    </bean>
+
+
+<!-- Disable the locale change interceptor for now.
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="en" />
+    </bean>
+
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="siteLanguage" />
+    </bean>
+
+    <bean id="annotationMapper" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="localeChangeInterceptor"/>
+            </list>
+        </property>
+    </bean> 
+ -->
+
+    <!--
+        This bean resolves specific types of exceptions to corresponding
+        logical view names for error views. The default behaviour of
+        DispatcherServlet is to propagate all exceptions to the servlet
+        container: this will happen here with all other types of
+        exceptions.
+    -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!--
+                    <prop key="org.hibernate.exception.GenericJDBCException">dataAccessFailure</prop>
+                -->
+
+                <prop key="org.springframework.transaction.TransactionException">errors/dataAccessFailure</prop>
+                
+                <prop key="org.springframework.dao.DataIntegrityViolationException">errors/illegalDatabaseOperation</prop>
+                
+
+<!--                <prop key="org.springframework.security.AccessDeniedException">errors/accessDenied</prop>-->
+                
+            </props>
+        </property>
+    </bean>
+
+
+    
+</beans>
