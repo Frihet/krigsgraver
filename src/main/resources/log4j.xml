@@ -12,7 +12,7 @@
 
     <appender name="mainLog" class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="TRACE" />
-        <param name="File" value="${catalina.home}/logs/${pom.artifactId}.log" />
+        <param name="File" value="${catalina.base}/logs/${pom.artifactId}.log" />
         <param name="MaxFileSize" value="10000KB" />
         <param name="MaxBackupIndex" value="20" />
         <layout class="org.apache.log4j.PatternLayout">

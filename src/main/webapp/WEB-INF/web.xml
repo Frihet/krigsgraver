@@ -62,6 +62,23 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+
+    <!-- Hibernate OpenSession Filter. -->
+    <filter>
+        <filter-name>hibernateFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+            <param-name>singleSession</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
     <!--    <context-param>-->
     <!--        <param-name>log4jRefreshInterval</param-name>-->
     <!--        <param-value>60000</param-value>-->
