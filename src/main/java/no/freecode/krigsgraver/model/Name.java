@@ -20,9 +20,41 @@ import javax.persistence.Entity;
 @Entity
 public class Name extends BaseEntity {
 
-    private String firstName;
+    private String first;
 
-    private String lastName;
+    private String last;
 
-    private String nameOfFather;
+    private String father;
+
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
+    }
+
+    public String getFather() {
+        return father;
+    }
+
+    public void setFather(String father) {
+        this.father = father;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return (first != null ? first : "") + " " + (last != null ? last : "");
+    }
 }

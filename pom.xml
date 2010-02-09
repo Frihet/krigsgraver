@@ -87,11 +87,25 @@
             <artifactId>hibernate-jmx</artifactId>
             <version>3.3.1.GA</version>
         </dependency>
+
+        <!--  JSR 303 with Hibernate Validator -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>3.1.0.GA</version>
+            <version>4.0.2.GA</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-validator</artifactId>-->
+<!--            <version>3.1.0.GA</version>-->
+<!--        </dependency>-->
+        
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -227,6 +241,13 @@
             <dependency> <groupId>net.sf.json-lib</groupId> <artifactId>json-lib</artifactId> <version>2.2.3</version>
             </dependency>
         -->
+        
+        <!--  URL Rewrite -->
+        <dependency>
+                <groupId>org.tuckey</groupId>
+                <artifactId>urlrewritefilter</artifactId>
+                <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -356,6 +377,13 @@
             <id>people.apache.org</id>
             <name>Apache people's repository</name>
             <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+        </repository>
+
+        <!-- For JSR 303 and Hibernate Validator. -->
+        <repository>
+            <id>org.jboss.repository.maven</id>
+            <url>http://repository.jboss.org/maven2</url>
+            <snapshots><enabled>false</enabled></snapshots>
         </repository>
     </repositories>
 </project>

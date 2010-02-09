@@ -27,9 +27,6 @@ public class Grave extends BaseEntity {
     @OneToOne
     private FlexibleDate dateOfBurial;
 
-    @OneToOne
-    private FlexibleDate dateOfExhumation;  // XXX: check this one
-
     // Geolocation
     private Double latitude;
     private Double longitude;

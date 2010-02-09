@@ -72,12 +72,8 @@
 
 
     <!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
-<!--
-    <bean id="deliveryDao" class="no.freecode.gcl.model.dao.DeliveryDaoImpl" />
-    <bean id="locationDao" class="no.freecode.gcl.model.dao.LocationDaoImpl" />
-    <bean id="reportHandler" class="no.freecode.gcl.model.dao.ReportHandler" />
-    <bean id="userDao" class="no.freecode.gcl.model.dao.UserDaoImpl" />
--->
+    <bean id="personDao" class="no.freecode.krigsgraver.model.dao.PersonDao" />
+
 
     <!-- Hibernate's JMX statistics service -->
 <!--    <bean name="gcl:type=HibernateStatistics" class="org.hibernate.jmx.StatisticsService" autowire="byName" />-->

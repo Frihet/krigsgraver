@@ -10,6 +10,8 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * A date implementation to make it a bit cleaner to store and express dates
@@ -20,10 +22,13 @@ import javax.persistence.Entity;
 @Entity
 public class FlexibleDate extends BaseEntity {
 
+    @Min(1) @Max(31)
     private Integer day;
 
+    @Min(1) @Max(12)
     private Integer month;
 
+    @Min(1000)
     private Integer year;
 
 
