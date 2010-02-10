@@ -14,39 +14,58 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
-public class Person extends BaseEntity {
+@Indexed
+public class Person extends IndexedEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
+    @IndexedEmbedded
     private Name westernName;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @IndexedEmbedded
     private Name cyrillicName;
 
     @OneToOne(cascade = CascadeType.ALL)
+    // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
     private FlexibleDate dateOfBirth;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String placeOfBirth;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String nationality;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private Integer prisonerNumber;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String obdNumber;
-    
+
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String rank;
 
     @OneToOne(cascade = CascadeType.ALL)
+    // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
     private FlexibleDate dateOfDeath;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String placeOfDeath;
 
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String causeOfDeath;
 
     @Lob
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String remarks;
 
     

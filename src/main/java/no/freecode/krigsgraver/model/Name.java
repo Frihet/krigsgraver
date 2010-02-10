@@ -11,6 +11,11 @@ package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 /**
  * There may be different sources of information about the same person/grave. A
  * single reference is one source.
@@ -18,13 +23,18 @@ import javax.persistence.Entity;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
-public class Name extends BaseEntity {
+@Indexed
+public class Name extends IndexedEntity {
 
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String first;
 
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String last;
 
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String father;
+
 
     public String getFirst() {
         return first;

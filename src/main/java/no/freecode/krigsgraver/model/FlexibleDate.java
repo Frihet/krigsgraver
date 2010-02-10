@@ -31,7 +31,14 @@ public class FlexibleDate extends BaseEntity {
     @Min(1000)
     private Integer year;
 
+    public FlexibleDate() { }
 
+    public FlexibleDate(Integer day, Integer month, Integer year) {
+        setDay(day);
+        setMonth(month);
+        setYear(year);
+    }
+    
     public Integer getDay() {
         return day;
     }
