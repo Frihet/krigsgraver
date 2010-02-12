@@ -10,6 +10,7 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
@@ -17,10 +18,14 @@ import javax.persistence.Entity;
 @Entity
 public class Cemetery extends BaseEntity {
 
+    @Size(max = 255)
     private String name;
     
+    @Size(max = 255)
     private String address;
 
+    // TODO: replace with a separate class (PostalDistrict?) with data from posten.no
+    @Size(max = 255)
     private String postalDistrict;
     
     private Integer postcode;

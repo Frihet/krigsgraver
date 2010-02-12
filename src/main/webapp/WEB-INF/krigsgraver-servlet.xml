@@ -39,16 +39,6 @@
         <property name="cacheSeconds" value="${messages.cacheSeconds}" />
     </bean>
 
-<!--     Message source for this context, loaded from localized "messages_xx" files. -->
-<!--    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">-->
-<!--        <property name="basenames">-->
-<!--            <list>-->
-<!--                <value>messages</value>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
-
-
 <!-- Force a specific locale:
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
         <property name="defaultLocale" value="en" />
@@ -62,25 +52,13 @@
     <mvc:interceptors>
         <!-- Changes the locale when a 'locale' request parameter is sent; e.g. /?locale=de -->
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+
+        <!-- Open a new session and fetch data in JSP's whenever an object needs to be lazily loaded. -->
+        <bean class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+            <property name="sessionFactory" ref="sessionFactory" />
+            <property name="singleSession" value="false" />
+        </bean>
     </mvc:interceptors>
-
-<!-- Disable the locale change interceptor for now.
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="en" />
-    </bean>
-
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="siteLanguage" />
-    </bean>
-
-    <bean id="annotationMapper" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor"/>
-            </list>
-        </property>
-    </bean> 
- -->
 
     <!-- Uploading files to the application. -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -10,6 +10,8 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
@@ -17,10 +19,12 @@ import javax.persistence.Entity;
 @Entity
 public class Stalag extends BaseEntity {
 
+    @Size(max = 255)
     private String name;
 
+    @Lob
     private String description;
-    
+
     // Geolocation
     private Double latitude;
     private Double longitude;

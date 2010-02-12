@@ -13,11 +13,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
+import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.FlexibleDate;
-import no.freecode.krigsgraver.model.Name;
 import no.freecode.krigsgraver.model.Person;
+import no.freecode.krigsgraver.model.PersonDetails;
 
 import org.apache.commons.csv.CSVUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +31,7 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -76,12 +79,12 @@ public class PersonDao {
     public List<Person> findPersons(String queryString) throws ParseException {
 
         String[] fields = new String[] { 
-                "westernName.first", "westernName.last",
-                "cyrillicName.first", "cyrillicName.last" };
+                "westernDetails.firstName", "westernDetails.lastName",
+                "cyrillicDetails.firstName", "cyrillicDetails.lastName" };
 
         MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
         org.apache.lucene.search.Query query = parser.parse(queryString);
-        
+
         FullTextQuery fullTextQuery = Search.getFullTextSession(sessionFactory.getCurrentSession()).createFullTextQuery(query, Person.class);
 //        fullTextQuery.setFirstResult(15); //start from the 15th element
 //        fullTextQuery.setMaxResults(10); //return 10 elements
@@ -92,6 +95,19 @@ public class PersonDao {
         logger.debug("Search returned " + fullTextQuery.getResultSize() + " results.");
         
         return results;
+    }
+    
+    /**
+     * Index all Person objects in the search engine.
+     */
+    public void indexData() {
+        FullTextSession fullTextSession = Search.getFullTextSession(sessionFactory.getCurrentSession());
+        
+        @SuppressWarnings("unchecked")
+        List<Person> personList = sessionFactory.getCurrentSession().createCriteria(Person.class).list();
+        for (Person person : personList) {
+            fullTextSession.index(person);
+        }
     }
 
     /**
@@ -116,27 +132,27 @@ public class PersonDao {
             
             person.setObdNumber(v[i++]);
 
-            Name cyrillicName = new Name();
-            cyrillicName.setLast(v[i++]);
-            cyrillicName.setFirst(v[i++]);
-            cyrillicName.setFather(v[i++]);
-            person.setCyrillicName(cyrillicName);
-
-            i++; // cyrillic place of birth
+            PersonDetails cyrillicDetails = new PersonDetails();
+            cyrillicDetails.setLastName(v[i++]);
+            cyrillicDetails.setFirstName(v[i++]);
+            cyrillicDetails.setNameOfFather(v[i++]);
+            cyrillicDetails.setPlaceOfBirth(v[i++]);
+            person.setCyrillicDetails(cyrillicDetails);
             
-            Name westernName = new Name();
-            westernName.setLast(v[i++]);
-            westernName.setFirst(v[i++]);
-            westernName.setFather(v[i++]);
-            person.setWesternName(westernName);
+            PersonDetails westernDetails = new PersonDetails();
+            westernDetails.setLastName(v[i++]);
+            westernDetails.setFirstName(v[i++]);
+            westernDetails.setNameOfFather(v[i++]);
 
             person.setDateOfBirth(new FlexibleDate(createInteger(v[i++]),
                     createInteger(v[i++]), createInteger(v[i++])));
             
-            person.setPlaceOfBirth(v[i++]);
-            person.setNationality(v[i++]);
+            westernDetails.setPlaceOfBirth(v[i++]);
+            person.setWesternDetails(westernDetails);
             
-            i++; // leir
+            person.setNationality(v[i++]);
+
+            i++; // stalag
             
             person.setPrisonerNumber(createInteger(v[i++]));
             person.setRank(v[i++]);
@@ -147,14 +163,50 @@ public class PersonDao {
                     createInteger(v[i++]), createInteger(v[i++])));
 
             person.setPlaceOfDeath(v[i++]);
-            person.setCauseOfDeath(v[i++]);
+
+//            String cause = v[i++];
+            person.setCausesOfDeath(getCauses(v[i++]));
+//            if (StringUtils.isNotEmpty(cause)) {
+//                CauseOfDeath causeOfDeath = new CauseOfDeath();
+//                causeOfDeath.setCause(cause);
+//                person.getCausesOfDeath().add(causeOfDeath);
+//            }
             
-            i++; // one more leir
+            i++; // norsk leir
             
             savePerson(person);
         }
     }
 
+    /**
+     * Temporary hack to get some different causes when parsing the CSV.
+     * 
+     * @param str
+     * @return
+     */
+    private static List<CauseOfDeath> getCauses(String str) {
+        
+        if (StringUtils.isNotEmpty(str)) {
+            List<CauseOfDeath> causes = new ArrayList<CauseOfDeath>();
+
+            for (String s1 : StringUtils.splitByWholeSeparator(str, ", ")) {
+                for (String s2 : StringUtils.splitByWholeSeparator(s1, " und ")) {
+                    for (String s3 : StringUtils.splitByWholeSeparator(s2, " u. ")) {
+                        CauseOfDeath cause = new CauseOfDeath();
+                        cause.setCause(s3);
+                        causes.add(cause);
+                    }
+                }
+            }
+            
+            return causes;
+            
+        } else {
+            return null;
+        }
+        
+    }
+    
     private static Integer createInteger(String str) {
         if (StringUtils.isBlank(str)) {
             return null;

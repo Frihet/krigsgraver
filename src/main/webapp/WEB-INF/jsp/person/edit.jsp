@@ -11,28 +11,37 @@
 
                 <table>
                     <tr>
-                        <th><form:label for="westernName.first" path="westernName.first" cssErrorClass="error"><fmt:message key="person.westernName"/></form:label></th>
-                        <td><form:input path="westernName.first" /> </td>
+                        <th><form:label for="westernDetails.firstName" path="westernDetails.firstName" cssErrorClass="error"><fmt:message key="person.firstName"/></form:label></th>
+                        <td><form:input path="westernDetails.firstName" /> </td>
 
-                        <td><form:input path="westernName.last" /> </td>
+                        <th><form:label for="westernDetails.nameOfFather" path="westernDetails.nameOfFather" cssErrorClass="error"><fmt:message key="person.nameOfFather"/></form:label></th>
+                        <td><form:input path="westernDetails.nameOfFather" /> </td>
 
-                        <th><form:label for="westernName.father" path="westernName.father" cssErrorClass="error"><fmt:message key="name.father"/></form:label></th>
-                        <td><form:input path="westernName.father" /> </td>
+                        <th><form:label for="westernDetails.lastName" path="westernDetails.lastName" cssErrorClass="error"><fmt:message key="person.lastName"/></form:label></th>
+                        <td><form:input path="westernDetails.lastName" /> </td>
 
-                        <form:errors element="td" cssClass="error" path="westernName.*" />
+                        <th><form:label for="westernDetails.placeOfBirth" path="westernDetails.placeOfBirth" cssErrorClass="error"><fmt:message key="person.placeOfBirth"/></form:label></th>
+                        <td><form:input path="westernDetails.placeOfBirth" /> </td>
+
+                        <form:errors element="td" cssClass="error" path="westernDetails.*" />
                     </tr>
 
                     <tr>
-                        <th><form:label for="cyrillicName.first" path="cyrillicName.first" cssErrorClass="error"><fmt:message key="person.cyrillicName"/></form:label></th>
-                        <td><form:input path="cyrillicName.first" /> </td>
+                        <th><form:label for="cyrillicDetails.firstName" path="cyrillicDetails.firstName" cssErrorClass="error"><fmt:message key="person.firstName"/></form:label></th>
+                        <td><form:input path="cyrillicDetails.firstName" /> </td>
 
-                        <td><form:input path="cyrillicName.last" /> </td>
+                        <th><form:label for="cyrillicDetails.nameOfFather" path="cyrillicDetails.nameOfFather" cssErrorClass="error"><fmt:message key="person.nameOfFather"/></form:label></th>
+                        <td><form:input path="cyrillicDetails.nameOfFather" /> </td>
 
-                        <th><form:label for="cyrillicName.father" path="cyrillicName.father" cssErrorClass="error"><fmt:message key="name.father"/></form:label></th>
-                        <td><form:input path="cyrillicName.father" /> </td>
+                        <th><form:label for="cyrillicDetails.lastName" path="cyrillicDetails.lastName" cssErrorClass="error"><fmt:message key="person.lastName"/></form:label></th>
+                        <td><form:input path="cyrillicDetails.lastName" /> </td>
 
-                        <form:errors element="td" cssClass="error" path="cyrillicName.*" />
+                        <th><form:label for="cyrillicDetails.placeOfBirth" path="cyrillicDetails.placeOfBirth" cssErrorClass="error"><fmt:message key="person.placeOfBirth"/></form:label></th>
+                        <td><form:input path="cyrillicDetails.placeOfBirth" /> </td>
+
+                        <form:errors element="td" cssClass="error" path="cyrillicDetails.*" />
                     </tr>
+
 
                     <tr>
                         <th><form:label for="dateOfBirth" path="dateOfBirth" cssErrorClass="error"><fmt:message key="person.dateOfBirth"/></form:label></th>
@@ -42,12 +51,6 @@
                             <form:input path="dateOfBirth.year" size="4" maxlength="4" />
                         </td>
                         <form:errors element="td" cssClass="error" path="dateOfBirth.*" />
-                    </tr>
-
-                    <tr>
-                        <th><form:label for="placeOfBirth" path="placeOfBirth" cssErrorClass="error"><fmt:message key="person.placeOfBirth"/></form:label></th>
-                        <td><form:input path="placeOfBirth" /> </td>
-                        <form:errors element="td" cssClass="error" path="placeOfBirth" />
                     </tr>
 
                     <tr>
@@ -89,12 +92,13 @@
                         <td><form:input path="placeOfDeath" /></td>
                         <form:errors element="td" cssClass="error" path="placeOfDeath" />
                     </tr>
-                    
-                    <tr>
-                        <th><form:label for="causeOfDeath" path="causeOfDeath" cssErrorClass="error"><fmt:message key="person.causeOfDeath"/></form:label></th>
-                        <td><form:input path="causeOfDeath" /></td>
-                        <form:errors element="td" cssClass="error" path="causeOfDeath" />
-                    </tr>
+
+                    <c:forEach items="${person.causesOfDeath}" var="causeOfDeath" varStatus="status" >
+                        <tr>
+                            <th><fmt:message key="person.causeOfDeath"/></th>
+                            <td>${causeOfDeath.cause}</td>
+                        </tr>
+                    </c:forEach>
 
                     <tr>
                         <th><form:label for="remarks" path="remarks" cssErrorClass="error"><fmt:message key="person.remarks"/></form:label></th>

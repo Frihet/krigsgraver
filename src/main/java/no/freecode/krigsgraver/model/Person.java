@@ -9,10 +9,18 @@
  */
 package no.freecode.krigsgraver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -29,66 +37,73 @@ public class Person extends IndexedEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
-    private Name westernName;
+    private PersonDetails westernDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
-    private Name cyrillicName;
+    private PersonDetails cyrillicDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
     // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
     private FlexibleDate dateOfBirth;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
-    private String placeOfBirth;
-
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Size(max = 255)
     private String nationality;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer prisonerNumber;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Size(max = 255)
     private String obdNumber;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Size(max = 255)
     private String rank;
 
     @OneToOne(cascade = CascadeType.ALL)
     // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
     private FlexibleDate dateOfDeath;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Size(max = 255)
     private String placeOfDeath;
 
-    @Field(index = Index.TOKENIZED, store=Store.NO)
-    private String causeOfDeath;
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Valid
+    private List<CauseOfDeath> causesOfDeath;
 
     @Lob
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String remarks;
 
-    
-    public Name getWesternName() {
-        if (westernName == null) {
-            westernName = new Name();
+    @OneToMany(cascade = CascadeType.ALL)
+    @Valid
+    private List<Grave> grave;
+
+
+    public PersonDetails getWesternDetails() {
+        if (westernDetails == null) {
+            westernDetails = new PersonDetails();
         }
-        return westernName;
+        return westernDetails;
     }
 
-    public void setWesternName(Name westernName) {
-        this.westernName = westernName;
+    public void setWesternDetails(PersonDetails westernDetails) {
+        this.westernDetails = westernDetails;
     }
 
-    public Name getCyrillicName() {
-        if (cyrillicName == null) {
-            cyrillicName = new Name();
+    public PersonDetails getCyrillicDetails() {
+        if (cyrillicDetails == null) {
+            cyrillicDetails = new PersonDetails();
         }
-        return cyrillicName;
+        return cyrillicDetails;
     }
 
-    public void setCyrillicName(Name cyrillicName) {
-        this.cyrillicName = cyrillicName;
+    public void setCyrillicDetails(PersonDetails cyrillicDetails) {
+        this.cyrillicDetails = cyrillicDetails;
     }
 
     public FlexibleDate getDateOfBirth() {
@@ -101,14 +116,6 @@ public class Person extends IndexedEntity {
 
     public void setDateOfBirth(FlexibleDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPlaceOfBirth() {
-        return placeOfBirth;
-    }
-
-    public void setPlaceOfBirth(String placeOfBirth) {
-        this.placeOfBirth = placeOfBirth;
     }
 
     public String getNationality() {
@@ -163,12 +170,24 @@ public class Person extends IndexedEntity {
         this.placeOfDeath = placeOfDeath;
     }
 
-    public String getCauseOfDeath() {
-        return causeOfDeath;
+    public List<CauseOfDeath> getCausesOfDeath() {
+        if (causesOfDeath == null) {
+            causesOfDeath = new ArrayList<CauseOfDeath>();
+        }
+        
+        return causesOfDeath;
     }
 
-    public void setCauseOfDeath(String causeOfDeath) {
-        this.causeOfDeath = causeOfDeath;
+    public void setCausesOfDeath(List<CauseOfDeath> causesOfDeath) {
+        this.causesOfDeath = causesOfDeath;
+    }
+
+    public List<Grave> getGrave() {
+        return grave;
+    }
+
+    public void setGrave(List<Grave> grave) {
+        this.grave = grave;
     }
 
     public String getRemarks() {

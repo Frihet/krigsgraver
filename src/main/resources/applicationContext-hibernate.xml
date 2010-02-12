@@ -31,7 +31,7 @@
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 
                 <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
-                <prop key="hibernate.search.default.indexBase">${hibernate.index_dir}</prop>
+                <prop key="hibernate.search.default.indexBase">${work.dir}/lucene/indexes</prop>
             </props>
         </property>
 

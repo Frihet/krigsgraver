@@ -138,6 +138,7 @@
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
         </dependency>
+
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -242,6 +243,8 @@
         </dependency>
 
         <!-- Seems like we need CGLIB2 for proxying (spring aop). -->
+<!-- 
+ -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>

@@ -10,6 +10,7 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
@@ -17,8 +18,10 @@ import javax.persistence.Entity;
 @Entity
 public class Camp extends BaseEntity {
 
+    @Size(max = 255)
     private String name;
 
+    @Size(max = 255)
     private String description;
     
     // Geolocation

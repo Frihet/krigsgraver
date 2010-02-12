@@ -118,16 +118,13 @@ public class PersonController {
 
         if (!file.isEmpty()) {
             personDao.loadCsvData(file.getInputStream());
-            
-//            byte[] bytes = file.getBytes();
-            // store the bytes somewhere
-            return "redirect:uploadSuccess";
+            return "redirect:/person/list";
             
         } else {
             return "redirect:uploadFailure";
         }
     }
-    
+
     /**
      * Do a free text search.
      * 

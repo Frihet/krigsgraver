@@ -13,6 +13,8 @@ import no.freecode.krigsgraver.model.dao.PersonDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Do free text searches.
@@ -26,21 +28,17 @@ public class TempController {
     @Autowired
     private PersonDao personDao;
 
+
+    /**
+     * Index all the data in the search engine.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/admin/indexData")
+    public void indexData() {
+
+        personDao.indexData();
+        
+    }
     
 
-//    /**
-//     * Do a free text search.
-//     * 
-//     * @throws ParseException 
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = "/search")
-//    public String search(@RequestParam(value = "q", required = false) String queryString,  Model model) throws ParseException {
-//
-//        if (queryString != null) {
-//            model.addAttribute("persons", personDao.findPersons(queryString));
-//        }
-//        
-//        return "search";
-//    }
-//    
+        
 }

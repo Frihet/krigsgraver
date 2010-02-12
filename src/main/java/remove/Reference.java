@@ -7,10 +7,14 @@
  *  it under the terms of the GNU General Public License as published
  *  by the Free Software Foundation; version 3.
  */
-package no.freecode.krigsgraver.model;
+package remove;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import no.freecode.krigsgraver.model.BaseEntity;
+import no.freecode.krigsgraver.model.Grave;
+import no.freecode.krigsgraver.model.Person;
 
 /**
  * There may be different sources of information about the same person/grave. A

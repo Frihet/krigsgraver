@@ -81,6 +81,7 @@
 
 
     <!-- Hibernate OpenSession Filter. -->
+<!-- 
     <filter>
         <filter-name>hibernateFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
@@ -92,9 +93,10 @@
 
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/app/*</url-pattern>
     </filter-mapping>
-
+ -->
+    
 
     <!--    <context-param>-->
     <!--        <param-name>log4jRefreshInterval</param-name>-->

@@ -28,7 +28,7 @@ public class FlexibleDate extends BaseEntity {
     @Min(1) @Max(12)
     private Integer month;
 
-    @Min(1000)
+    @Min(1000) @Max(9999)
     private Integer year;
 
     public FlexibleDate() { }
