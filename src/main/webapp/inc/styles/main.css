@@ -19,3 +19,16 @@ h2 {
 	margin-bottom: 0.5em;
 }
 */
+
+/* General table stuff. */
+th {
+    text-align: left;
+}
+
+/*
+label, input {
+    display: inline !important;
+} */
+
+/* falstad-fargen (grønt): #919100 */
+/* blått: #003366 */

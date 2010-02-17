@@ -29,6 +29,7 @@
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
                 <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
                 
                 <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
                 <prop key="hibernate.search.default.indexBase">${work.dir}/lucene/indexes</prop>
@@ -76,7 +77,9 @@
 
     <!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
     <bean id="personDao" class="no.freecode.krigsgraver.model.dao.PersonDao" />
-
+    <bean id="cemeteryDao" class="no.freecode.krigsgraver.model.dao.CemeteryDao" />
+    <bean id="graveDao" class="no.freecode.krigsgraver.model.dao.GraveDao" />
+    <bean id="genericDao" class="no.freecode.krigsgraver.model.dao.GenericDao" />
 
     <!-- Hibernate's JMX statistics service -->
 <!--    <bean name="gcl:type=HibernateStatistics" class="org.hibernate.jmx.StatisticsService" autowire="byName" />-->

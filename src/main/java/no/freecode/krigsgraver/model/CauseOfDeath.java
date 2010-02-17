@@ -9,8 +9,12 @@
  */
 package no.freecode.krigsgraver.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * There may be different sources of information about the same person/grave. A
@@ -22,17 +26,19 @@ import javax.validation.constraints.Size;
 public class CauseOfDeath extends BaseEntity {
 
     @Size(max = 255)
+    @NotEmpty
+//    @Id
+    @Column(nullable = false, unique = true)
+    @OrderBy
     private String cause;
 
     /* E.g. "Illness", "External cause", etc. */
     @Size(max = 255)
     private String causeGroup;
-    
+
     @Size(max = 255)
     private String description;
 
-//    private Set<Person>
-    
 
     public String getCause() {
         return cause;

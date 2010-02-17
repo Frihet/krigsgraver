@@ -22,7 +22,7 @@ import org.hibernate.search.annotations.DocumentId;
  * @author Reidar Øksnevad (reidar.oksnevad@freecode.no)
  */
 @MappedSuperclass
-public abstract class IndexedEntity {
+public abstract class IndexedEntity implements Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,9 +35,5 @@ public abstract class IndexedEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public boolean isNew() {
-        return (this.id == null);
     }
 }

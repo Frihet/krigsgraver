@@ -20,7 +20,7 @@ import javax.persistence.MappedSuperclass;
  * @author Reidar Øksnevad (reidar.oksnevad@freecode.no)
  */
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,9 +32,5 @@ public abstract class BaseEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public boolean isNew() {
-        return (this.id == null);
     }
 }

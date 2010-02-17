@@ -10,18 +10,23 @@
 package no.freecode.krigsgraver.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -34,6 +39,13 @@ import org.hibernate.search.annotations.Store;
 @Entity
 @Indexed
 public class Person extends IndexedEntity {
+
+    /* Auto-generate timestamp. I've tested this on postgres and oracle. */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false, insertable = false, nullable = false, 
+            columnDefinition = "timestamp default current_timestamp")
+    @Generated(GenerationTime.ALWAYS)
+    private Date createdDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
@@ -70,8 +82,7 @@ public class Person extends IndexedEntity {
     @Size(max = 255)
     private String placeOfDeath;
 
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
     @Valid
     private List<CauseOfDeath> causesOfDeath;
 
@@ -80,8 +91,8 @@ public class Person extends IndexedEntity {
     private String remarks;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @Valid
-    private List<Grave> grave;
+//    @Valid
+    private List<Grave> graves;
 
 
     public PersonDetails getWesternDetails() {
@@ -182,19 +193,32 @@ public class Person extends IndexedEntity {
         this.causesOfDeath = causesOfDeath;
     }
 
-    public List<Grave> getGrave() {
-        return grave;
-    }
-
-    public void setGrave(List<Grave> grave) {
-        this.grave = grave;
-    }
-
     public String getRemarks() {
         return remarks;
     }
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public List<Grave> getGraves() {
+        
+        if (graves == null) {
+            graves = new ArrayList<Grave>();
+        }
+        
+        return graves;
+    }
+
+    public void setGraves(List<Grave> graves) {
+        this.graves = graves;
     }
 }

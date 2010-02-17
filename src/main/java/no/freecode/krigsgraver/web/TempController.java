@@ -34,11 +34,13 @@ public class TempController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/admin/indexData")
     public void indexData() {
-
         personDao.indexData();
-        
     }
-    
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/test")
+    public String test() {
+        return "welcome";
+    }
 
         
 }

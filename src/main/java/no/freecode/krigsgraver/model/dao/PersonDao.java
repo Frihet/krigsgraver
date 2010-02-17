@@ -50,6 +50,9 @@ public class PersonDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private GenericDao genericDao;
 
     /**
      * Update or create the person.
@@ -171,7 +174,7 @@ public class PersonDao {
 //                causeOfDeath.setCause(cause);
 //                person.getCausesOfDeath().add(causeOfDeath);
 //            }
-            
+
             i++; // norsk leir
             
             savePerson(person);
@@ -184,7 +187,7 @@ public class PersonDao {
      * @param str
      * @return
      */
-    private static List<CauseOfDeath> getCauses(String str) {
+    private List<CauseOfDeath> getCauses(String str) {
         
         if (StringUtils.isNotEmpty(str)) {
             List<CauseOfDeath> causes = new ArrayList<CauseOfDeath>();
@@ -192,8 +195,13 @@ public class PersonDao {
             for (String s1 : StringUtils.splitByWholeSeparator(str, ", ")) {
                 for (String s2 : StringUtils.splitByWholeSeparator(s1, " und ")) {
                     for (String s3 : StringUtils.splitByWholeSeparator(s2, " u. ")) {
-                        CauseOfDeath cause = new CauseOfDeath();
-                        cause.setCause(s3);
+                        
+                        CauseOfDeath cause = genericDao.getUnique(CauseOfDeath.class, "cause", s3);
+                        if (cause == null) {
+                            cause = new CauseOfDeath();
+                            cause.setCause(s3);
+                        }
+                            
                         causes.add(cause);
                     }
                 }
