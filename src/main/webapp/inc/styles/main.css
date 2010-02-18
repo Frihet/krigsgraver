@@ -1,19 +1,50 @@
 @CHARSET "UTF-8";
 
-/* 
+/* falstad-fargen (grønt): #919100 */
+/* blått: #003366 */
+
 html,body {
     font-family: verdana, "Tahoma MS", Helvetica, Arial, Sans-Serif;
     font-size: 90%;
     margin: 0px;
     padding: 0px;
+    background: #fcfcfc;
 }
 
+div#header {
+    background-color: #919100;
+    height: 120px;
+    width: 100%;
+}
+
+#headerLogo {
+    float: left;
+    height: 120px;
+    width: 300px;
+    padding: 0;
+    margin: 0;
+    background-color: #000000;
+    background-repeat: no-repeat;
+    background-position: center 7px;
+}
+
+
+div#mainContent {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 1em;
+    width: 1000px;
+}
+
+/* 
 body {
 	text-align: center;
     background-color: #FFFFFF;
     background-repeat: repeat-x;
     background-position: top;
 }
+
+
 
 h2 {
 	margin-bottom: 0.5em;
@@ -25,10 +56,19 @@ th {
     text-align: left;
 }
 
-/*
-label, input {
-    display: inline !important;
-} */
 
-/* falstad-fargen (grønt): #919100 */
-/* blått: #003366 */
+/* Widgets. */
+a.button {
+    padding: .4em 1em .5em 25px;
+    text-decoration: none;
+    position: relative;
+}
+
+a.button span.ui-icon {
+    margin: 0 5px 0 0;
+    position: absolute;
+    left: .2em;
+    top: 50%;
+    margin-top: -8px;
+}
+

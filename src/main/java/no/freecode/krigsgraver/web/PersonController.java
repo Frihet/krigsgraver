@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,15 +66,6 @@ public class PersonController {
         return "person/list";
     }
 
-//    /**
-//     * Create a new person.
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = "create")
-//    public String getCreateForm(Model model) {
-//        model.addAttribute(new Person());
-//        return "person/edit";
-//    }
-
     /**
      * Create a new person.
      */
@@ -83,22 +75,23 @@ public class PersonController {
         return "person/edit";
     }
 
-//    /**
-//     * Edit an existing person.
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
-//    public String getEditForm(@PathVariable int personId, Model model) {
-//        model.addAttribute(personDao.getPerson(personId));
-//        return "person/edit";
-//    }
+    /**
+     * Edit an existing person.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
+    public String getEditForm(@PathVariable int personId, Model model) {
+        model.addAttribute("command", new PersonCommandObject(personDao.getPerson(personId)));
+        return "person/edit";
+    }
 
-//    /**
-//     * Edit an existing person.
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = "{personId}")
-//    public Person getPerson(@PathVariable int personId) {
-//        return personDao.getPerson(personId);
-//    }
+    /**
+     * Get an existing person.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "{personId}")
+    public Person getPerson(@PathVariable int personId) {
+        return personDao.getPerson(personId);
+    }
+
 
 //    @RequestMapping(method = RequestMethod.POST, value = "*/edit")
 //    public String save(@Valid Person person, BindingResult result) {
@@ -110,23 +103,22 @@ public class PersonController {
 //        return "redirect:/person/list";
 //    }
 
-
     /**
      * Submit a new person.
      */
-    @RequestMapping(method = RequestMethod.POST, value = {"create"})
-    public String create(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model) {
+    @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
+    public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model) {
 
         for (Grave grave : command.getLazyGraves()) {
             logger.debug("Got grave: " + ReflectionToStringBuilder.toString(grave));
         }
-        
+
         if (result.hasErrors()) {
-//            model.addAttribute("command", new PersonCommandObject(new Person()));
             return "person/edit";
         }
 
-        personDao.savePerson(command.getPerson());
+        personDao.savePersonCommandObject(command);
+        
         return "redirect:/person/list";
 //        return "redirect:/person/" + person.getId();
     }

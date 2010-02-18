@@ -5,15 +5,15 @@
 
     <fieldset>
         <form:label for="cause" path="cause" cssErrorClass="error"><fmt:message key="person.causeOfDeath.cause" /></form:label>
-        <form:input path="cause" cssClass="text ui-widget-content ui-corner-all" />
-        <form:errors element="span" cssClass="error" path="cause" />
+        <form:input id="causeOfDeathDefaultField" path="cause" cssClass="text ui-widget-content ui-corner-all" cssErrorClass="text ui-widget-content ui-state-error" />
+        <form:errors element="p" cssClass="error" path="cause" />
 
         <form:label for="causeGroup" path="causeGroup" cssErrorClass="error"><fmt:message key="person.causeOfDeath.causeGroup" /></form:label>
-        <form:input path="causeGroup" cssClass="text ui-widget-content ui-corner-all" />
+        <form:input path="causeGroup" cssClass="text ui-widget-content ui-corner-all" cssErrorClass="ui-state-error" />
         <form:errors element="span" cssClass="error" path="causeGroup" />
 
         <form:label for="description" path="description" cssErrorClass="error"><fmt:message key="person.causeOfDeath.description" /></form:label>
-        <form:input path="description" cssClass="text ui-widget-content ui-corner-all" />
+        <form:input path="description" cssClass="text ui-widget-content ui-corner-all" cssErrorClass="ui-state-error"/>
         <form:errors element="span" cssClass="error" path="description" />
     </fieldset>
 

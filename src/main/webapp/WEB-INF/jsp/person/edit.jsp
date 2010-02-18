@@ -2,58 +2,86 @@
 <%@ include file="../includes.jsp"%>
 
 <style type="text/css">
+/*
+    div.dialog label, div.dialog input {
+        display: block;
+        
+    }
+  */
+
+    input.text { margin-bottom:12px; width:100%; }
+    div.dialog fieldset { padding:0; border:0; margin-top:25px; }
+    fieldset.main { border-color: #003366;}
+    fieldset.main legend { color: #003366; }
+    th { font-weight: normal; }
+
 <%--
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
-        fieldset { padding:0; border:0; margin-top:25px; }
         body { font-size: 62.5%; }
         h1 { font-size: 1.2em; margin: .6em 0; }
         div#users-contain {  width: 350px; margin: 20px 0; }
         div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
         div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
- --%>
         .ui-button { outline: 0; margin:0; padding: .4em 1em .5em; text-decoration:none;  !important; cursor:pointer; position: relative; text-align: center; }
         .ui-dialog .ui-state-highlight, .ui-dialog .ui-state-error { padding: .3em;  }
+ --%>
 </style>
+
+<!-- 
+    body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
+ -->
+
+<script type="text/javascript">
+    $(function(){
+        //hover states on the static widgets
+        $('#save_button, #causeOfDeathSelector').hover(
+            function() { $(this).addClass('ui-state-hover'); }, 
+            function() { $(this).removeClass('ui-state-hover'); }
+        );
+        
+    });
+</script>
+
 
 
 <div class="container">
     <div>
-        <form:form method="post">
+        <form:form method="post" id="personForm">
             <form:hidden path="person.id"/>
 
-            <fieldset>
+            <fieldset class="main">
                 <legend><fmt:message key="person.title"/></legend>
 
                 <table>
                     <tr>
                         <th><form:label for="person.westernDetails.firstName" path="person.westernDetails.firstName" cssErrorClass="error"><fmt:message key="person.firstName"/></form:label></th>
-                        <td><form:input path="person.westernDetails.firstName" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.westernDetails.firstName" /> </td>
 
                         <th><form:label for="person.westernDetails.nameOfFather" path="person.westernDetails.nameOfFather" cssErrorClass="error"><fmt:message key="person.nameOfFather"/></form:label></th>
-                        <td><form:input path="person.westernDetails.nameOfFather" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.westernDetails.nameOfFather" /> </td>
 
                         <th><form:label for="person.westernDetails.lastName" path="person.westernDetails.lastName" cssErrorClass="error"><fmt:message key="person.lastName"/></form:label></th>
-                        <td><form:input path="person.westernDetails.lastName" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.westernDetails.lastName" /> </td>
 
                         <th><form:label for="person.westernDetails.placeOfBirth" path="person.westernDetails.placeOfBirth" cssErrorClass="error"><fmt:message key="person.placeOfBirth"/></form:label></th>
-                        <td><form:input path="person.westernDetails.placeOfBirth" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.westernDetails.placeOfBirth" /> </td>
 
                         <form:errors element="td" cssClass="error" path="person.westernDetails.*" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.cyrillicDetails.firstName" path="person.cyrillicDetails.firstName" cssErrorClass="error"><fmt:message key="person.firstName"/></form:label></th>
-                        <td><form:input path="person.cyrillicDetails.firstName" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.cyrillicDetails.firstName" /> </td>
 
                         <th><form:label for="person.cyrillicDetails.nameOfFather" path="person.cyrillicDetails.nameOfFather" cssErrorClass="error"><fmt:message key="person.nameOfFather"/></form:label></th>
-                        <td><form:input path="person.cyrillicDetails.nameOfFather" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.cyrillicDetails.nameOfFather" /> </td>
 
                         <th><form:label for="person.cyrillicDetails.lastName" path="person.cyrillicDetails.lastName" cssErrorClass="error"><fmt:message key="person.lastName"/></form:label></th>
-                        <td><form:input path="person.cyrillicDetails.lastName" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.cyrillicDetails.lastName" /> </td>
 
                         <th><form:label for="person.cyrillicDetails.placeOfBirth" path="person.cyrillicDetails.placeOfBirth" cssErrorClass="error"><fmt:message key="person.placeOfBirth"/></form:label></th>
-                        <td><form:input path="person.cyrillicDetails.placeOfBirth" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.cyrillicDetails.placeOfBirth" /> </td>
 
                         <form:errors element="td" cssClass="error" path="person.cyrillicDetails.*" />
                     </tr>
@@ -61,43 +89,35 @@
                     <tr>
                         <th><form:label for="person.dateOfBirth" path="person.dateOfBirth" cssErrorClass="error"><fmt:message key="person.dateOfBirth"/></form:label></th>
                         <td>
-                            <form:input path="person.dateOfBirth.day" size="1" maxlength="2" />
-                            <form:input path="person.dateOfBirth.month" size="1" maxlength="2" />
-                            <form:input path="person.dateOfBirth.year" size="4" maxlength="4" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfBirth.month" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfBirth.year" size="4" maxlength="4" />
                         </td>
                         <form:errors element="td" cssClass="error" path="person.dateOfBirth.*" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.nationality" path="person.nationality" cssErrorClass="error"><fmt:message key="person.nationality"/></form:label></th>
-                        <td><form:input path="person.nationality" /> </td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.nationality" /> </td>
                         <form:errors element="td" cssClass="error" path="person.nationality" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.prisonerNumber" path="person.prisonerNumber" cssErrorClass="error"><fmt:message key="person.prisonerNumber"/></form:label></th>
-                        <td><form:input path="person.prisonerNumber" /></td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.prisonerNumber" /></td>
                         <form:errors element="td" cssClass="error" path="person.prisonerNumber" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.rank" path="person.rank" cssErrorClass="error"><fmt:message key="person.rank"/></form:label></th>
-                        <td><form:input path="person.rank" /></td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.rank" /></td>
                         <form:errors element="td" cssClass="error" path="person.rank" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.obdNumber" path="person.obdNumber" cssErrorClass="error"><fmt:message key="person.obdNumber"/></form:label></th>
-                        <td><form:input path="person.obdNumber" /></td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.obdNumber" /></td>
                         <form:errors element="td" cssClass="error" path="person.obdNumber" />
-                    </tr>
-
-
-
-                    <tr>
-                        <th><form:label for="person.remarks" path="person.remarks" cssErrorClass="error"><fmt:message key="person.remarks"/></form:label></th>
-                        <td><form:textarea path="person.remarks" /></td>
-                        <form:errors element="td" cssClass="error" path="person.remarks" />
                     </tr>
                 </table>
 
@@ -107,30 +127,30 @@
 
             </fieldset>
 
-            <fieldset>
+            <fieldset class="main">
                 <legend><fmt:message key="person.death.title"/></legend>
 
                 <table>
                     <tr>
                         <th><form:label for="person.dateOfDeath" path="person.dateOfDeath" cssErrorClass="error"><fmt:message key="person.dateOfDeath"/></form:label></th>
                         <td>
-                            <form:input path="person.dateOfDeath.day" size="1" maxlength="2" />
-                            <form:input path="person.dateOfDeath.month" size="1" maxlength="2" />
-                            <form:input path="person.dateOfDeath.year" size="4" maxlength="4" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfDeath.day" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfDeath.month" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.dateOfDeath.year" size="4" maxlength="4" />
                         </td>
                         <form:errors element="td" cssClass="error" path="person.dateOfDeath.*" />
                     </tr>
 
                     <tr>
                         <th><form:label for="person.placeOfDeath" path="person.placeOfDeath" cssErrorClass="error"><fmt:message key="person.placeOfDeath"/></form:label></th>
-                        <td><form:input path="person.placeOfDeath" /></td>
+                        <td><form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.placeOfDeath" /></td>
                         <form:errors element="td" cssClass="error" path="person.placeOfDeath" />
                     </tr>
 
                     <tr>
                         <th><fmt:message key="person.causeOfDeath"/></th>
                         <td>
-                            <select id="causeOfDeathSelector">
+                            <select id="causeOfDeathSelector" class="ui-widget-content ui-corner-all">
                                 <c:forEach items="${causesOfDeath}" var="causeOfDeath">
                                     <option value="${causeOfDeath.id}">${causeOfDeath.cause}</option>
                                 </c:forEach>
@@ -148,7 +168,7 @@
                 </table>
             </fieldset>
 
-            <fieldset>
+            <fieldset class="main">
                 <legend><fmt:message key="person.graves.title"/></legend>
 
                 <table id="graveTable">
@@ -169,7 +189,7 @@
                             <%@ include file="../grave/graveTds_spring.jsp"%>
 
                             <td>
-                                <form:errors element="td" cssClass="error" path="lazyGraves[${status.index}].*" />
+                                <form:errors element="td" cssClass="ui-state-error" path="lazyGraves[${status.index}].*" />
                             </td>
                         </tr>
                     </c:forEach>
@@ -178,8 +198,22 @@
                 <a onclick="javascript:addGrave();">Add entry</a>
             </fieldset>
             
-            <p>
-                <button type="submit"><fmt:message key="button.save"/></button>
+            <table>
+                <tr>
+                    <th><form:label for="person.remarks" path="person.remarks"><fmt:message key="person.remarks"/></form:label></th>
+                    <td><form:textarea cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="person.remarks" /></td>
+                    <form:errors element="td" cssClass="error" path="person.remarks" />
+                </tr>
+            </table>
+            
+            
+            <p style="text-align: center;">
+                <a class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button" href="#" onclick="$('#personForm').submit()">
+                    <span class="ui-icon ui-icon-newwin"></span><fmt:message key="person.button.save"/>
+                </a>
+
+                <input type="submit" style="display: none;" />
+<!--        <button type="submit"><fmt:message key="button.save"/></button>-->
             </p>
         </form:form>
     </div>
@@ -188,9 +222,11 @@
 <c:set var="index" value="NNN" />
 <script type="text/javascript">
 <!--
+    $('#personForm input:text:visible:first').focus();
+
     /* Reload the causeOfDeath select box with JSON data. */
     function reloadCauseOfDeathSelector() {
-        $.getJSON('causeOfDeath/list', function(data) {
+        $.getJSON('<c:url value="/person/causeOfDeath/list" />', function(data) {
             var html = '';
             var len = data.length;
             $.each(data, function(i, item) {
@@ -202,8 +238,9 @@
 
     /* Make an AJAX call to load the data in the causeOfDeath dialog. */
     function loadCauseOfDeathForm() {
-        $.get('causeOfDeath/create', function(data) {
+        $.get('<c:url value="/person/causeOfDeath/create" />', function(data) {
             $('#causeOfDeathDialog').html(data);
+            $('#causeOfDeathForm input:text:visible:first').focus();
         });
     }
 
@@ -230,7 +267,7 @@
             title: '<fmt:message key="person.causeOfDeath"/>',
             buttons: {
                 '<fmt:message key="button.save"/>': function() {
-                    $.post("causeOfDeath/create", $("#causeOfDeathForm").serialize(), function(data, textStatus) {
+                    $.post('<c:url value="/person/causeOfDeath/create" />', $('#causeOfDeathForm').serialize(), function(data, textStatus) {
                         if (data == "SUCCESS") {
                         	$("#causeOfDeathDialog").dialog('close');
                             
@@ -246,6 +283,8 @@
             },
             open: function() {
             	loadCauseOfDeathForm();
+            	// $("#causeOfDeathForm input:text:visible:first").focus();
+            	/* $('#causeOfDeathDefaultField').focus(); */
             },
             beforeclose: function() {
                 reloadCauseOfDeathSelector();
@@ -267,7 +306,7 @@
 //-->
 </script>
 
-<div id="causeOfDeathDialog"></div>
+<div class="dialog" id="causeOfDeathDialog"></div>
 
 <table style="display: none;">
   <tr id="graveTds">

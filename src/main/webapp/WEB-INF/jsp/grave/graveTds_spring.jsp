@@ -1,12 +1,12 @@
 <%@ include file="../includes.jsp"%>
 <td>
-    <form:input path="lazyGraves[${index}].dateOfBurial.day" size="1" maxlength="2" />
+    <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.day" size="1" maxlength="2" />
 </td>
 <td>
-    <form:input path="lazyGraves[${index}].dateOfBurial.month" size="1" maxlength="2" />
+    <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.month" size="1" maxlength="2" />
 </td>
 <td>
-    <form:input path="lazyGraves[${index}].dateOfBurial.year" size="4" maxlength="4" />
+    <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.year" size="4" maxlength="4" />
 </td>
 <td>
     <form:checkbox path="lazyGraves[${index}].approximateDate" />
@@ -19,13 +19,13 @@
     --%>
 </td>
 <td>
-    <form:input path="lazyGraves[${index}].graveField" size="2" />
+    <form:input cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].graveField" size="2" />
 </td>
 <td>
-    <form:input path="lazyGraves[${index}].graveRow" size="2" />
+    <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].graveRow" size="2" />
 </td>
 <td>
-    <form:input path="lazyGraves[${index}].graveNumber" size="2" />
+    <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].graveNumber" size="2" />
 </td>
 <td>
     <form:checkbox path="lazyGraves[${index}].massGrave" />

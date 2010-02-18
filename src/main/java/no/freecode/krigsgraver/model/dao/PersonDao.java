@@ -18,8 +18,10 @@ import java.util.List;
 
 import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.FlexibleDate;
+import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
+import no.freecode.krigsgraver.web.PersonCommandObject;
 
 import org.apache.commons.csv.CSVUtils;
 import org.apache.commons.lang.StringUtils;
@@ -58,6 +60,15 @@ public class PersonDao {
      * Update or create the person.
      */
     public void savePerson(Person person) {
+        sessionFactory.getCurrentSession().merge(person);
+    }
+
+    /**
+     * Update or create the person.
+     */
+    public void savePersonCommandObject(PersonCommandObject command) {
+        Person person = command.getPerson();
+        person.setGraves(new ArrayList<Grave>(command.getLazyGraves()));
         sessionFactory.getCurrentSession().merge(person);
     }
 

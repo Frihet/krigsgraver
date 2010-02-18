@@ -137,11 +137,12 @@
  -->
 
     <!-- Saves a locale change using a cookie -->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="no_nb" />
+    </bean>
 
     <!-- Configures Handler Interceptors -->    
     <mvc:interceptors>
-        
         <!-- Changes the locale when a 'locale' request parameter is sent; e.g. /?locale=de -->
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 

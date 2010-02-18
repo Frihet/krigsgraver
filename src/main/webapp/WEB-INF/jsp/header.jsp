@@ -22,3 +22,8 @@
 </head>
 
 <body>
+<div id="header">
+    <div id="headerLogo" style="background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);">
+    </div>
+</div>
+<div id="mainContent">
