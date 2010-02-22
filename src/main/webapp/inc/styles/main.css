@@ -28,28 +28,18 @@ div#header {
     background-position: center 7px;
 }
 
-
 div#mainContent {
     vertical-align: top;
-    margin: 0 auto;
+    margin: 0 0;
     padding: 1em;
-    width: 1000px;
+    width: 900px;
 }
 
-/* 
-body {
-	text-align: center;
-    background-color: #FFFFFF;
-    background-repeat: repeat-x;
-    background-position: top;
+/* Text formatting. */
+span.soft {
+    color: grey;
 }
 
-
-
-h2 {
-	margin-bottom: 0.5em;
-}
-*/
 
 /* General table stuff. */
 th {
@@ -57,9 +47,11 @@ th {
 }
 
 
+
 /* Widgets. */
 a.button {
     padding: .4em 1em .5em 25px;
+    /* padding: .4em 1em .5em 25px; */
     text-decoration: none;
     position: relative;
 }
@@ -70,5 +62,10 @@ a.button span.ui-icon {
     left: .2em;
     top: 50%;
     margin-top: -8px;
+}
+
+a.clickie {
+    cursor: pointer;
+    color: blue;
 }
 

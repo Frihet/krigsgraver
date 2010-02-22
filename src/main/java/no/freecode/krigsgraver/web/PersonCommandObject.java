@@ -42,7 +42,12 @@ public class PersonCommandObject {
      */
     public PersonCommandObject(Person person) {
         setPerson(person);
+        
         getLazyGraves().addAll(person.getGraves());
+
+        if (getLazyGraves().isEmpty()) {
+            getLazyGraves().add(new Grave());
+        }
     }
 
     public Person getPerson() {
@@ -62,10 +67,6 @@ public class PersonCommandObject {
                     return new Grave();
                 }
             });
-
-//            if (person != null && person.getGraves() != null) {
-//                lazyGraves.addAll(person.getGraves());
-//            }
         }
 
         return lazyGraves;
@@ -74,7 +75,7 @@ public class PersonCommandObject {
     public void setLazyGraves(List<Grave> lazyGraves) {
         this.lazyGraves = lazyGraves;
     }
-    
+
     /* 
     public void setLazyGraves(List<Grave> graves) {
         List<Grave> lg = getLazyGraves();

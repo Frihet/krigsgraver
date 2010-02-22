@@ -9,6 +9,7 @@
  */
 package no.freecode.krigsgraver.web;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,10 +17,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Person;
+import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
@@ -28,10 +31,13 @@ import org.apache.commons.collections.list.LazyList;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.ParseException;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,7 +85,7 @@ public class PersonController {
      * Edit an existing person.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
-    public String getEditForm(@PathVariable int personId, Model model) {
+    public String getEditForm(@PathVariable long personId, Model model) {
         model.addAttribute("command", new PersonCommandObject(personDao.getPerson(personId)));
         return "person/edit";
     }
@@ -88,20 +94,9 @@ public class PersonController {
      * Get an existing person.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{personId}")
-    public Person getPerson(@PathVariable int personId) {
+    public Person getPerson(@PathVariable long personId) {
         return personDao.getPerson(personId);
     }
-
-
-//    @RequestMapping(method = RequestMethod.POST, value = "*/edit")
-//    public String save(@Valid Person person, BindingResult result) {
-//        if (result.hasErrors()) {
-//            return "person/edit";
-//        }
-//
-//        personDao.savePerson(person);
-//        return "redirect:/person/list";
-//    }
 
     /**
      * Submit a new person.
@@ -119,29 +114,24 @@ public class PersonController {
 
         personDao.savePersonCommandObject(command);
         
-        return "redirect:/person/list";
-//        return "redirect:/person/" + person.getId();
+        return "redirect:/person/" + command.getPerson().getId() + "/edit";
     }
-
-//    /**
-//     * Submit a new person.
-//     */
-//    @RequestMapping(method = RequestMethod.POST, value = {"create"})
-//    public String create(@Valid Person person, BindingResult result) {
-//        if (result.hasErrors()) {
-//            return "person/edit";
-//        }
-//
-//        personDao.savePerson(person);
-//        return "redirect:/person/list";
-////        return "redirect:/person/" + person.getId();
-//    }
 
     @ModelAttribute("causesOfDeath")
     public Collection<CauseOfDeath> getCausesOfDeath() {
         return genericDao.getAll(CauseOfDeath.class);
     }
+    
+    @ModelAttribute("stalags")
+    public List<Stalag> getStalags() {
+        return genericDao.getAll(Stalag.class, Order.asc("name"));
+    }
 
+    @ModelAttribute("camps")
+    public Collection<Camp> getCamps() {
+        return genericDao.getAll(Camp.class);
+    }
+    
     @ModelAttribute("cemeteries")
     public Collection<Cemetery> getCausesCemeteries() {
         return genericDao.getAll(Cemetery.class);
@@ -185,6 +175,53 @@ public class PersonController {
         }
         
         return "person/search";
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(Stalag.class, new PropertyEditorSupport() {
+
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if ("null".equals(text)) {
+                    setValue(null);
+                } else {
+                    setValue(genericDao.get(Stalag.class, Long.parseLong(text)));
+                }
+            }
+
+            @Override
+            public String getAsText() {
+                Stalag stalag = (Stalag) getValue();
+                if (stalag == null) {
+                    return null;
+                } else {
+                    return String.valueOf(stalag.getId());
+                }
+            }
+        });
+        
+        dataBinder.registerCustomEditor(Camp.class, new PropertyEditorSupport() {
+            
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if ("null".equals(text)) {
+                    setValue(null);
+                } else {
+                    setValue(genericDao.get(Camp.class, Long.parseLong(text)));
+                }
+            }
+
+            @Override
+            public String getAsText() {
+                Camp camp = (Camp) getValue();
+                if (camp == null) {
+                    return null;
+                } else {
+                    return String.valueOf(camp.getId());
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

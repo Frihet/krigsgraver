@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -35,8 +36,6 @@ public class Grave extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private FlexibleDate dateOfBurial;
 
-    private boolean approximateDate;
-
     private boolean moved;
 
     private boolean massGrave;
@@ -48,6 +47,9 @@ public class Grave extends BaseEntity {
     // Geolocation
     private Double latitude;
     private Double longitude;
+    
+    @Transient
+    private boolean delete;
 
     public Cemetery getCemetery() {
         return cemetery;
@@ -133,11 +135,11 @@ public class Grave extends BaseEntity {
         this.reference = reference;
     }
 
-    public boolean isApproximateDate() {
-        return approximateDate;
+    public boolean isDelete() {
+        return delete;
     }
 
-    public void setApproximateDate(boolean approximateDate) {
-        this.approximateDate = approximateDate;
+    public void setDelete(boolean delete) {
+        this.delete = delete;
     }
 }

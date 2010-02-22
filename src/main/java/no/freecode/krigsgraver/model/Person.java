@@ -18,6 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -49,14 +50,17 @@ public class Person extends IndexedEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
+    @Valid
     private PersonDetails westernDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
+    @Valid
     private PersonDetails cyrillicDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
     // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
+    @Valid
     private FlexibleDate dateOfBirth;
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -73,6 +77,15 @@ public class Person extends IndexedEntity {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     @Size(max = 255)
     private String rank;
+    
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    private Camp camp;
+
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    private Stalag stalag;
 
     @OneToOne(cascade = CascadeType.ALL)
     // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
@@ -221,4 +234,22 @@ public class Person extends IndexedEntity {
     public void setGraves(List<Grave> graves) {
         this.graves = graves;
     }
+
+    public Camp getCamp() {
+        return camp;
+    }
+
+    public void setCamp(Camp camp) {
+        this.camp = camp;
+    }
+
+    public Stalag getStalag() {
+        return stalag;
+    }
+
+    public void setStalag(Stalag stalag) {
+        this.stalag = stalag;
+    }
+
+
 }

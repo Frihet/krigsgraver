@@ -16,11 +16,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
+import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.web.PersonCommandObject;
 
 import org.apache.commons.csv.CSVUtils;
@@ -68,7 +70,15 @@ public class PersonDao {
      */
     public void savePersonCommandObject(PersonCommandObject command) {
         Person person = command.getPerson();
-        person.setGraves(new ArrayList<Grave>(command.getLazyGraves()));
+        
+        ArrayList<Grave> graves = new ArrayList<Grave>();
+        for (Grave grave : command.getLazyGraves()) {
+            if (!grave.isDelete()) {
+                graves.add(grave);
+            }
+        }
+        person.setGraves(graves);
+        
         sessionFactory.getCurrentSession().merge(person);
     }
 
@@ -166,7 +176,16 @@ public class PersonDao {
             
             person.setNationality(v[i++]);
 
-            i++; // stalag
+            String stalagString = v[i++];
+            if (StringUtils.isNotBlank(stalagString)) {
+                Stalag stalag = genericDao.getUnique(Stalag.class, "name", stalagString);
+                if (stalag == null) {
+                    stalag = new Stalag();
+                    stalag.setName(stalagString);
+                    genericDao.save(stalag);
+                }
+                person.setStalag(stalag);
+            }
             
             person.setPrisonerNumber(createInteger(v[i++]));
             person.setRank(v[i++]);
@@ -186,7 +205,16 @@ public class PersonDao {
 //                person.getCausesOfDeath().add(causeOfDeath);
 //            }
 
-            i++; // norsk leir
+            String campString = v[i++];
+            if (StringUtils.isNotBlank(campString)) {
+                Camp camp = genericDao.getUnique(Camp.class, "name", campString);
+                if (camp == null) {
+                    camp = new Camp();
+                    camp.setName(campString);
+                    genericDao.save(camp);
+                }
+                person.setCamp(camp);
+            }
             
             savePerson(person);
         }

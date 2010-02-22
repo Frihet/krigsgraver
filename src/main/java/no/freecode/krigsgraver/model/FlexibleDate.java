@@ -30,6 +30,9 @@ public class FlexibleDate extends BaseEntity {
 
     @Min(1000) @Max(9999)
     private Integer year;
+    
+    /** Used to indicate that this date is not to be completely trusted. */
+    private boolean approximate;
 
     public FlexibleDate() { }
 
@@ -61,5 +64,13 @@ public class FlexibleDate extends BaseEntity {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public boolean isApproximate() {
+        return approximate;
+    }
+
+    public void setApproximate(boolean approximate) {
+        this.approximate = approximate;
     }
 }
