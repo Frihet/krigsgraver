@@ -1,14 +1,13 @@
 @CHARSET "UTF-8";
 
-/* falstad-fargen (grønt): #919100 */
-/* blått: #003366 */
-
+/* falstad-fargen (grønt): #919100 */ /* blått: #003366 */
 html,body {
     font-family: verdana, "Tahoma MS", Helvetica, Arial, Sans-Serif;
     font-size: 90%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: #fcfcfc;
+    text-align: center;
 }
 
 div#header {
@@ -30,9 +29,10 @@ div#header {
 
 div#mainContent {
     vertical-align: top;
-    margin: 0 0;
+    margin: 0 auto;
     padding: 1em;
     width: 900px;
+    text-align: left;
 }
 
 /* Text formatting. */
@@ -40,13 +40,11 @@ span.soft {
     color: grey;
 }
 
-
 /* General table stuff. */
 th {
     text-align: left;
+    padding-right: 1em;
 }
-
-
 
 /* Widgets. */
 a.button {
@@ -69,3 +67,43 @@ a.clickie {
     color: blue;
 }
 
+/* Form fields. */
+fieldset.main {
+    border-color: #003366;
+    margin-bottom: 1em;
+}
+
+fieldset.main legend {
+    color: #003366;
+    font-size: 110%;
+}
+
+fieldset.sub {
+    border: solid 1px #cccccc;
+    margin-bottom: 0.5em;
+}
+
+fieldset.sub legend {
+    color: #000000;
+    font-size: 80%;
+}
+
+table.fixedWidth th {
+    width: 12em;
+}
+
+table.fixedWidth {
+    width: 100%;
+}
+
+table.withMargin {
+    margin: 1em;
+}
+
+/* Dialogs */
+div.dialog fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+    text-align: left;
+}

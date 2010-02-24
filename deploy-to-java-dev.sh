@@ -31,4 +31,6 @@ done \
 echo
 echo "Inserting data..."
 cd notes
-./upload_csv_tiny_java-dev.sh
+./prepare_remote.sh
+#./upload_csv_tiny_java-dev.sh
+./upload_csv_java-dev.sh

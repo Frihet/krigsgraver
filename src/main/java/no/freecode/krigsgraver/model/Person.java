@@ -59,13 +59,11 @@ public class Person extends IndexedEntity {
     private PersonDetails cyrillicDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
-    // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
     @Valid
     private FlexibleDate dateOfBirth;
 
-    @Field(index = Index.TOKENIZED, store = Store.NO)
-    @Size(max = 255)
-    private String nationality;
+    @ManyToOne
+    private Nationality nationality;
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer prisonerNumber;
@@ -74,16 +72,12 @@ public class Person extends IndexedEntity {
     @Size(max = 255)
     private String obdNumber;
 
-    @Field(index = Index.TOKENIZED, store = Store.NO)
-    @Size(max = 255)
-    private String rank;
-    
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    private Rank rank;
+
     @ManyToOne
     private Camp camp;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ManyToOne
     private Stalag stalag;
 
@@ -99,12 +93,14 @@ public class Person extends IndexedEntity {
     @Valid
     private List<CauseOfDeath> causesOfDeath;
 
+    @Size(max = 255)
+    private String causeOfDeathDescription;
+
     @Lob
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String remarks;
 
     @OneToMany(cascade = CascadeType.ALL)
-//    @Valid
     private List<Grave> graves;
 
 
@@ -142,12 +138,20 @@ public class Person extends IndexedEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getNationality() {
+    public Nationality getNationality() {
         return nationality;
     }
 
-    public void setNationality(String nationality) {
+    public void setNationality(Nationality nationality) {
         this.nationality = nationality;
+    }
+
+    public String getCauseOfDeathDescription() {
+        return causeOfDeathDescription;
+    }
+
+    public void setCauseOfDeathDescription(String causeOfDeathDescription) {
+        this.causeOfDeathDescription = causeOfDeathDescription;
     }
 
     public Integer getPrisonerNumber() {
@@ -166,11 +170,11 @@ public class Person extends IndexedEntity {
         this.obdNumber = obdNumber;
     }
 
-    public String getRank() {
+    public Rank getRank() {
         return rank;
     }
 
-    public void setRank(String rank) {
+    public void setRank(Rank rank) {
         this.rank = rank;
     }
 

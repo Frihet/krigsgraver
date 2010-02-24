@@ -4,8 +4,6 @@
 </div>
 
 <br />
-<ul>
-    <li> <a href="?locale=en_gb">English</a> | <a href="?locale=no_nb">Norsk</a> </li>
-</ul>
+<a href="?locale=en_gb">English</a> | <a href="?locale=no_nb">Norsk</a>
 
 <c:out escapeXml="false" value="</body></html>" />

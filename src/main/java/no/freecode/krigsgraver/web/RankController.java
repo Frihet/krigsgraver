@@ -9,46 +9,36 @@
  */
 package no.freecode.krigsgraver.web;
 
-import no.freecode.krigsgraver.model.Nationality;
-import no.freecode.krigsgraver.model.dao.GenericDao;
-import no.freecode.krigsgraver.model.dao.PersonDao;
+import java.util.List;
 
+import no.freecode.krigsgraver.model.CauseOfDeath;
+import no.freecode.krigsgraver.model.Rank;
+import no.freecode.krigsgraver.model.dao.GenericDao;
+
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Do free text searches.
+ * Edit and display {@link CauseOfDeath} objects.
  * 
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Controller
-//@RequestMapping(value = "/search")
-public class TempController {
-
-    @Autowired
-    private PersonDao personDao;
+@RequestMapping(value = "/rank")
+public class RankController {
 
     @Autowired
     private GenericDao genericDao;
 
     /**
-     * Index all the data in the search engine.
+     * List all the stalags.
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/indexData")
-    public void indexData() {
-        personDao.indexData();
+    @RequestMapping(method = RequestMethod.GET, value = "list")
+    public @ResponseBody List<Rank> getList() {
+        return genericDao.getAll(Rank.class, Order.asc("name"));
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/insertBaseData")
-    public String test() {
-
-        genericDao.save(new Nationality("RU"));
-        genericDao.save(new Nationality("UA"));
-        genericDao.save(new Nationality("BY"));
-
-        return "welcome";
-    }
-
 }

@@ -11,27 +11,23 @@ package no.freecode.krigsgraver.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
-public class Stalag extends BaseEntity {
+public class Rank extends BaseEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     @Size(max = 255)
-    @OrderBy
     private String name;
 
-    @Lob
-    private String description;
-
-    // Geolocation
-    private Double latitude;
-    private Double longitude;
+    public Rank() { }
+    
+    public Rank(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -39,13 +35,5 @@ public class Stalag extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

@@ -15,13 +15,23 @@
         Use Apache Commons DBCP for connection pooling. See Commons DBCP documentation for the required JAR files.
         Alternatively you can use another connection pool such as C3P0, similarly configured using Spring.
     -->
+<!-- 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
-        p:url="${jdbc.url}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+        p:url="${jdbc.url}" p:username="${jdbc.username}" p:password="${jdbc.password}">
+    </bean>
+ -->
 
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass"><value>${jdbc.driverClassName}</value></property>
+        <property name="jdbcUrl"><value>${jdbc.url}</value></property>
+        <property name="user"><value>${jdbc.username}</value></property>
+        <property name="password"><value>${jdbc.password}</value></property>
+    </bean>
+
+        
     <!-- Hibernate SessionFactory. -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
-        p:dataSource-ref="dataSource">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" p:dataSource-ref="dataSource">
 
         <property name="hibernateProperties">
             <props>

@@ -9,9 +9,12 @@
  */
 package no.freecode.krigsgraver.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
@@ -19,8 +22,10 @@ import javax.validation.constraints.Size;
 @Entity
 public class Cemetery extends BaseEntity {
 
+    @Column(nullable = false, unique = true)
     @Size(max = 255)
     @OrderBy
+    @NotEmpty
     private String name;
 
     @Size(max = 255)
@@ -67,21 +72,5 @@ public class Cemetery extends BaseEntity {
 
     public void setPostcode(Integer postcode) {
         this.postcode = postcode;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 }

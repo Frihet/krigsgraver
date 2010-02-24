@@ -13,15 +13,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.CauseOfDeath;
+import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
+import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.web.PersonCommandObject;
 
@@ -143,7 +148,8 @@ public class PersonDao {
     public void loadCsvData(InputStream inputStream) throws IOException {
         
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(inputStream));
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        
         String line;
         while ((line = csvReader.readLine()) != null) {
             
@@ -173,8 +179,9 @@ public class PersonDao {
             
             westernDetails.setPlaceOfBirth(v[i++]);
             person.setWesternDetails(westernDetails);
-            
-            person.setNationality(v[i++]);
+
+            i++; // nationality
+//            person.setNationality(v[i++]);
 
             String stalagString = v[i++];
             if (StringUtils.isNotBlank(stalagString)) {
@@ -186,9 +193,18 @@ public class PersonDao {
                 }
                 person.setStalag(stalag);
             }
-            
+
             person.setPrisonerNumber(createInteger(v[i++]));
-            person.setRank(v[i++]);
+            
+            String rankString = v[i++];
+            if (StringUtils.isNotBlank(rankString)) {
+                Rank rank = genericDao.getUnique(Rank.class, "name", rankString);
+                if (rank == null) {
+                    rank = new Rank(rankString);
+                    genericDao.save(rank);
+                }
+                person.setRank(rank);
+            }
             
             i++;  // pårørende
 
@@ -215,6 +231,47 @@ public class PersonDao {
                 }
                 person.setCamp(camp);
             }
+            
+            String cemeteryString = v[i++];
+            
+            i++; // row - not much there
+            
+            String graveNumber = v[i++];
+            String graveDateString = v[i++];
+            Date graveDate = null;
+            
+            try {
+                if (StringUtils.isNotBlank(graveDateString)) {
+                    graveDate = dateFormat.parse(graveDateString);
+                }
+                
+            } catch (java.text.ParseException e) {
+                // ignore parse errors for now - this is just to get some data
+            }
+            
+            Grave grave = new Grave();
+            grave.setGraveNumber(createInteger(graveNumber));
+            if (graveDate != null) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(graveDate);
+                grave.getDateOfBurial().setDay(cal.get(Calendar.DAY_OF_MONTH));
+                grave.getDateOfBurial().setMonth(cal.get(Calendar.MONTH) + 1);
+                grave.getDateOfBurial().setYear(cal.get(Calendar.YEAR));
+            }
+
+            if (StringUtils.isNotBlank(cemeteryString)) {
+                Cemetery cemetery = genericDao.getUnique(Cemetery.class, "name", cemeteryString);
+                if (cemetery == null) {
+                    cemetery = new Cemetery();
+                    cemetery.setName(cemeteryString);
+                    genericDao.save(cemetery);
+                }
+
+                grave.setCemetery(cemetery);
+            }
+            
+            genericDao.save(grave);
+            person.getGraves().add(grave);
             
             savePerson(person);
         }
@@ -264,6 +321,15 @@ public class PersonDao {
                 // ignore it for now. XXX
                 return null;
             }
+        }
+    }
+    
+    public static void main(String[] args) {
+        try {
+            System.out.println(new SimpleDateFormat("MM/dd/yyyy").parse("11/3/1943"));
+            
+        } catch (java.text.ParseException e) {
+            // ignore...
         }
     }
 }

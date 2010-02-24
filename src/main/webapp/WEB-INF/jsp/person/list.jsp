@@ -1,8 +1,6 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
-Følgende personer er foreløpig lagt til:
-
 <c:forEach items="${persons}" var="person">
     <p>
         <a href="${person.id}/edit">${person.westernDetails} (${person.cyrillicDetails})</a>

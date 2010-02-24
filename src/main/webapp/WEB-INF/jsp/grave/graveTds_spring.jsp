@@ -11,11 +11,12 @@
         <form:checkbox path="lazyGraves[${index}].dateOfBurial.approximate" />
     </td>
     <td>
-        <%--
-        <select id="lazyGraves${index}.cemetery" name="lazyGraves[${index}].cemetery">
-            TODO...
-        </select>
-        --%>
+        <form:select id="lazyGraves${index}CemeterySelector" path="lazyGraves[${index}].cemetery" cssClass="ui-widget-content ui-corner-all">
+            <option value="not_loaded"><fmt:message key="status.loading"/></option>
+        </form:select>
+        <script type="text/javascript">
+            populateSelectList('cemetery/list', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true);
+        </script>
     </td>
     <td>
         <form:input cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].graveField" size="2" />
@@ -32,22 +33,11 @@
     <td>
         <form:checkbox path="lazyGraves[${index}].moved" />
     </td>
-
     <td>
-<%--
-        <form:checkbox cssClass="deleteGrave" path="lazyGraves[${index}].delete" onchange="if (this.checked) $('#graveTr${index}').addClass('ui-state-disabled');" />
- --%>
-        <form:checkbox cssClass="deleteGrave" path="lazyGraves[${index}].delete" onchange="toggleDeleteGrave(this, '#graveTr${index}')" />
+        <form:checkbox cssClass="deleteGrave" path="lazyGraves[${index}].delete" onclick="toggleDeleteGrave(this, '#graveTr${index} *')" />
     </td>
-
     <td>
         <form:errors element="td" cssClass="ui-state-error" path="lazyGraves[${status.index}].*" />
     </td>
 </tr>
-<%--
-<tr>
-    <td colspan="9">
-        <form:textarea cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].reference" />
-    </td>
-</tr>
- --%>
+

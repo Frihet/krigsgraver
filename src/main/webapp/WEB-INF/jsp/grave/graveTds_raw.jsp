@@ -11,11 +11,9 @@
         <input id="lazyGraves${index}.dateOfBurial.approximate1" name="lazyGraves${index}.dateOfBurial.approximate" type="checkbox" value="true"/><input type="hidden" name="_lazyGraves${index}.dateOfBurial.approximate" value="on"/>
     </td>
     <td>
-        <%--
-        <select id="lazyGraves${index}.cemetery" name="lazyGraves[${index}].cemetery">
-            TODO...
+        <select id="lazyGraves${index}CemeterySelector" name="lazyGraves[${index}].cemetery" class="ui-widget-content ui-corner-all">
+            <option value="not_loaded"><fmt:message key="status.loading"/></option>
         </select>
-        --%>
     </td>
     <td>
         <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.graveField" name="lazyGraves[${index}].graveField" type="text" value="" size="2"/>
@@ -35,7 +33,7 @@
     </td>
 
     <td>
-        <input class="deleteGrave" name="lazyGraves[${index}].delete" type="checkbox" value="true" onchange="toggleDeleteGrave(this, '#graveTr${index}')" />
+        <input class="deleteGrave" name="lazyGraves[${index}].delete" type="checkbox" value="true" onclick="toggleDeleteGrave(this, '#graveTr${index} *')" />
         <input type="hidden" name="_lazyGraves[${index}].delete" value="on"/>
     </td>
 

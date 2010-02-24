@@ -9,25 +9,21 @@
  */
 package no.freecode.krigsgraver.web;
 
-import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Camp;
-import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.Grave;
+import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
+import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
-import org.apache.commons.collections.Factory;
-import org.apache.commons.collections.list.LazyList;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.ParseException;
@@ -62,7 +58,7 @@ public class PersonController {
     @Autowired
     private GenericDao genericDao;
 
-    
+
     /**
      * List all the people.
      */
@@ -104,6 +100,8 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model) {
 
+        logger.debug("getLazyGraves: " + ReflectionToStringBuilder.toString(command.getLazyGraves())); 
+        
         for (Grave grave : command.getLazyGraves()) {
             logger.debug("Got grave: " + ReflectionToStringBuilder.toString(grave));
         }
@@ -117,26 +115,12 @@ public class PersonController {
         return "redirect:/person/" + command.getPerson().getId() + "/edit";
     }
 
-    @ModelAttribute("causesOfDeath")
-    public Collection<CauseOfDeath> getCausesOfDeath() {
-        return genericDao.getAll(CauseOfDeath.class);
-    }
-    
-    @ModelAttribute("stalags")
-    public List<Stalag> getStalags() {
-        return genericDao.getAll(Stalag.class, Order.asc("name"));
+    @ModelAttribute("nationalities")
+    public List<Nationality> getNationalities() {
+        return genericDao.getAll(Nationality.class, Order.asc("countryCode"));
     }
 
-    @ModelAttribute("camps")
-    public Collection<Camp> getCamps() {
-        return genericDao.getAll(Camp.class);
-    }
-    
-    @ModelAttribute("cemeteries")
-    public Collection<Cemetery> getCausesCemeteries() {
-        return genericDao.getAll(Cemetery.class);
-    }
-    
+
     /**
      * Upload people.
      */
@@ -179,64 +163,10 @@ public class PersonController {
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
-        dataBinder.registerCustomEditor(Stalag.class, new PropertyEditorSupport() {
-
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                if ("null".equals(text)) {
-                    setValue(null);
-                } else {
-                    setValue(genericDao.get(Stalag.class, Long.parseLong(text)));
-                }
-            }
-
-            @Override
-            public String getAsText() {
-                Stalag stalag = (Stalag) getValue();
-                if (stalag == null) {
-                    return null;
-                } else {
-                    return String.valueOf(stalag.getId());
-                }
-            }
-        });
-        
-        dataBinder.registerCustomEditor(Camp.class, new PropertyEditorSupport() {
-            
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                if ("null".equals(text)) {
-                    setValue(null);
-                } else {
-                    setValue(genericDao.get(Camp.class, Long.parseLong(text)));
-                }
-            }
-
-            @Override
-            public String getAsText() {
-                Camp camp = (Camp) getValue();
-                if (camp == null) {
-                    return null;
-                } else {
-                    return String.valueOf(camp.getId());
-                }
-            }
-        });
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void main(String[] args) {
-        List<Grave> list = LazyList.decorate(new ArrayList<Grave>(), new Factory() {
-            @Override
-            public Object create() {
-                return new Grave();
-            }
-        });
-
-        System.out.println(list.get(100));
-
-        for (Grave g : list) {
-            System.out.println("- " + g);
-        }
+        dataBinder.registerCustomEditor(Stalag.class, new EntityPropertyEditor(Stalag.class, genericDao));
+        dataBinder.registerCustomEditor(Camp.class, new EntityPropertyEditor(Camp.class, genericDao));
+        dataBinder.registerCustomEditor(Nationality.class, new EntityPropertyEditor(Nationality.class, genericDao));
+        dataBinder.registerCustomEditor(Rank.class, new EntityPropertyEditor(Rank.class, genericDao));
+        dataBinder.registerCustomEditor(Cemetery.class, new EntityPropertyEditor(Cemetery.class, genericDao));
     }
 }
