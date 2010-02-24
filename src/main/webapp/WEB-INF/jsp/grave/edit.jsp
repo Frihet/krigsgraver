@@ -1,38 +1,6 @@
 <%-- <%@ include file="../header.jsp"%> --%>
 <%@ include file="../includes.jsp"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <style>img{ height: 100px; float: left; }</style>
-<!--  <script src="http://code.jquery.com/jquery-latest.js"></script>-->
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-</head>
-<body>
-    <div id="images">
-
-</div>
-
-
-<script>
-    $.getJSON('http://localhost:8080/krigsgraver/grave/1', function(data) {
-          $('<div/>').html(data.graveField);
-    });
-
-/*
-	$.getJSON(
-					"http://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?",
-					function(data) {
-						$.each(data.items, function(i, item) {
-							$("<img/>").attr("src", item.media.m).appendTo(
-									"#images");
-							if (i == 3)
-								return false;
-						});
-					});
-*/
-</script>
-
 <form:form modelAttribute="grave" method="post">
     <form:hidden path="id" />
 

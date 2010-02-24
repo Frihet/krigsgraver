@@ -197,22 +197,42 @@
                         <form:errors element="td" cssClass="ui-state-error-text" path="person.placeOfDeath" />
                     </tr>
 
-                    <tr>
+                    <tr style="vertical-align: top;">
                         <th><fmt:message key="person.causesOfDeath"/></th>
-                        <td>
-                            <select id="causeOfDeathSelector" class="ui-widget-content ui-corner-all">
-                                <option value="not_loaded"><fmt:message key="status.loading"/></option>
-                            </select>
-                            <a onclick="$('#causeOfDeathDialog').dialog('open');" class="clickie"><fmt:message key="button.add"/></a>
+                        <td style="padding-right: 1em;">
+                            <div id="causeOfDeathSection">
+                                <c:forEach items="${command.lazyCausesOfDeath}" var="causeOfDeath" varStatus="status">
+                                    <div>
+                                        <select id="causeOfDeath${status.index}Selector" name="lazyCausesOfDeath[${status.index}]" class="ui-widget-content ui-corner-all">
+                                            <option value="not_loaded"><fmt:message key="status.loading"/></option>
+                                        </select>
+                                        <script type="text/javascript">
+                                            populateSelectList('person/causeOfDeath/list', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true);
+                                        </script>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        
+                            <div style="width: 20em; text-align: center;">
+                                <a class="clickie" onclick="javascript:addCauseOfDeath();"><fmt:message key="person.causeOfDeath.add"/></a>
+<%--
+                                 <a onclick="$('#causeOfDeathDialog').dialog('open');" class="clickie"><fmt:message key="button.add"/></a>
+ --%>
+                            </div>
                         </td>
-                        <td>(jobber med dette)</td>
+                        <td><fmt:message key="person.causeOfDeathDescription"/></td>
+                        <td>
+                            <form:textarea path="person.causeOfDeathDescription" cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" rows="4" cols="30" />
+                        </td>
                     </tr>
 
+<%--
                     <c:forEach items="${command.person.causesOfDeath}" var="causeOfDeath" varStatus="status" >
                         <tr>
-                            <th><fmt:message key="person.causeOfDeath"/></th>
+                            <th><fmt:message key="person.causeOfDeathDescription"/></th>
                         </tr>
                     </c:forEach>
+ --%>
 
                     <tr>
                         <th><form:label for="person.obdNumber" path="person.obdNumber" cssErrorClass="ui-state-error-text"><fmt:message key="person.obdNumber"/></form:label></th>
@@ -377,6 +397,18 @@
 
         populateSelectList('cemetery/list', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true);
     };
+
+    /* Add another "cause of death" select box. */
+    function addCauseOfDeath() {
+        var causeOfDeathSection = document.getElementById('causeOfDeathSection');
+        var elements = causeOfDeathSection.getElementsByTagName('div');
+        var n = elements.length;
+    	$('#causeOfDeathSection').append('<div><select id="causeOfDeath' + n + 'Selector" name="lazyCausesOfDeath[' + n + 
+                ']" class="ui-widget-content ui-corner-all">' + 
+                '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
+        
+        populateSelectList('person/causeOfDeath/list', 'causeOfDeath' + n, 'cause', 'null', true);
+    }
 
     /* Gray out the row if 'delete' is checked.  */
     function toggleDeleteGrave(checkbox, rowSelector) {

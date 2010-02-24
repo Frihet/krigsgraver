@@ -83,7 +83,15 @@ public class PersonDao {
             }
         }
         person.setGraves(graves);
-        
+
+        ArrayList<CauseOfDeath> causesOfDeath = new ArrayList<CauseOfDeath>();
+        for (CauseOfDeath cause : command.getLazyCausesOfDeath()) {
+            if (cause != null) {
+                causesOfDeath.add(cause);
+            }
+        }
+        person.setCausesOfDeath(causesOfDeath);
+
         sessionFactory.getCurrentSession().merge(person);
     }
 

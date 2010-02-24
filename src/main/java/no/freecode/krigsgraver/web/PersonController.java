@@ -15,8 +15,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Camp;
+import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
-import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Rank;
@@ -24,7 +24,6 @@ import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.criterion.Order;
@@ -100,12 +99,6 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model) {
 
-        logger.debug("getLazyGraves: " + ReflectionToStringBuilder.toString(command.getLazyGraves())); 
-        
-        for (Grave grave : command.getLazyGraves()) {
-            logger.debug("Got grave: " + ReflectionToStringBuilder.toString(grave));
-        }
-
         if (result.hasErrors()) {
             return "person/edit";
         }
@@ -119,7 +112,6 @@ public class PersonController {
     public List<Nationality> getNationalities() {
         return genericDao.getAll(Nationality.class, Order.asc("countryCode"));
     }
-
 
     /**
      * Upload people.
@@ -163,10 +155,13 @@ public class PersonController {
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
+        logger.debug("Initializing custom editors for the entities.");
+        
         dataBinder.registerCustomEditor(Stalag.class, new EntityPropertyEditor(Stalag.class, genericDao));
         dataBinder.registerCustomEditor(Camp.class, new EntityPropertyEditor(Camp.class, genericDao));
         dataBinder.registerCustomEditor(Nationality.class, new EntityPropertyEditor(Nationality.class, genericDao));
         dataBinder.registerCustomEditor(Rank.class, new EntityPropertyEditor(Rank.class, genericDao));
         dataBinder.registerCustomEditor(Cemetery.class, new EntityPropertyEditor(Cemetery.class, genericDao));
+        dataBinder.registerCustomEditor(CauseOfDeath.class, new EntityPropertyEditor(CauseOfDeath.class, genericDao));
     }
 }

@@ -39,7 +39,6 @@ public class CauseOfDeath extends BaseEntity {
     @Size(max = 255)
     private String description;
 
-
     public String getCause() {
         return cause;
     }

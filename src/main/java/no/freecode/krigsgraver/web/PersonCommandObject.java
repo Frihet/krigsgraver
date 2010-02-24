@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.Person;
 
@@ -32,6 +33,10 @@ public class PersonCommandObject {
     @Valid
     private List<Grave> lazyGraves;
 
+    @Valid
+    private List<CauseOfDeath> lazyCausesOfDeath;
+
+    
     /**
      * 
      */
@@ -48,6 +53,8 @@ public class PersonCommandObject {
         if (getLazyGraves().isEmpty()) {
             getLazyGraves().add(new Grave());
         }
+
+        getLazyCausesOfDeath().addAll(person.getCausesOfDeath());
     }
 
     public Person getPerson() {
@@ -76,12 +83,23 @@ public class PersonCommandObject {
         this.lazyGraves = lazyGraves;
     }
 
-    /* 
-    public void setLazyGraves(List<Grave> graves) {
-        List<Grave> lg = getLazyGraves();
-        lg.clear();
-        if (graves != null) {
-            lg.addAll(graves);
+    
+    @SuppressWarnings("unchecked")
+    public List<CauseOfDeath> getLazyCausesOfDeath() {
+        if (lazyCausesOfDeath == null) {
+            lazyCausesOfDeath = LazyList.decorate(new ArrayList<CauseOfDeath>(), new Factory() {
+                @Override
+                public Object create() {
+                    return new CauseOfDeath();
+                }
+            });
         }
-    }*/
+
+        return lazyCausesOfDeath;
+    }
+
+    public void setLazyCausesOfDeath(List<CauseOfDeath> lazyCausesOfDeath) {
+        this.lazyCausesOfDeath = lazyCausesOfDeath;
+    }
+
 }
