@@ -113,27 +113,31 @@ public class PersonDao {
     }
 
     @Transactional(readOnly = true)
-    public List<Person> findPersons(String queryString) throws ParseException {
+    public List<Person> search(String queryString, Paginator paginator) throws ParseException {
 
         String[] fields = new String[] { 
                 "westernDetails.firstName", "westernDetails.lastName",
                 "cyrillicDetails.firstName", "cyrillicDetails.lastName" };
 
         MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
+//        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
         org.apache.lucene.search.Query query = parser.parse(queryString);
 
         FullTextQuery fullTextQuery = Search.getFullTextSession(sessionFactory.getCurrentSession()).createFullTextQuery(query, Person.class);
-//        fullTextQuery.setFirstResult(15); //start from the 15th element
-//        fullTextQuery.setMaxResults(10); //return 10 elements
+
+        fullTextQuery.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
+        fullTextQuery.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
 
         @SuppressWarnings("unchecked")
         List<Person> results = fullTextQuery.list();
-        
-        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results.");
-        
-        return results;
+
+        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results. List size=" + results.size());
+        paginator.setNumberOfResults(fullTextQuery.getResultSize());
+
+        return paginator.paginate(results);
+//        return results;
     }
-    
+
     /**
      * Index all Person objects in the search engine.
      */

@@ -10,11 +10,11 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 /**
@@ -24,8 +24,8 @@ import org.hibernate.search.annotations.Store;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
-@Indexed
-public class PersonDetails extends IndexedEntity {
+//@Indexed
+public class PersonDetails extends BaseEntity {
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
     @Size(max = 255)
@@ -76,11 +76,23 @@ public class PersonDetails extends IndexedEntity {
         this.placeOfBirth = placeOfBirth;
     }
 
+    /**
+     * @return true if none of the fields have been set.
+     */
+    @Transient
+    public boolean isEmpty() {
+        if (firstName == null && nameOfFather == null && lastName == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return (firstName != null ? firstName : "") + (nameOfFather != null ? " " + nameOfFather + " " : " ") + (lastName != null ? lastName : "");
+        return (firstName != null ? firstName : "") + (nameOfFather != null ? " " + nameOfFather : "") + (lastName != null ? " " + lastName : "");
     }
 }

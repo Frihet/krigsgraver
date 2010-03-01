@@ -7,37 +7,107 @@ html,body {
     margin: 0;
     padding: 0;
     background: #fcfcfc;
+    color: #222222;
     text-align: center;
+    height: 100%;
 }
 
-div#header {
-    background-color: #919100;
-    height: 120px;
+table#wholePage {
+    height: 100%;
+    overflow: auto;
+    border-collapse: collapse;
     width: 100%;
+    height: 100%;
 }
 
-#headerLogo {
+td#rightHeader {
+    background-color: #919100;
+    height: 98px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+}
+
+a#loginLink {
+    padding: 0.5em;
+    float: right;
+    color: white;
+    text-decoration: none;
+    font-size: 80%;
+}
+
+td#headerLogo {
     float: left;
-    height: 120px;
-    width: 300px;
+    height: 98px;
+    width: 190px;
     padding: 0;
     margin: 0;
     background-color: #000000;
     background-repeat: no-repeat;
-    background-position: center 7px;
+    background-position: center -1px;
+    vertical-align: top;
 }
 
-div#mainContent {
+td#menuArea {
+    padding: 0;
+    width: 190px;
     vertical-align: top;
-    margin: 0 auto;
-    padding: 1em;
-    width: 900px;
+    background-color: black;
+    color: white;
+}
+
+td#mainContentWrapper {
+    padding: 0;
+    vertical-align: top;
+}
+
+#mainContent {
+    vertical-align: top;
+    margin: 0;
+    padding: 1.5em 2em;
+    max-width: 95em;
     text-align: left;
 }
 
+/* Global info & errors. */
+div.info,div.error {
+    margin-bottom: 1em;
+}
+
 /* Text formatting. */
+h1 {
+    margin-top: 0;
+}
+
+h1,h2 {
+    color: #003366;
+}
+
+h2 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
 span.soft {
     color: grey;
+}
+
+/* Horizontal line. */
+div.ruler {
+    margin: 0 2em 1em 2em;
+    border-bottom: 1px solid #919100;
+    padding-top: 1em;
+    /* width: 90%; */
+}
+
+/* Links. */
+a {
+    color: #222222;
+}
+
+a:hover {
+    color: #919100;
 }
 
 /* General table stuff. */
@@ -52,6 +122,7 @@ a.button {
     /* padding: .4em 1em .5em 25px; */
     text-decoration: none;
     position: relative;
+    color: black;
 }
 
 a.button span.ui-icon {
@@ -68,13 +139,11 @@ a.clickie {
 }
 
 /* Form fields. */
-fieldset.main {
-    border-color: #003366;
+fieldset.main { /* border-color: #003366; */ /* border-color: black; */
     margin-bottom: 1em;
 }
 
-fieldset.main legend {
-    color: #003366;
+fieldset.main legend { /* color: #003366; */ /* color: #919100; */
     font-size: 110%;
 }
 
@@ -106,4 +175,27 @@ div.dialog fieldset {
     border: 0;
     margin-top: 25px;
     text-align: left;
+}
+
+/* Searching. */
+div.searchContainer {
+    margin: 2em auto;
+    padding: 1em;
+    width: 35em;
+    /* background-color: #dadab5; */
+}
+
+div.searchMenu {
+    font-size: 80%;
+    padding: 0.2em 4px;
+    /* font-weight: bold; */
+}
+
+div.searchMenu a {
+    text-decoration: none;
+    color: blue;
+}
+
+div.searchMenu span {
+    padding-right: 1em;
 }

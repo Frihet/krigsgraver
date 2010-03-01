@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Nationality extends BaseEntity {
 
     @Column(unique = true)
@@ -35,5 +36,13 @@ public class Nationality extends BaseEntity {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return countryCode;
     }
 }

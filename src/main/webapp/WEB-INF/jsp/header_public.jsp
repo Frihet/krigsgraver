@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
+<%--
+    This is the public header. It should be as small as possible, as it will be used for e.g. the front page.
+ --%>
+
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="includes.jsp"%>
@@ -9,7 +13,7 @@
     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xml:lang="en">
 <head>
     <title><fmt:message key="global.title"/></title>
-    <link rel="stylesheet" href='<c:url value="/inc/styles/main.css?version=1"/>' type="text/css" media="screen,projection" />
+    <link rel="stylesheet" href="<c:url value="/inc/styles/main.css?version=2"/>" type="text/css" media="screen,projection" />
 <!--    <link rel="stylesheet" href="<c:url value="/inc/styles/print.css?version=1"/>" type="text/css" media="print" />-->
 <!--    <link rel="stylesheet" href="<c:url value="/inc/styles/menus.css?version=1"/>" type="text/css" media="screen,projection" />-->
 
@@ -22,24 +26,12 @@
 </head>
 
 <body>
-<table id="wholePage">
-<tr>
-    <td id="headerLogo" style="background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);"></td>
-    <td id="rightHeader">
-        <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR">
-            <a id="loginLink" href='<c:url value="/login" />'><fmt:message key="link.login"/></a>
-        </sec:authorize>
-        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR">
-            <a id="loginLink" href='<c:url value="/j_spring_security_logout" />'><fmt:message key="link.logout"/></a>
-        </sec:authorize>
-    </td>
-</tr>
-<tr>
-    <td id="menuArea">
-        <div style="padding-top: 3em;">(meny...)</div>
-    </td>
+<div id="header">
+    <div id="headerLogo" style="background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);">
+    </div>
+</div>
 
-    <td id="mainContentWrapper"><div id="mainContent">
+<div id="mainContent">
 
 
     <%-- If a standardInfo/standardError String is present in the model,
@@ -53,7 +45,7 @@
         </div>
         <c:remove var="standardInfo" scope="session" />
     </c:if>
-
+    
     <c:if test="${standardError != Null}">
         <div class="error ui-widget">
             <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
@@ -63,3 +55,4 @@
         </div>
         <c:remove var="standardError" scope="session" />
     </c:if>
+

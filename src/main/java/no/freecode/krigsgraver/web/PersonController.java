@@ -10,8 +10,9 @@
 package no.freecode.krigsgraver.web;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Camp;
@@ -28,9 +29,12 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,17 +54,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class PersonController {
 
     private static final Logger logger = Logger.getLogger(PersonController.class);
-    
+
     @Autowired
     private PersonDao personDao;
 
     @Autowired
     private GenericDao genericDao;
 
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * List all the people.
      */
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public String getListForm(Model model) {
         model.addAttribute("persons", personDao.getAll());
@@ -70,8 +77,10 @@ public class PersonController {
     /**
      * Create a new person.
      */
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model) {
+        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
         model.addAttribute("command", new PersonCommandObject(new Person()));
         return "person/edit";
     }
@@ -79,8 +88,10 @@ public class PersonController {
     /**
      * Edit an existing person.
      */
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
     public String getEditForm(@PathVariable long personId, Model model) {
+        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
         model.addAttribute("command", new PersonCommandObject(personDao.getPerson(personId)));
         return "person/edit";
     }
@@ -88,34 +99,44 @@ public class PersonController {
     /**
      * Get an existing person.
      */
-    @RequestMapping(method = RequestMethod.GET, value = "{personId}")
-    public Person getPerson(@PathVariable long personId) {
-        return personDao.getPerson(personId);
+    @RequestMapping(method = RequestMethod.GET, value = "{personId}/view")
+    public String getPerson(@PathVariable long personId, Model model) {
+        model.addAttribute("person", personDao.getPerson(personId));
+        return "person/view";
     }
-
+    
     /**
      * Submit a new person.
      */
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
-    public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model) {
+    public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model, HttpSession session, Locale locale) {
 
         if (result.hasErrors()) {
             return "person/edit";
         }
 
         personDao.savePersonCommandObject(command);
-        
+
+        String message = messageSource.getMessage("person.successfullySaved",
+                new Object[] { command.getPerson().toString() }, locale);
+        session.setAttribute("standardInfo", message);
+
         return "redirect:/person/" + command.getPerson().getId() + "/edit";
     }
 
-    @ModelAttribute("nationalities")
-    public List<Nationality> getNationalities() {
-        return genericDao.getAll(Nationality.class, Order.asc("countryCode"));
-    }
+
+//    @ModelAttribute("nationalities")
+//    public List<Nationality> getNationalities() {
+//        return genericDao.getAll(Nationality.class, Order.asc("countryCode"));
+//    }
+
 
     /**
      * Upload people.
      */
+    // TODO: secure
+//    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "upload")
     public String getUploadForm() {
         return "person/upload";
@@ -127,6 +148,8 @@ public class PersonController {
      * @throws IOException 
      */
     @RequestMapping(method = RequestMethod.POST, value = "upload")
+    // TODO: secure
+//    @Secured({"ROLE_ADMIN"})
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
 
         if (!file.isEmpty()) {
@@ -143,14 +166,20 @@ public class PersonController {
      * 
      * @throws ParseException 
      */
-    @RequestMapping(method = RequestMethod.GET, value = "search")
-    public String search(@RequestParam(value = "q", required = false) String queryString,  Model model) throws ParseException {
+//    @RequestMapping(method = RequestMethod.GET, value = "search")
+//    public String search(@RequestParam(value = "q", required = false) String queryString,  Model model) throws ParseException {
+//
+//        if (queryString != null) {
+//            model.addAttribute("persons", personDao.search(queryString));
+//        }
+//        
+//        return "person/search";
+//    }
 
-        if (queryString != null) {
-            model.addAttribute("persons", personDao.findPersons(queryString));
+    private static void validatePerson(Person person, Errors errors) {
+        if (person.getCyrillicDetails().isEmpty() && person.getWesternDetails().isEmpty()) {
+            errors.reject("person.error.missingName");
         }
-        
-        return "person/search";
     }
 
     @InitBinder

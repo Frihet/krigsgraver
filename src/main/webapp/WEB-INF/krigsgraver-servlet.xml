@@ -13,7 +13,13 @@
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven  />
 
-    <mvc:view-controller path="/" view-name="welcome"/>
+    <mvc:view-controller path="/login" view-name="login" />
+
+    <mvc:view-controller path="/errors/default" view-name="errors/default" />
+
+<!-- 
+    <mvc:view-controller path="/" view-name="search"/>
+ -->
 
 <!--    <context:annotation-config />-->
 

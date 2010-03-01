@@ -73,4 +73,24 @@ public class FlexibleDate extends BaseEntity {
     public void setApproximate(boolean approximate) {
         this.approximate = approximate;
     }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        if (year != null || month != null || day != null) {
+            return
+                (year != null ? String.format("%04d", year) : "????") + "-" +
+                (month != null ? String.format("%02d", month) : "??") + "-" +
+                (day != null ? String.format("%02d", day) : "??");
+        } else {
+            return "?";
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new FlexibleDate(null, null, null));
+    }
 }

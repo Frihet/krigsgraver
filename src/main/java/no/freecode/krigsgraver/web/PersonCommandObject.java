@@ -36,7 +36,6 @@ public class PersonCommandObject {
     @Valid
     private List<CauseOfDeath> lazyCausesOfDeath;
 
-    
     /**
      * 
      */

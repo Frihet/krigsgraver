@@ -26,11 +26,15 @@
         <appender-ref ref="console"/>
     </category>
 
+<!-- 
     <category name="org.springframework.org.hibernate">
         <priority value="debug" />
     </category>
 
-<!-- 
+    <category name="net.sf.ehcache">
+        <priority value="debug" />
+    </category>
+
     <category name="org.springframework.security">
         <priority value="debug" />
     </category>

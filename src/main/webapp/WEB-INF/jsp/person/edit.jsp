@@ -12,7 +12,7 @@
 <!--
     /* Populate a select list asynchronously using JSON. */
     function populateSelectList(source, type, field, currentId, allowNull) {
-        $.getJSON('<c:url value="/"/>' + source, function(data) {
+        $.getJSON(source, function(data) {
             var html = '';
             if (allowNull) {
                 html += '<option value="null">&lt;<fmt:message key="value.notSet"/>&gt;</option>';
@@ -207,17 +207,14 @@
                                             <option value="not_loaded"><fmt:message key="status.loading"/></option>
                                         </select>
                                         <script type="text/javascript">
-                                            populateSelectList('person/causeOfDeath/list', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true);
+                                            populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true);
                                         </script>
                                     </div>
                                 </c:forEach>
                             </div>
                         
-                            <div style="width: 20em; text-align: center;">
+                            <div>
                                 <a class="clickie" onclick="javascript:addCauseOfDeath();"><fmt:message key="person.causeOfDeath.add"/></a>
-<%--
-                                 <a onclick="$('#causeOfDeathDialog').dialog('open');" class="clickie"><fmt:message key="button.add"/></a>
- --%>
                             </div>
                         </td>
                         <td><fmt:message key="person.causeOfDeathDescription"/></td>
@@ -244,6 +241,8 @@
 
             <fieldset class="main ui-corner-all">
                 <legend><fmt:message key="person.graves.title"/></legend>
+
+                <form:errors element="div" cssClass="ui-state-error-text" cssStyle="text-align: center;" path="lazyGraves*" />
 
                 <table id="graveTable" class="withMargin" style="width: 100%;">
                     <tr>
@@ -322,12 +321,10 @@
         });
     }
 
-    populateSelectList('rank/list', 'rank', 'name', '<c:if test="${command.person.rank != Null}">${command.person.rank.id}</c:if>', true);
-    populateSelectList('stalag/list', 'stalag', 'name', '<c:if test="${command.person.stalag != Null}">${command.person.stalag.id}</c:if>', true);
-    populateSelectList('camp/list', 'camp', 'name', '<c:if test="${command.person.camp != Null}">${command.person.camp.id}</c:if>', true);
+    populateSelectList('<c:url value="/rank/list" />', 'rank', 'name', '${command.person.rank.id}', true);
+    populateSelectList('<c:url value="/stalag/list" />', 'stalag', 'name', '${command.person.stalag.id}', true);
+    populateSelectList('<c:url value="/camp/list" />', 'camp', 'name', '${command.person.camp.id}', true);
     reloadCauseOfDeathSelector();
-
-    //populateSelectList('cemetery/list', 'lazyGraves0Cemetery', 'name', '', true);
     
     /* Make an AJAX call to load the data in the causeOfDeath dialog. */
     function loadCauseOfDeathForm() {
@@ -395,7 +392,7 @@
         var graveTds = document.getElementById('graveTrNNN').innerHTML.replace(/NNN/gi, rowId);
         $('#graveTable').append('<tr id="graveTr' + rowId + '">' + graveTds + '</tr>');
 
-        populateSelectList('cemetery/list', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true);
+        populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true);
     };
 
     /* Add another "cause of death" select box. */
@@ -407,7 +404,7 @@
                 ']" class="ui-widget-content ui-corner-all">' + 
                 '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
         
-        populateSelectList('person/causeOfDeath/list', 'causeOfDeath' + n, 'cause', 'null', true);
+        populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath' + n, 'cause', 'null', true);
     }
 
     /* Gray out the row if 'delete' is checked.  */

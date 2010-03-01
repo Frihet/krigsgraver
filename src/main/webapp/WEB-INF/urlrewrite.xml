@@ -5,6 +5,12 @@
 		<from>/inc/**</from>
 		<to>/inc/$1</to>
 	</rule>
+<!-- 
+    <rule>
+        <from>/j_spring_security_**</from>
+        <to>/j_spring_security_$1</to>
+    </rule>
+ -->
 	<rule>
 		<from>/**</from>
 		<to>/app/$1</to>

@@ -29,7 +29,6 @@
         <property name="password"><value>${jdbc.password}</value></property>
     </bean>
 
-        
     <!-- Hibernate SessionFactory. -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" p:dataSource-ref="dataSource">
 
@@ -40,7 +39,13 @@
                 <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
-                
+
+                <!-- Investigate caching...? -->
+<!-- 
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+ -->
+
                 <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
                 <prop key="hibernate.search.default.indexBase">${work.dir}/lucene/indexes</prop>
             </props>

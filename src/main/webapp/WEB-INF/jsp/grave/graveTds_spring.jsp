@@ -15,7 +15,7 @@
             <option value="not_loaded"><fmt:message key="status.loading"/></option>
         </form:select>
         <script type="text/javascript">
-            populateSelectList('cemetery/list', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true);
+            populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true);
         </script>
     </td>
     <td>
@@ -37,7 +37,9 @@
         <form:checkbox cssClass="deleteGrave" path="lazyGraves[${index}].delete" onclick="toggleDeleteGrave(this, '#graveTr${index} *')" />
     </td>
     <td>
+<%--
         <form:errors element="td" cssClass="ui-state-error" path="lazyGraves[${status.index}].*" />
+ --%>
     </td>
 </tr>
 

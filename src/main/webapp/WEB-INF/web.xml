@@ -29,6 +29,17 @@
         </param-value>
     </context-param>
 
+    <!-- Enable Spring security. -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -68,34 +79,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Enable Spring security. -->
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-
-    <!-- Hibernate OpenSession Filter. -->
-<!-- 
-    <filter>
-        <filter-name>hibernateFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
-        <init-param>
-            <param-name>singleSession</param-name>
-            <param-value>false</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>hibernateFilter</filter-name>
-        <url-pattern>/app/*</url-pattern>
-    </filter-mapping>
- -->
     
 
     <!--    <context-param>-->
@@ -110,16 +93,11 @@
     <!-- 
  -->
 
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-
 
     <!-- Error handling. -->
-
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
-        <location>/errors/default.do</location>
+        <location>/errors/default</location>
     </error-page>
 
    <error-page>

@@ -23,9 +23,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.search.annotations.Field;
@@ -255,5 +257,37 @@ public class Person extends IndexedEntity {
         this.stalag = stalag;
     }
 
+    @Transient
+    public String getPlaceOfBirthString() {
+        return mixCharsets(getWesternDetails().getPlaceOfBirth(), getCyrillicDetails().getPlaceOfBirth());
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return mixCharsets(getWesternDetails().toString(), getCyrillicDetails().toString());
+    }
+    
+    private static String mixCharsets(String s1, String s2) {
+        if (StringUtils.isNotBlank(s1)) {
+            StringBuilder s = new StringBuilder();
+            s.append(s1);
+            
+            if (StringUtils.isNotBlank(s2)) {
+                s.append(" / ");
+                s.append(s2);
+            }
 
+            return s.toString();
+            
+        } else {
+            return s2;
+        }
+    }
+    
+    public static void main(String[] args) {
+        
+    }
 }
