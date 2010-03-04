@@ -8,27 +8,18 @@
     th { font-weight: normal; }
 </style>
 
-<script type="text/javascript">
-<!--
-    /* Populate a select list asynchronously using JSON. */
-    function populateSelectList(source, type, field, currentId, allowNull) {
-        $.getJSON(source, function(data) {
-            var html = '';
-            if (allowNull) {
-                html += '<option value="null">&lt;<fmt:message key="value.notSet"/>&gt;</option>';
-            }
-            
-            var len = data.length;
-    
-            $.each(data, function(i, item) {
-                html += '<option value=' + item.id + '>' + eval('item.' + field) + '</option>';
-            });
-            $('#' + type + 'Selector').html(html);
-            $('#' + type + 'Selector').val(currentId);
-        });
-    }
-//-->
-</script>
+<h1>
+    <c:choose>
+        <c:when test="${command.person.id == Null}">
+            <fmt:message key="person.createNew"/>
+        </c:when>
+        <c:otherwise>
+            <fmt:message key="person.editExisting">
+                <fmt:param value="${command.person.fullName}" />
+            </fmt:message>
+        </c:otherwise>
+    </c:choose>
+</h1>
 
 <div class="container">
     <div>
@@ -98,11 +89,11 @@
                     <tr>
                         <th><form:label for="person.dateOfBirth" path="person.dateOfBirth" cssErrorClass="ui-state-error-text"><fmt:message key="person.dateOfBirth"/></form:label></th>
                         <td>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
-                            <span class="soft">/</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.month" size="1" maxlength="2" />
-                            <span class="soft">/</span>
                             <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.year" size="4" maxlength="4" />
+                            <span class="soft">-</span>
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.month" size="1" maxlength="2" />
+                            <span class="soft">-</span>
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
                             <span class="soft">(<fmt:message key="type.date.formatDescription"/>)</span>
                             
                             <span style="padding-right: 2em;"></span>
@@ -178,11 +169,11 @@
                     <tr>
                         <th><form:label for="person.dateOfDeath" path="person.dateOfDeath" cssErrorClass="ui-state-error-text"><fmt:message key="person.dateOfDeath"/></form:label></th>
                         <td>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.day" size="1" maxlength="2" />
-                            <span class="soft">/</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.month" size="1" maxlength="2" />
-                            <span class="soft">/</span>
                             <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.year" size="4" maxlength="4" />
+                            <span class="soft">-</span>
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.month" size="1" maxlength="2" />
+                            <span class="soft">-</span>
+                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.day" size="1" maxlength="2" />
                             <span class="soft">(<fmt:message key="type.date.formatDescription"/>)</span>
                             <span style="padding-right: 2em;"></span>
                             <fmt:message key="grave.approximateDate"/>
@@ -207,7 +198,7 @@
                                             <option value="not_loaded"><fmt:message key="status.loading"/></option>
                                         </select>
                                         <script type="text/javascript">
-                                            populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true);
+                                            populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true, '<fmt:message key="value.notSet"/>');
                                         </script>
                                     </div>
                                 </c:forEach>
@@ -321,9 +312,9 @@
         });
     }
 
-    populateSelectList('<c:url value="/rank/list" />', 'rank', 'name', '${command.person.rank.id}', true);
-    populateSelectList('<c:url value="/stalag/list" />', 'stalag', 'name', '${command.person.stalag.id}', true);
-    populateSelectList('<c:url value="/camp/list" />', 'camp', 'name', '${command.person.camp.id}', true);
+    populateSelectList('<c:url value="/rank/list" />', 'rank', 'name', '${command.person.rank.id}', true, '<fmt:message key="value.notSet"/>');
+    populateSelectList('<c:url value="/stalag/list" />', 'stalag', 'name', '${command.person.stalag.id}', true, '<fmt:message key="value.notSet"/>');
+    populateSelectList('<c:url value="/camp/list" />', 'camp', 'name', '${command.person.camp.id}', true, '<fmt:message key="value.notSet"/>');
     reloadCauseOfDeathSelector();
     
     /* Make an AJAX call to load the data in the causeOfDeath dialog. */
@@ -392,7 +383,7 @@
         var graveTds = document.getElementById('graveTrNNN').innerHTML.replace(/NNN/gi, rowId);
         $('#graveTable').append('<tr id="graveTr' + rowId + '">' + graveTds + '</tr>');
 
-        populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true);
+        populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true, '<fmt:message key="value.notSet"/>');
     };
 
     /* Add another "cause of death" select box. */
@@ -404,7 +395,7 @@
                 ']" class="ui-widget-content ui-corner-all">' + 
                 '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
         
-        populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath' + n, 'cause', 'null', true);
+        populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath' + n, 'cause', 'null', true, '<fmt:message key="value.notSet"/>');
     }
 
     /* Gray out the row if 'delete' is checked.  */

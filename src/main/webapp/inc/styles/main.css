@@ -50,11 +50,30 @@ td#headerLogo {
 }
 
 td#menuArea {
-    padding: 0;
+    font-size: 11px;
+    padding: 2em 2em 0;
     width: 190px;
     vertical-align: top;
     background-color: black;
     color: white;
+    text-align: left;
+}
+
+td#menuArea a {
+    color: white;
+    text-decoration: none;
+}
+
+td#menuArea a:hover {
+    color: #919100;
+}
+
+div.menuTitle {
+    /* margin: 0 2em 1em 2em; */
+    font-weight: bold;
+    border-bottom: 1px solid #919100;
+    margin: 1.5em 0 0.5em 0;
+    padding: 0 0 0.1em 0;
 }
 
 td#mainContentWrapper {
@@ -185,17 +204,22 @@ div.searchContainer {
     /* background-color: #dadab5; */
 }
 
-div.searchMenu {
-    font-size: 80%;
-    padding: 0.2em 4px;
-    /* font-weight: bold; */
+.searchMenu {
+    width: 100%;
+    text-align: left;
+    padding: 0.2em 0.5em 0 0;
+    white-space: nowrap;
 }
 
-div.searchMenu a {
+.searchMenu tr, td {
+    padding: 0;
+}
+
+.searchMenu a {
     text-decoration: none;
     color: blue;
 }
 
-div.searchMenu span {
+.searchMenu span {
     padding-right: 1em;
 }

@@ -13,6 +13,10 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 /**
  * A date implementation to make it a bit cleaner to store and express dates
  * that don't necessarily have all its fields set.
@@ -23,12 +27,15 @@ import javax.validation.constraints.Min;
 public class FlexibleDate extends BaseEntity {
 
     @Min(1) @Max(31)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer day;
 
     @Min(1) @Max(12)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer month;
 
     @Min(1000) @Max(9999)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer year;
     
     /** Used to indicate that this date is not to be completely trusted. */

@@ -22,10 +22,10 @@
 <h1>${person}</h1>
 
 <table>
-    <c:if test="${!empty person.placeOfBirthString}">
+    <c:if test="${!empty person.placeOfBirth}">
         <tr>
             <th> <fmt:message key="person.placeOfBirth"/> </th>
-            <td> ${person.placeOfBirthString} </td>
+            <td> ${person.placeOfBirth} </td>
         </tr>
     </c:if>
     <tr>

@@ -3,7 +3,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page pageEncoding="UTF-8" %>
-<%@ include file="includes.jsp"%>
+<%@ include file="includes.jsp" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xml:lang="en">
@@ -16,6 +16,7 @@
     <link type="text/css" href="<c:url value='/inc/jquery/css/custom-theme/jquery-ui-1.7.2.custom.css'/>" rel="stylesheet" />    
     <script type="text/javascript" src="<c:url value='/inc/jquery/js/jquery-1.4.1.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/inc/jquery/js/jquery-ui-1.7.2.custom.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/inc/scripts/krigsgraver.js'/>"></script>
 
     <link rel="icon" href="<c:url value="/inc/img/favicon.ico" />" type="image/x-icon" />
     <link rel="shortcut icon" href="<c:url value="/inc/img/favicon.ico" />" type="image/x-icon" />
@@ -36,7 +37,7 @@
 </tr>
 <tr>
     <td id="menuArea">
-        <div style="padding-top: 3em;">(meny...)</div>
+        <%@ include file="menu.jsp" %>
     </td>
 
     <td id="mainContentWrapper"><div id="mainContent">

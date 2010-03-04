@@ -1,11 +1,11 @@
 <%@ include file="../includes.jsp"%>
 <tr id="graveTr${index}">
     <td>
-        <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.day" size="1" maxlength="2" />
-        <span class="soft">/</span>
-        <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.month" size="1" maxlength="2" />
-        <span class="soft">/</span>
         <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.year" size="4" maxlength="4" />
+        <span class="soft">-</span>
+        <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.month" size="1" maxlength="2" />
+        <span class="soft">-</span>
+        <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-state-error" path="lazyGraves[${index}].dateOfBurial.day" size="1" maxlength="2" />
     </td>
     <td>
         <form:checkbox path="lazyGraves[${index}].dateOfBurial.approximate" />
@@ -15,7 +15,7 @@
             <option value="not_loaded"><fmt:message key="status.loading"/></option>
         </form:select>
         <script type="text/javascript">
-            populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true);
+            populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true, '<fmt:message key="value.notSet"/>');
         </script>
     </td>
     <td>

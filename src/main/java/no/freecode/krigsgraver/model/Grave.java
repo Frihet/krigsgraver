@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.search.annotations.IndexedEmbedded;
+
 /**
  * 
  * 
@@ -25,6 +27,7 @@ import javax.persistence.Transient;
 public class Grave extends BaseEntity {
 
     @ManyToOne
+    @IndexedEmbedded
     private Cemetery cemetery;
 
     private Integer graveField;

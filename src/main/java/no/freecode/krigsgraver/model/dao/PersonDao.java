@@ -38,7 +38,12 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projections;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -115,19 +120,37 @@ public class PersonDao {
     @Transactional(readOnly = true)
     public List<Person> search(String queryString, Paginator paginator) throws ParseException {
 
-        String[] fields = new String[] { 
-                "westernDetails.firstName", "westernDetails.lastName",
-                "cyrillicDetails.firstName", "cyrillicDetails.lastName" };
+        Session currentSession = sessionFactory.getCurrentSession();
 
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
+        String[] fields = new String[] { 
+//                "westernDetails.firstName", "westernDetails.nameOfFather", "westernDetails.lastName",
+                "fullName", "placeOfBirth",
+//                "westernDetails.placeOfBirth",
+//                "cyrillicDetails.firstName", "cyrillicDetails.nameOfFather", "cyrillicDetails.lastName",
+//                "cyrillicDetails.placeOfBirth",
+                "dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day",
+                "nationality.countryCode", "prisonerNumber", "obdNumber",
+                "rank.name", "camp.name", "stalag.name",
+                "placeOfDeath",
+                "causeOfDeathDescription", "remarks",
+                "causesOfDeath.cause", "causesOfDeath.causeGroup", "graves.cemetery.name"
+                };
+
 //        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
+        parser.setDefaultOperator(Operator.AND);
+
         org.apache.lucene.search.Query query = parser.parse(queryString);
 
-        FullTextQuery fullTextQuery = Search.getFullTextSession(sessionFactory.getCurrentSession()).createFullTextQuery(query, Person.class);
+        FullTextQuery fullTextQuery = Search.getFullTextSession(currentSession).createFullTextQuery(query, Person.class);
 
         fullTextQuery.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
         fullTextQuery.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
 
+//        Criteria crit = currentSession.createCriteria(Person.class);
+//        crit.add(Restrictions.eq("rank.name", "soldat"));
+//        fullTextQuery.setCriteriaQuery(crit);
+        
         @SuppressWarnings("unchecked")
         List<Person> results = fullTextQuery.list();
 
@@ -138,6 +161,42 @@ public class PersonDao {
 //        return results;
     }
 
+
+    @Transactional(readOnly = true)
+    public List<Person> search(Paginator paginator, Criterion... crits) throws ParseException {
+        
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
+        for (Criterion criterion : crits) {
+            crit.add(criterion);
+        }
+
+        crit.setProjection(Projections.rowCount());
+        paginator.setNumberOfResults((Integer) crit.uniqueResult());
+        
+        crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
+        for (Criterion criterion : crits) {
+            crit.add(criterion);
+        }
+        
+//        crit.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+////        paginator.setNumberOfResults((Integer) crit.uniqueResult());
+////
+////        // wipe out the projection, keep the criteria
+//        crit.setProjection(null);
+        
+        crit.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
+        crit.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
+        
+        @SuppressWarnings("unchecked")
+        List<Person> results = crit.list();
+
+//        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results. List size=" + results.size());
+//        paginator.setNumberOfResults(fullTextQuery.getResultSize());
+
+        return paginator.paginate(results);
+//        return results;
+    }
+    
     /**
      * Index all Person objects in the search engine.
      */

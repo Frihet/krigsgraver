@@ -18,7 +18,9 @@
 <h1><fmt:message key="search.title"/></h1>
 
 <div style="margin: 0 auto; padding-bottom: 1em; width: 50%;">
-    <%@ include file="simple_search_bar.jsp"%>
+    <form style="text-align: center;">
+        <%@ include file="simple_search_bar.jsp"%>
+    </form>
 </div>
 
 <c:if test="${!empty persons}">
@@ -48,7 +50,10 @@
 
     <c:forEach items="${persons}" var="person" varStatus="status">
         <tr class="line tr${status.index % 2}">
+<%--
             <td><a href='<c:url value="/person/${person.id}/view"/>'>${person.westernDetails}<br></br>${person.cyrillicDetails}&nbsp;</a></td>
+ --%>
+            <td><a href='<c:url value="/person/${person.id}/view"/>'>${person.fullName}</a></td>
             <td>${person.nationality}</td>
             <td>${person.dateOfBirth}</td>
         </tr>

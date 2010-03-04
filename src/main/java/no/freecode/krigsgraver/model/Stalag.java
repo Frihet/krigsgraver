@@ -15,6 +15,10 @@ import javax.persistence.Lob;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
@@ -24,6 +28,7 @@ public class Stalag extends BaseEntity {
     @Column(unique = true, nullable = false)
     @Size(max = 255)
     @OrderBy
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
 
     @Lob

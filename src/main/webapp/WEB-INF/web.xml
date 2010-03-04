@@ -79,8 +79,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    
-
     <!--    <context-param>-->
     <!--        <param-name>log4jRefreshInterval</param-name>-->
     <!--        <param-value>60000</param-value>-->
@@ -90,15 +88,15 @@
     <!--        <param-name>log4jExposeWebAppRoot</param-name>-->
     <!--        <param-value>false</param-value>-->
     <!--    </context-param>-->
-    <!-- 
- -->
-
+    <!--  -->
 
     <!-- Error handling. -->
+<!-- 
     <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/errors/default</location>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/jsp/errors/default.jsp</location>
     </error-page>
+ -->
 
    <error-page>
         <error-code>403</error-code>

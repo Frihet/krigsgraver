@@ -13,6 +13,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
@@ -21,6 +25,7 @@ public class Camp extends BaseEntity {
 
     @Column(unique = true)
     @Size(max = 255)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
 
     @Size(max = 255)

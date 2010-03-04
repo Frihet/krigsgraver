@@ -30,6 +30,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -62,29 +63,34 @@ public class Person extends IndexedEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
+    @IndexedEmbedded
     private FlexibleDate dateOfBirth;
 
     @ManyToOne
+    @IndexedEmbedded
     private Nationality nationality;
 
-    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
     private Integer prisonerNumber;
 
-    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
     @Size(max = 255)
     private String obdNumber;
 
     @ManyToOne
+    @IndexedEmbedded
     private Rank rank;
 
     @ManyToOne
+    @IndexedEmbedded
     private Camp camp;
 
     @ManyToOne
+    @IndexedEmbedded
     private Stalag stalag;
 
     @OneToOne(cascade = CascadeType.ALL)
-    // TODO: how do I index this?  (use @IndexedEmbedded, and set a @DateBridge(resolution = Resolution.DAY) in the class, probably).
+    @IndexedEmbedded
     private FlexibleDate dateOfDeath;
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -93,9 +99,11 @@ public class Person extends IndexedEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @Valid
+    @IndexedEmbedded
     private List<CauseOfDeath> causesOfDeath;
 
     @Size(max = 255)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String causeOfDeathDescription;
 
     @Lob
@@ -103,9 +111,10 @@ public class Person extends IndexedEntity {
     private String remarks;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @IndexedEmbedded
     private List<Grave> graves;
 
-
+    
     public PersonDetails getWesternDetails() {
         if (westernDetails == null) {
             westernDetails = new PersonDetails();
@@ -258,8 +267,16 @@ public class Person extends IndexedEntity {
     }
 
     @Transient
-    public String getPlaceOfBirthString() {
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    public String getPlaceOfBirth() {
         return mixCharsets(getWesternDetails().getPlaceOfBirth(), getCyrillicDetails().getPlaceOfBirth());
+    }
+
+    @Transient
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Boost(3.0f)
+    public String getFullName() {
+        return mixCharsets(getWesternDetails().toString(), getCyrillicDetails().toString());
     }
     
     /* (non-Javadoc)

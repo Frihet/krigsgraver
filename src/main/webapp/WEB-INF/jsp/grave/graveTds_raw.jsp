@@ -1,11 +1,11 @@
 <%@ include file="../includes.jsp"%>
 <tr id="graveTr${index}">
     <td>
-        <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.day" name="lazyGraves[${index}].dateOfBurial.day" type="text" value="" size="1" maxlength="2"/>
-        <span class="soft">/</span>
-        <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.month" name="lazyGraves[${index}].dateOfBurial.month" type="text" value="" size="1" maxlength="2"/>
-        <span class="soft">/</span>
         <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.year" name="lazyGraves[${index}].dateOfBurial.year" type="text" value="" size="4" maxlength="4"/>
+        <span class="soft">-</span>
+        <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.month" name="lazyGraves[${index}].dateOfBurial.month" type="text" value="" size="1" maxlength="2"/>
+        <span class="soft">-</span>
+        <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.day" name="lazyGraves[${index}].dateOfBurial.day" type="text" value="" size="1" maxlength="2"/>
     </td>
     <td>
         <input id="lazyGraves${index}.dateOfBurial.approximate1" name="lazyGraves${index}.dateOfBurial.approximate" type="checkbox" value="true"/><input type="hidden" name="_lazyGraves${index}.dateOfBurial.approximate" value="on"/>

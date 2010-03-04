@@ -14,6 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -26,16 +29,20 @@ public class Cemetery extends BaseEntity {
     @Size(max = 255)
     @OrderBy
     @NotEmpty
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
 
     @Size(max = 255)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String address;
 
     // TODO: replace with a separate class (PostalDistrict?) with data from
     // posten.no
     @Size(max = 255)
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
     private String postalDistrict;
 
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
     private Integer postcode;
 
     // Geolocation

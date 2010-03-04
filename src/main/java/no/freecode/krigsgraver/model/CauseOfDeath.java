@@ -14,6 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -30,13 +33,16 @@ public class CauseOfDeath extends BaseEntity {
 //    @Id
     @Column(nullable = false, unique = true)
     @OrderBy
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String cause;
 
     /* E.g. "Illness", "External cause", etc. */
     @Size(max = 255)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String causeGroup;
 
     @Size(max = 255)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String description;
 
     public String getCause() {
