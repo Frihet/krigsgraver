@@ -28,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * 
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
-@Entity
+@Entity(name = "KgUser")
 public class User extends BaseEntity implements UserDetails {
 
     private static final Logger logger = Logger.getLogger(User.class);
@@ -40,7 +40,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.ROLE_NONE;
+    private Role role = Role.ROLE_EDITOR;
 
     private boolean credentialsNonExpired = true;
 
@@ -137,10 +137,6 @@ public class User extends BaseEntity implements UserDetails {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        // TODO: Users should be asked to set their login information when they
-        // log in for the first time. I think we should use this field for that
-        // information.
-        
         return credentialsNonExpired;
     }
 
@@ -178,8 +174,7 @@ public class User extends BaseEntity implements UserDetails {
      */
     public enum Role {
         ROLE_ADMIN("role.admin"),
-        ROLE_EDITOR("role.sender"),
-        ROLE_NONE("role.none");
+        ROLE_EDITOR("role.editor");
 
         private String descriptionId;
 

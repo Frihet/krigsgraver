@@ -25,7 +25,6 @@
 <!--        <remember-me use-secure-cookie="true" token-validity-seconds="3600" />-->
         <remember-me token-validity-seconds="3600" />
 
-
         <!--
             All of this is unnecessary, as auto-config="true" 
             <form-login />
@@ -44,35 +43,27 @@
         <beans:property name="tokenValiditySeconds" value="120" />
         <beans:property name="userDetailsService" ref="userDao" />
     </beans:bean>
-
-    <beans:bean id="passwordEncoder" class="org.springframework.security.providers.encoding.ShaPasswordEncoder" />
-
-    <authentication-provider user-service-ref="userDao">
-        <password-encoder ref="passwordEncoder"/>
-    </authentication-provider>
  -->
 
-    <!--
-    Usernames/Passwords are
-        rod/koala
-        dianne/emu
-        scott/wombat
-        peter/opal
-    -->
+    <beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDao">
+            <password-encoder ref="passwordEncoder" />
+<!--            <password-encoder hash="sha" />-->
+        </authentication-provider>
+    </authentication-manager>
+
+<!-- 
     <authentication-manager>
         <authentication-provider>
             <password-encoder hash="md5" />
 
             <user-service>
-                <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_ADMIN" />
                 <user name="kg" password="ebe86682666f2ab3da0843ed3097e4b3" authorities="ROLE_ADMIN" />
-<!-- 
-                <user name="dianne" password="65d15fe9156f9c4bbffd98085992a44e" authorities="ROLE_USER,ROLE_TELLER" />
-                <user name="scott" password="2b58af6dddbd072ed27ffc86725d7d3a" authorities="ROLE_USER" />
-                <user name="peter" password="22b5c9accc6e1ba628cedc63a72d57f8" authorities="ROLE_USER" />
- -->
             </user-service>
         </authentication-provider>
     </authentication-manager>
+ -->
 
 </beans:beans>

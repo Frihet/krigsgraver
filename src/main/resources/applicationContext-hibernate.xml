@@ -11,10 +11,6 @@
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <context:property-placeholder location="classpath:krigsgraver.properties" />
 
-    <!--
-        Use Apache Commons DBCP for connection pooling. See Commons DBCP documentation for the required JAR files.
-        Alternatively you can use another connection pool such as C3P0, similarly configured using Spring.
-    -->
 <!-- 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
@@ -22,6 +18,7 @@
     </bean>
  -->
 
+    <!-- Use C3P0 for connection pooling. -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass"><value>${jdbc.driverClassName}</value></property>
         <property name="jdbcUrl"><value>${jdbc.url}</value></property>
@@ -83,20 +80,12 @@
 	-->
     <tx:annotation-driven />
 
-    <!--
-        Exporter that exposes the Hibernate statistics service via JMX. Autodetects the service MBean, using its bean
-        name as JMX object name.
-    -->
-<!--    <context:mbean-export />-->
 
-
-    <!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
+    <!-- Data access objects. -->
     <bean id="personDao" class="no.freecode.krigsgraver.model.dao.PersonDao" />
     <bean id="cemeteryDao" class="no.freecode.krigsgraver.model.dao.CemeteryDao" />
     <bean id="graveDao" class="no.freecode.krigsgraver.model.dao.GraveDao" />
     <bean id="genericDao" class="no.freecode.krigsgraver.model.dao.GenericDao" />
-
-    <!-- Hibernate's JMX statistics service -->
-<!--    <bean name="gcl:type=HibernateStatistics" class="org.hibernate.jmx.StatisticsService" autowire="byName" />-->
+    <bean id="userDao" class="no.freecode.krigsgraver.model.dao.UserDaoImpl" />
 
 </beans>

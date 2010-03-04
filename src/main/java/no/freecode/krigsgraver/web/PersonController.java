@@ -67,7 +67,6 @@ public class PersonController {
     /**
      * List all the people.
      */
-    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public String getListForm(Model model) {
         model.addAttribute("persons", personDao.getAll());
@@ -77,7 +76,7 @@ public class PersonController {
     /**
      * Create a new person.
      */
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model) {
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
@@ -88,7 +87,7 @@ public class PersonController {
     /**
      * Edit an existing person.
      */
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
     public String getEditForm(@PathVariable long personId, Model model) {
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
@@ -108,7 +107,7 @@ public class PersonController {
     /**
      * Submit a new person.
      */
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model, HttpSession session, Locale locale) {
 
@@ -125,18 +124,12 @@ public class PersonController {
         return "redirect:/person/" + command.getPerson().getId() + "/edit";
     }
 
-
-//    @ModelAttribute("nationalities")
-//    public List<Nationality> getNationalities() {
-//        return genericDao.getAll(Nationality.class, Order.asc("countryCode"));
-//    }
-
-
     /**
      * Upload people.
      */
     // TODO: secure
 //    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "upload")
     public String getUploadForm() {
         return "person/upload";
@@ -149,7 +142,7 @@ public class PersonController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "upload")
     // TODO: secure
-//    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
 
         if (!file.isEmpty()) {
