@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao, UserDetailsService {
 
 //    private static final Logger logger = Logger.getLogger(UserDao.class);
 //    private static final Logger userLogger = Logger.getLogger("userLog");
-    
+
     @Autowired
     private SessionFactory sessionFactory;
 

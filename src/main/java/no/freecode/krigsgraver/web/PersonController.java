@@ -88,28 +88,28 @@ public class PersonController {
      * Edit an existing person.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
-    @RequestMapping(method = RequestMethod.GET, value = "{personId}/edit")
-    public String getEditForm(@PathVariable long personId, Model model) {
+    @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
+    public String getEditForm(@PathVariable long id, Model model) {
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
-        model.addAttribute("command", new PersonCommandObject(personDao.getPerson(personId)));
+        model.addAttribute("command", new PersonCommandObject(personDao.getPerson(id)));
         return "person/edit";
     }
 
     /**
      * Get an existing person.
      */
-    @RequestMapping(method = RequestMethod.GET, value = "{personId}/view")
-    public String getPerson(@PathVariable long personId, Model model) {
-        model.addAttribute("person", personDao.getPerson(personId));
+    @RequestMapping(method = RequestMethod.GET, value = "{id}/view")
+    public String getPerson(@PathVariable long id, Model model) {
+        model.addAttribute("person", personDao.getPerson(id));
         return "person/view";
     }
-    
+
     /**
-     * Submit a new person.
+     * Submit a person.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
-    public String save(@Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, Model model, HttpSession session, Locale locale) {
+    public String save(Model model, @Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, HttpSession session, Locale locale) {
 
         if (result.hasErrors()) {
             return "person/edit";
