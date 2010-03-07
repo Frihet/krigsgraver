@@ -35,7 +35,7 @@
     <c:if test="${!empty person.nationality}">
         <tr>
             <th> <fmt:message key="person.nationality"/> </th>
-            <td> ${person.nationality} </td>
+            <td> ${person.nationality.name} </td>
         </tr>
     </c:if>
     <c:if test="${!empty person.rank.name}">

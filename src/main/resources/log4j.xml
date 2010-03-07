@@ -36,6 +36,11 @@
         <appender-ref ref="console"/>
     </category>
 
+
+<!--    ### log schema export/update ###-->
+<!--    log4j.logger.org.hibernate.tool.hbm2ddl=info-->
+
+
 <!-- 
     <category name="org.springframework.org.hibernate">
         <priority value="debug" />

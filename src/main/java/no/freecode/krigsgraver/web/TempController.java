@@ -43,7 +43,7 @@ public class TempController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    
+
     /**
      * Index all the data in the search engine.
      */
@@ -56,9 +56,9 @@ public class TempController {
     @RequestMapping(method = RequestMethod.GET, value = "/admin/insertBaseData")
     public String test() {
 
-        genericDao.save(new Nationality("RU"));
-        genericDao.save(new Nationality("UA"));
-        genericDao.save(new Nationality("BY"));
+//        genericDao.save(new Nationality("RU", "Russland"));
+//        genericDao.save(new Nationality("UA", ""));
+//        genericDao.save(new Nationality("BY"));
 
         return "welcome";
     }

@@ -54,7 +54,7 @@
             <td><a href='<c:url value="/person/${person.id}/view"/>'>${person.westernDetails}<br></br>${person.cyrillicDetails}&nbsp;</a></td>
  --%>
             <td><a href='<c:url value="/person/${person.id}/view"/>'>${person.fullName}</a></td>
-            <td>${person.nationality}</td>
+            <td>${person.nationality.name}</td>
             <td>${person.dateOfBirth}</td>
         </tr>
     </c:forEach>

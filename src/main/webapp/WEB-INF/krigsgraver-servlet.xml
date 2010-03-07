@@ -182,6 +182,10 @@
                 
                 <prop key="org.springframework.dao.DataIntegrityViolationException">errors/illegalDatabaseOperation</prop>
                 
+<!--                <prop key="org.springframework.dao.DuplicateKeyException">errors/duplicateKeyException</prop>-->
+
+
+<!--ConstraintViolationException-->
 
 <!--                <prop key="org.springframework.security.AccessDeniedException">errors/accessDenied</prop>-->
                 

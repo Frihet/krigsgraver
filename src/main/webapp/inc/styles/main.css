@@ -2,224 +2,236 @@
 
 /* falstad-fargen (grønt): #919100 */ /* blått: #003366 */
 html,body {
-    font-family: verdana, "Tahoma MS", Helvetica, Arial, Sans-Serif;
-    font-size: 90%;
-    margin: 0;
-    padding: 0;
-    background: #fcfcfc;
-    color: #222222;
-    text-align: center;
-    height: 100%;
+	font-family: verdana, "Tahoma MS", Helvetica, Arial, Sans-Serif;
+	font-size: 90%;
+	margin: 0;
+	padding: 0;
+	background: #fcfcfc;
+	color: #222222;
+	text-align: center;
+	height: 100%;
 }
 
 table#wholePage {
-    height: 100%;
-    overflow: auto;
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
+	height: 100%;
+	overflow: auto;
+	border-collapse: collapse;
+	width: 100%;
+	height: 100%;
 }
 
 td#rightHeader {
-    background-color: #919100;
-    height: 98px;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    vertical-align: top;
+	background-color: #919100;
+	height: 98px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
 }
 
 a#loginLink {
-    padding: 0.5em;
-    float: right;
-    color: white;
-    text-decoration: none;
-    font-size: 80%;
+	padding: 0.5em;
+	float: right;
+	color: white;
+	text-decoration: none;
+	font-size: 80%;
 }
 
 td#headerLogo {
-    float: left;
-    height: 98px;
-    width: 190px;
-    padding: 0;
-    margin: 0;
-    background-color: #000000;
-    background-repeat: no-repeat;
-    background-position: center -1px;
-    vertical-align: top;
+	float: left;
+	height: 98px;
+	width: 190px;
+	padding: 0;
+	margin: 0;
+	background-color: #000000;
+	background-repeat: no-repeat;
+	background-position: center -1px;
+	vertical-align: top;
 }
 
 td#menuArea {
-    font-size: 11px;
-    padding: 2em 2em 0;
-    width: 190px;
-    vertical-align: top;
-    background-color: black;
-    color: white;
-    text-align: left;
+	font-size: 11px;
+	padding: 2em 2em 0;
+	width: 190px;
+	vertical-align: top;
+	background-color: black;
+	color: white;
+	text-align: left;
 }
 
 td#menuArea a {
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 
 td#menuArea a:hover {
-    color: #919100;
+	color: #919100;
 }
 
-div.menuTitle {
-    /* margin: 0 2em 1em 2em; */
-    font-weight: bold;
-    border-bottom: 1px solid #919100;
-    margin: 1.5em 0 0.5em 0;
-    padding: 0 0 0.1em 0;
+div.menuTitle { /* margin: 0 2em 1em 2em; */
+	font-weight: bold;
+	border-bottom: 1px solid #919100;
+	margin: 1.5em 0 0.5em 0;
+	padding: 0 0 0.1em 0;
 }
 
 td#mainContentWrapper {
-    padding: 0;
-    vertical-align: top;
+	padding: 0;
+	vertical-align: top;
 }
 
 #mainContent {
-    vertical-align: top;
-    margin: 0;
-    padding: 1.5em 2em;
-    max-width: 95em;
-    text-align: left;
+	vertical-align: top;
+	margin: 0;
+	padding: 1.5em 2em;
+	max-width: 95em;
+	text-align: left;
 }
 
 /* Global info & errors. */
 div.info,div.error {
-    margin-bottom: 1em;
+	margin-bottom: 1em;
 }
 
 /* Text formatting. */
 h1 {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 h1,h2 {
-    color: #003366;
+	color: #003366;
 }
 
 h2 {
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
 }
 
 span.soft {
-    color: grey;
+	color: grey;
 }
 
 /* Horizontal line. */
 div.ruler {
-    margin: 0 2em 1em 2em;
-    border-bottom: 1px solid #919100;
-    padding-top: 1em;
-    /* width: 90%; */
+	margin: 0 2em 1em 2em;
+	border-bottom: 1px solid #919100;
+	padding-top: 1em;
+	/* width: 90%; */
 }
 
 /* Links. */
 a {
-    color: #222222;
+	color: #222222;
 }
 
 a:hover {
-    color: #919100;
+	color: #919100;
 }
 
 /* General table stuff. */
 th {
-    text-align: left;
-    padding-right: 1em;
+	text-align: left;
+	padding-right: 1em;
+	vertical-align: top;
 }
 
 /* Widgets. */
+.button {
+	cursor: pointer;
+	margin: 0 4px 0 0;
+	padding: 0.1em 0.3em 0.2em 0.3em;
+	position: relative;
+	text-align: center;
+	text-decoration: none !important;
+	color: black !important;
+}
+
+
+/*
 a.button {
-    padding: .4em 1em .5em 25px;
-    /* padding: .4em 1em .5em 25px; */
-    text-decoration: none;
-    position: relative;
-    color: black;
+	padding: .3em 1em .3em 25px;
+	text-decoration: none;
+	position: relative;
+	color: black;
 }
 
 a.button span.ui-icon {
-    margin: 0 5px 0 0;
-    position: absolute;
-    left: .2em;
-    top: 50%;
-    margin-top: -8px;
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
 }
+*/
 
 a.clickie {
-    cursor: pointer;
-    color: blue;
+	cursor: pointer;
+	color: blue;
 }
 
 /* Form fields. */
 fieldset.main { /* border-color: #003366; */ /* border-color: black; */
-    margin-bottom: 1em;
+	margin-bottom: 1em;
 }
 
 fieldset.main legend { /* color: #003366; */ /* color: #919100; */
-    font-size: 110%;
+	font-size: 110%;
 }
 
 fieldset.sub {
-    border: solid 1px #cccccc;
-    margin-bottom: 0.5em;
+	border: solid 1px #cccccc;
+	margin-bottom: 0.5em;
 }
 
 fieldset.sub legend {
-    color: #000000;
-    font-size: 80%;
+	color: #000000;
+	font-size: 80%;
 }
 
 table.fixedWidth th {
-    width: 12em;
+	width: 12em;
 }
 
 table.fixedWidth {
-    width: 100%;
+	width: 100%;
 }
 
 table.withMargin {
-    margin: 1em;
+	margin: 1em;
 }
 
 /* Dialogs */
 div.dialog fieldset {
-    padding: 0;
-    border: 0;
-    margin-top: 25px;
-    text-align: left;
+	padding: 0;
+	border: 0;
+	margin-top: 25px;
+	text-align: left;
 }
 
 /* Searching. */
 div.searchContainer {
-    margin: 2em auto;
-    padding: 1em;
-    width: 35em;
-    /* background-color: #dadab5; */
+	margin: 2em auto;
+	padding: 1em;
+	width: 35em;
+	/* background-color: #dadab5; */
 }
 
 .searchMenu {
-    width: 100%;
-    text-align: left;
-    padding: 0.2em 0.5em 0 0;
-    white-space: nowrap;
+	width: 100%;
+	text-align: left;
+	padding: 0.2em 0.5em 0 0;
+	white-space: nowrap;
 }
 
-.searchMenu tr, td {
-    padding: 0;
+.searchMenu tr,td {
+	padding: 0;
 }
 
 .searchMenu a {
-    text-decoration: none;
-    color: blue;
+	text-decoration: none;
+	color: blue;
 }
 
 .searchMenu span {
-    padding-right: 1em;
+	padding-right: 1em;
 }

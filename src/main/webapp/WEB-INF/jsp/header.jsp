@@ -16,6 +16,7 @@
     <link type="text/css" href="<c:url value='/inc/jquery/css/custom-theme/jquery-ui-1.7.2.custom.css'/>" rel="stylesheet" />    
     <script type="text/javascript" src="<c:url value='/inc/jquery/js/jquery-1.4.1.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/inc/jquery/js/jquery-ui-1.7.2.custom.min.js'/>"></script>
+<!--    <script type="text/javascript" src="<c:url value='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js'/>"></script>-->
     <script type="text/javascript" src="<c:url value='/inc/scripts/krigsgraver.js'/>"></script>
 
     <link rel="icon" href="<c:url value="/inc/img/favicon.ico" />" type="image/x-icon" />

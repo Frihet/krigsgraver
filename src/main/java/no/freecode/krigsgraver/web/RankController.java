@@ -19,7 +19,6 @@ import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -98,7 +98,10 @@ public class RankController {
         logger.debug(rank.getName());
         
         if (result.hasErrors()) {
-            logger.debug("validation error: " + ReflectionToStringBuilder.toString(result.getAllErrors()));
+            logger.debug("validation errors: ");
+            for (ObjectError error : result.getAllErrors()) {
+                logger.debug(error);
+            }
             return "rank/edit";
         }
 
@@ -115,17 +118,22 @@ public class RankController {
      * Delete a {@link Rank}.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public String deleteObject(@PathVariable long id, Model model) {
-        model.addAttribute("rank", genericDao.get(Rank.class, id));
-        return "rank/edit";
+    @RequestMapping(method = RequestMethod.DELETE, value = "*/edit")
+    public String deleteObject(@ModelAttribute("rank") Rank rank, Model model, HttpSession session, Locale locale) {
+        
+//        genericDao.delete(getObject(id));
+        genericDao.delete(rank);
+        
+        String message = messageSource.getMessage("info.deletedEntry", null, locale);
+        session.setAttribute("standardInfo", message);
+        return "redirect:/rank/create";
     }
 
     /**
      * Get an {@link Rank}, e.g. in JSON.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public @ResponseBody Rank getObject(@PathVariable long id, Model model) {
+    public @ResponseBody Rank getObject(@PathVariable long id) {
         return genericDao.get(Rank.class, id);
     }
     

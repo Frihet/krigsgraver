@@ -26,7 +26,6 @@ import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -111,6 +110,9 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(Model model, @Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, HttpSession session, Locale locale) {
 
+        // A little more validation.
+        validatePerson(command.getPerson(), result);
+        
         if (result.hasErrors()) {
             return "person/edit";
         }
@@ -154,21 +156,6 @@ public class PersonController {
         }
     }
 
-    /**
-     * Do a free text search.
-     * 
-     * @throws ParseException 
-     */
-//    @RequestMapping(method = RequestMethod.GET, value = "search")
-//    public String search(@RequestParam(value = "q", required = false) String queryString,  Model model) throws ParseException {
-//
-//        if (queryString != null) {
-//            model.addAttribute("persons", personDao.search(queryString));
-//        }
-//        
-//        return "person/search";
-//    }
-
     private static void validatePerson(Person person, Errors errors) {
         if (person.getCyrillicDetails().isEmpty() && person.getWesternDetails().isEmpty()) {
             errors.reject("person.error.missingName");
@@ -177,8 +164,7 @@ public class PersonController {
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
-        logger.debug("Initializing custom editors for the entities.");
-        
+//        logger.debug("Initializing custom editors for the entities.");
         dataBinder.registerCustomEditor(Stalag.class, new EntityPropertyEditor(Stalag.class, genericDao));
         dataBinder.registerCustomEditor(Camp.class, new EntityPropertyEditor(Camp.class, genericDao));
         dataBinder.registerCustomEditor(Nationality.class, new EntityPropertyEditor(Nationality.class, genericDao));

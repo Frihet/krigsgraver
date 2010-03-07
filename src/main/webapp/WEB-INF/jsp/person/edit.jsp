@@ -6,7 +6,12 @@
     input { vertical-align: middle; }
     select { width: 20em; }
     th { font-weight: normal; }
+    th,td { padding-bottom: 0.5em; }
 </style>
+
+<spring:hasBindErrors name="command">
+    <%@ include file="../inc/showBindErrors.jsp" %>
+</spring:hasBindErrors>
 
 <h1>
     <c:choose>
@@ -21,7 +26,7 @@
     </c:choose>
 </h1>
 
-<div class="container">
+<div class="ui-widget">
     <div>
         <form:form method="post" id="personForm">
             <form:hidden path="person.id"/>
@@ -112,9 +117,9 @@
                                 <c:forEach items="${nationalities}" var="nationality">
                                     <c:choose>
                                         <c:when test="${nationality.id == command.person.nationality.id}">
-                                            <option value="${nationality.id}" selected="selected">${nationality.countryCode}</option>
+                                            <option value="${nationality.id}" selected="selected">${nationality.name}</option>
                                         </c:when> <c:otherwise>
-                                            <option value="${nationality.id}">${nationality.countryCode}</option>
+                                            <option value="${nationality.id}">${nationality.name}</option>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
@@ -276,9 +281,12 @@
             </fieldset>
 
             <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
+                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="person.button.save"/></button>
+<%--
                 <a class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button" href="#" onclick="$('#personForm').submit()">
-                    <span class="ui-icon ui-icon-disk"></span><fmt:message key="person.button.save"/>
+                    <fmt:message key="person.button.save"/>
                 </a>
+ --%>
 
                 <input type="submit" style="display: none;" />
             </p>

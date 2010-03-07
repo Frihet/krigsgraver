@@ -1,20 +1,10 @@
 <%@ include file="../includes.jsp"%>
 
-<div class="standardError">
-    <div class="heading">
-        <fmt:message key='global.error'/>
-    </div>
-    
-    <div class="content">
+<div class="error ui-widget">
+    <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
         <p>
-            <c:choose>
-                <c:when test="${fn:length(errors.allErrors) == 1}">
-                    There was 1 error:
-                </c:when>
-                <c:otherwise>
-                    There were ${fn:length(errors.allErrors)} errors:
-                </c:otherwise>
-            </c:choose>
+            <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>
+            <strong><fmt:message key="errors.thereWereErrors"/>:</strong>
         </p>
 
         <p style="font-style: italic; text-indent: 2em;">
@@ -30,7 +20,7 @@
         </p>
         
         <p>
-            <fmt:message key="errors.appropriate_corrections"/>
+            <fmt:message key="errors.appropriateCorrections"/>
         </p>
     </div>
 </div>

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
@@ -81,7 +82,7 @@ public class PersonDetails extends BaseEntity {
      */
     @Transient
     public boolean isEmpty() {
-        if (firstName == null && nameOfFather == null && lastName == null) {
+        if (StringUtils.isBlank(firstName) && StringUtils.isBlank(nameOfFather) && StringUtils.isBlank(lastName)) {
             return true;
         } else {
             return false;

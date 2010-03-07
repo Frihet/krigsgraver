@@ -1,6 +1,12 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
+<spring:hasBindErrors name="rank">
+    <%@ include file="../inc/showBindErrors.jsp" %>
+</spring:hasBindErrors>
+
+<form:form id="rankDeleteForm" method="delete" modelAttribute="rank" />
+
 <form:form id="rankForm" modelAttribute="rank" method="post">
     <form:hidden id="hiddenId" path="id" />
 
@@ -11,7 +17,7 @@
             <tr>
                 <td>
                     <select id="rankSelector" class="ui-widget-content ui-corner-all">
-                        <option value="null">&lt;<fmt:message key="value.createNew"/>&gt;</option>
+                        <option value="">&lt;<fmt:message key="value.createNew"/>&gt;</option>
 
                         <c:forEach items="${ranks}" var="r">
                             <c:choose>
@@ -38,8 +44,8 @@
         </table>
 
         <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
-            <a class="button ui-state-error-text ui-state-default ui-corner-all" id="delete_button" href="#" onclick="$('#rankForm').submit()" style="display: none;">
-                <span class="ui-icon ui-icon-trash"></span><fmt:message key="button.delete"/>
+            <a class="button ui-state-error-text ui-state-default ui-corner-all" id="delete_button" href="#" onclick="$('#rankDeleteForm').submit()" style="display: none;">
+                <span class="ui-icon ui-icon-trash"></span><fmt:message key="button.deleteEntry"/>
             </a>
 
             &nbsp;
@@ -59,9 +65,9 @@
 <!--
     $('#rankSelector').change(function() {
     	var selector = $('#rankSelector');
-    	$('#hiddenId').val(selector.val());
-        
-        if (selector.val() != "null") {
+        $('#hiddenId').val(selector.val());
+
+        if (selector.val() != "") {
             // Editing old
         	$('#rankName').val($('#rankSelector :selected').text());
             $('#delete_button').css('display', '');

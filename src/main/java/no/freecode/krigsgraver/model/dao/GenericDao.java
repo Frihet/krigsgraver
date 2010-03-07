@@ -19,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,23 @@ public class GenericDao {
     }
 
     /**
+     * @param <T>
+     * @param entity
+     * @throws org.hibernate.exception.ConstraintViolationException
+     */
+    public <T> boolean delete(Entity entity) {
+        try {
+            sessionFactory.getCurrentSession().delete(entity);
+            
+        } catch (ConstraintViolationException e) {
+            logger.warn("Constraint violation while trying to delete entity of type " + entity.getClass() + " with id " + entity.getId());
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
      * Fetch an object from the DB.
      */
     @SuppressWarnings("unchecked")
@@ -62,7 +80,6 @@ public class GenericDao {
         crit.add(Restrictions.eq(entryName, value));
         return (T) crit.uniqueResult();
     }
-
     
     @Transactional(readOnly = true)
     public <T> boolean containsEntry(Class<T> clazz, String entryName, Object value) {

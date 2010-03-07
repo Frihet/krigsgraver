@@ -24,6 +24,7 @@ import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
+import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
 import no.freecode.krigsgraver.model.Rank;
@@ -129,7 +130,7 @@ public class PersonDao {
 //                "cyrillicDetails.firstName", "cyrillicDetails.nameOfFather", "cyrillicDetails.lastName",
 //                "cyrillicDetails.placeOfBirth",
                 "dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day",
-                "nationality.countryCode", "prisonerNumber", "obdNumber",
+                "nationality.countryCode", "nationality.name", "prisonerNumber", "obdNumber",
                 "rank.name", "camp.name", "stalag.name",
                 "placeOfDeath",
                 "causeOfDeathDescription", "remarks",
@@ -251,8 +252,17 @@ public class PersonDao {
             westernDetails.setPlaceOfBirth(v[i++]);
             person.setWesternDetails(westernDetails);
 
-            i++; // nationality
-//            person.setNationality(v[i++]);
+
+            String nationalityString = v[i++];
+            if (StringUtils.isNotBlank(nationalityString)) {
+                Nationality nationality = genericDao.getUnique(Nationality.class, "name", nationalityString);
+                if (nationality == null) {
+                    nationality = new Nationality();
+                    nationality.setName(nationalityString);
+                    genericDao.save(nationality);
+                }
+                person.setNationality(nationality);
+            }
 
             String stalagString = v[i++];
             if (StringUtils.isNotBlank(stalagString)) {
