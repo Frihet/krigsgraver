@@ -1,5 +1,10 @@
 <%@ include file="../includes.jsp"%>
 
+<style type="text/css">
+    select { width: 35em; }
+    input { width: 35em; }
+</style>
+
 <form id="selectorForm">
     <select id="itemSelector" name="id" class="ui-widget-content ui-corner-all">
         <c:forEach items="${items}" var="item">
@@ -30,7 +35,7 @@
 
 <h2>
     <c:choose>
-        <c:when test="${stalag.id == Null}">
+        <c:when test="${currentItem.id == Null}">
             <fmt:message key="title.createNew"/>
         </c:when>
         <c:otherwise>
@@ -52,7 +57,7 @@
     $('#deleteItem').click(function() {
         var form = $('#selectorForm');
 
-        if (confirm('<fmt:message key='message.confirmDelete'/>')) {
+        if (confirm('<fmt:message key="message.confirmDelete"/>')) {
             form.attr('action', '${deleteUrl}');
             form.submit();
         } else {

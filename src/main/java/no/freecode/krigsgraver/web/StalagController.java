@@ -102,7 +102,7 @@ public class StalagController {
         }
 
         /* Database validation. */
-        if (genericDao.containsEntry(Stalag.class, "name", stalag.getName())) {
+        if (stalag.getId() == null && genericDao.containsEntry(Stalag.class, "name", stalag.getName())) {
             result.rejectValue("name", "errors.entry_already_exists");
             return "stalag/edit";
         }

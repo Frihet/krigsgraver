@@ -34,9 +34,9 @@ public class CauseOfDeath extends BaseEntity {
     @Column(nullable = false, unique = true)
     @OrderBy
     @Field(index = Index.TOKENIZED, store = Store.NO)
-    private String cause;
+    private String name;
 
-    /* E.g. "Illness", "External cause", etc. */
+    /* E.g. "Illness", "External name", etc. */
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String causeGroup;
@@ -45,12 +45,13 @@ public class CauseOfDeath extends BaseEntity {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String description;
 
-    public String getCause() {
-        return cause;
+
+    public String getName() {
+        return name;
     }
 
-    public void setCause(String cause) {
-        this.cause = cause;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -74,6 +75,6 @@ public class CauseOfDeath extends BaseEntity {
      */
     @Override
     public String toString() {
-        return getCause();
+        return getName();
     }
 }

@@ -1,5 +1,7 @@
 <%@ include file="includes.jsp" %>
 
+<input type="hidden" name="simple" value="${simple}" />
+
 <table>
 <%--
     <tr>

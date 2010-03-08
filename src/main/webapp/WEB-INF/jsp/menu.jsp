@@ -18,6 +18,17 @@
     </div>
 
     <a href='<c:url value="/person/create" />'><fmt:message key="menu.people.add"/></a>
+
+    <div class="menuTitle">
+        <fmt:message key="menu.elements"/>
+    </div>
+
+    <a href='<c:url value="/nationality/create" />'><fmt:message key="menu.elements.nationalities"/></a><br/>
+    <a href='<c:url value="/rank/create" />'><fmt:message key="menu.elements.ranks"/></a><br/>
+    <a href='<c:url value="/stalag/create" />'><fmt:message key="menu.elements.stalags"/></a><br/>
+    <a href='<c:url value="/camp/create" />'><fmt:message key="menu.elements.camps"/></a><br/>
+    <a href='<c:url value="/cemetery/create" />'><fmt:message key="menu.elements.cemeteries"/></a><br/>
+    <a href='<c:url value="/causeOfDeath/create" />'><fmt:message key="menu.elements.causesOfDeath"/></a><br/>
 </sec:authorize>
 
 <sec:authorize ifAnyGranted="ROLE_ADMIN">
@@ -25,5 +36,5 @@
         <fmt:message key="menu.admin"/>
     </div>
     
-    <a href='<c:url value="/admin/users" />'><fmt:message key="menu.admin.users"/></a>
+    <a href='<c:url value="/admin/users" />'><fmt:message key="menu.admin.users"/></a> (kommer snart)
 </sec:authorize>

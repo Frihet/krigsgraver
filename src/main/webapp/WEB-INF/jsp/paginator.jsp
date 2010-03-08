@@ -3,7 +3,7 @@
     <div class="paginator">
         <c:choose>
             <c:when test="${paginator.hasPrevious}">
-                <a href="?q=<c:out value="${q}"/>&page=${paginator.previousPage}">
+                <a href="?q=<c:out value="${q}"/>&page=${paginator.previousPage}&simple=${param.simple}">
                     <fmt:message key='search.previous'/>
                 </a>
             </c:when>
@@ -16,7 +16,7 @@
 
         <c:choose>
             <c:when test="${paginator.hasNext}">
-                <a href="?q=<c:out value="${q}"/>&page=${paginator.nextPage}">
+                <a href="?q=<c:out value="${q}"/>&page=${paginator.nextPage}&simple=${param.simple || false}">
                     <fmt:message key='search.next'/>
                 </a>
             </c:when>

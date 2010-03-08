@@ -2,11 +2,15 @@
 <%@ include file="includes.jsp" %>
 <%@ page session="false" %>
 
+<c:set var="simple" value="${true}" />
+
+
 <style type="text/css">
-    #mainContent {
-        max-width: 200em;
-    }
+<!--
+    #mainContent { max-width: 200em; }
+-->
 </style>
+
 
 <h1><fmt:message key="menu.search.simple"/></h1>
 
@@ -31,8 +35,10 @@
         <fmt:message key="search.findSimilarWords" />
  --%>
  
+<%--
         <input type="checkbox" class="ui-state-default" style="vertical-align: middle;" name="fuzzy" value="true" />
         <fmt:message key="search.findSimilarWords" />
+ --%>
     </form>
 </div>
 

@@ -28,6 +28,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -52,6 +53,9 @@ public class SearchController {
 
     @Autowired
     private GenericDao genericDao;
+    
+    @Autowired
+    private MessageSource messageSource;
 
 
     /**
@@ -62,13 +66,13 @@ public class SearchController {
     @RequestMapping(method = RequestMethod.GET, value = {"/"})
     public String simpleSearch(
                 @RequestParam(value = "q", required = false) String queryString,
-                @RequestParam(required = false, defaultValue = "false") boolean fuzzy,
+                @RequestParam(required = false, defaultValue = "false") boolean simple,
                 @RequestParam(value = "page", required = false) Integer page,
                 Model model) throws ParseException {
 
         String formattedQueryString = queryString;
 
-        if (fuzzy) {
+        if (simple) {
             formattedQueryString = QueryUtils.makeFuzzy(formattedQueryString);
         }
 
@@ -76,11 +80,18 @@ public class SearchController {
             return "simple_search";
 
         } else {
-            Paginator paginator = new Paginator(page);
-            model.addAttribute("persons", personDao.search(formattedQueryString, paginator));
-            model.addAttribute("paginator", paginator);
-            model.addAttribute("q", queryString);
-            return "results";
+            try {
+                Paginator paginator = new Paginator(page);
+                model.addAttribute("persons", personDao.search(formattedQueryString, paginator));
+                model.addAttribute("paginator", paginator);
+                model.addAttribute("simple", simple);
+                model.addAttribute("q", queryString);
+                return "results";
+
+            } catch (org.apache.lucene.queryParser.ParseException e) {
+                model.addAttribute("standardError", "search.invalidInput");
+                return "simple_search";
+            }
         }
     }
 

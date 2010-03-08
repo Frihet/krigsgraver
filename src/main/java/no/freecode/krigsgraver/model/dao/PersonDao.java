@@ -134,7 +134,7 @@ public class PersonDao {
                 "rank.name", "camp.name", "stalag.name",
                 "placeOfDeath",
                 "causeOfDeathDescription", "remarks",
-                "causesOfDeath.cause", "causesOfDeath.causeGroup", "graves.cemetery.name"
+                "causesOfDeath.name", "causesOfDeath.causeGroup", "graves.cemetery.name"
                 };
 
 //        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
@@ -373,10 +373,10 @@ public class PersonDao {
                 for (String s2 : StringUtils.splitByWholeSeparator(s1, " und ")) {
                     for (String s3 : StringUtils.splitByWholeSeparator(s2, " u. ")) {
                         
-                        CauseOfDeath cause = genericDao.getUnique(CauseOfDeath.class, "cause", s3);
+                        CauseOfDeath cause = genericDao.getUnique(CauseOfDeath.class, "name", s3);
                         if (cause == null) {
                             cause = new CauseOfDeath();
-                            cause.setCause(s3);
+                            cause.setName(s3);
                         }
                             
                         causes.add(cause);

@@ -1,25 +1,24 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
-<spring:hasBindErrors name="rank">
+<spring:hasBindErrors name="camp">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
 
-<h1><fmt:message key="menu.elements.ranks"/></h1>
+<h1><fmt:message key="menu.elements.camps"/></h1>
 
-<c:set var="currentItem" value="${rank}" />
-<c:set var="items" value="${ranks}" />
-<c:set var="editUrl"><c:url value="/rank/edit"/></c:set>
-<c:set var="deleteUrl"><c:url value="/rank/delete"/></c:set>
-<c:set var="createUrl"><c:url value="/rank/create"/></c:set>
+<c:set var="currentItem" value="${camp}" />
+<c:set var="items" value="${camps}" />
+<c:set var="editUrl"><c:url value="/camp/edit"/></c:set>
+<c:set var="deleteUrl"><c:url value="/camp/delete"/></c:set>
+<c:set var="createUrl"><c:url value="/camp/create"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
-
-<form:form id="rankForm" modelAttribute="rank" method="post">
+<form:form id="campForm" modelAttribute="camp" method="post">
     <form:hidden id="hiddenId" path="id" />
 
     <fieldset class="main ui-corner-all">
-        <legend><fmt:message key="rank.title" /></legend>
+        <legend><fmt:message key="camp.title" /></legend>
 
         <table class="withMargin">
             <tr>
@@ -32,17 +31,5 @@
 
 	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
 </form:form>
-
-
-<script type="text/javascript">
-<!--
-$(function(){
-    $('.button').hover(
-        function() { $(this).addClass('ui-state-hover'); }, 
-        function() { $(this).removeClass('ui-state-hover'); }
-    );
-});
-//-->
-</script>
 
 <%@ include file="../footer.jsp" %>

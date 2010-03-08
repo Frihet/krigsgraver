@@ -15,11 +15,10 @@ import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Rank;
+import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -27,17 +26,17 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Edit and display {@link CauseOfDeath} objects.
+ * Edit and display {@link Rank} objects.
  * 
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
@@ -45,21 +44,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/rank")
 public class RankController {
 
-    private static final Logger logger = Logger.getLogger(RankController.class);
-    
     @Autowired
     private GenericDao genericDao;
-    
+
     @Autowired
     private MessageSource messageSource;
 
     @ModelAttribute("ranks")
     public List<Rank> getRanks() {
-        return genericDao.getAll(Rank.class, Order.asc("name"));
+        return getList();
     }
-
+    
     /**
-     * List all the {@link Rank}s.
+     * List all the ranks.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public @ResponseBody List<Rank> getList() {
@@ -72,7 +69,6 @@ public class RankController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model) {
-//        model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("rank", new Rank());
         return "rank/edit";
     }
@@ -81,27 +77,32 @@ public class RankController {
      * Edit an existing {@link Rank}.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
-    @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
+    @RequestMapping(method = RequestMethod.GET, value = {"{id}/edit"})
     public String getEditForm(@PathVariable long id, Model model) {
-//        model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("rank", genericDao.get(Rank.class, id));
         return "rank/edit";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = {"edit"})
+    public String getEditFormRedirect(@RequestParam("id") long id, Model model) {
+        return "redirect:/rank/" + id + "/edit";
+    }
+    
     /**
      * Submit a {@link Rank}.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("rank") Rank rank, BindingResult result, Model model, HttpSession session, Locale locale) {
-
-        logger.debug(rank.getName());
         
         if (result.hasErrors()) {
-            logger.debug("validation errors: ");
-            for (ObjectError error : result.getAllErrors()) {
-                logger.debug(error);
-            }
+            return "rank/edit";
+        }
+
+        /* Database validation. */
+        if (rank.getId() == null && genericDao.containsEntry(Rank.class, "name", rank.getName())) {
+            result.rejectValue("name", "errors.entry_already_exists");
             return "rank/edit";
         }
 
@@ -111,24 +112,34 @@ public class RankController {
                 new Object[] { rank.getName() }, locale);
         session.setAttribute("standardInfo", message);
 
-        return "redirect:/rank/" + rank.getId() + "/edit";
+//        return "redirect:/rank/" + rank.getId() + "/edit";
+        return "redirect:/rank/create";
     }
 
     /**
      * Delete a {@link Rank}.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
-    @RequestMapping(method = RequestMethod.DELETE, value = "*/edit")
-    public String deleteObject(@ModelAttribute("rank") Rank rank, Model model, HttpSession session, Locale locale) {
-        
-//        genericDao.delete(getObject(id));
-        genericDao.delete(rank);
-        
-        String message = messageSource.getMessage("info.deletedEntry", null, locale);
-        session.setAttribute("standardInfo", message);
+    @RequestMapping(method = RequestMethod.GET, value = "delete")
+    public String deleteObject(@RequestParam("id") long id, Model model, HttpSession session, Locale locale) {
+
+        Rank rank = getObject(id);
+        String name = rank.getName();
+
+        // Check if the element is in use to avoid a constraint violation.
+        if (!genericDao.containsEntry(Person.class, "rank", rank)) {
+            genericDao.delete(rank);
+            String message = messageSource.getMessage("info.deleted", new Object[] { name }, locale);
+            session.setAttribute("standardInfo", message);
+
+        } else {
+            String message = messageSource.getMessage("errors.elementInUseCannotDelete", new Object[] { name }, locale);
+            session.setAttribute("standardError", message);
+        }
+
         return "redirect:/rank/create";
     }
-
+    
     /**
      * Get an {@link Rank}, e.g. in JSON.
      */
@@ -136,7 +147,7 @@ public class RankController {
     public @ResponseBody Rank getObject(@PathVariable long id) {
         return genericDao.get(Rank.class, id);
     }
-    
+
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         dataBinder.registerCustomEditor(Rank.class, new EntityPropertyEditor(Rank.class, genericDao));

@@ -5,7 +5,7 @@
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
 
-<h1><fmt:message key="nationality.title"/></h1>
+<h1><fmt:message key="menu.elements.nationalities"/></h1>
 
 <c:set var="currentItem" value="${nationality}" />
 <c:set var="items" value="${nationalities}" />
@@ -24,7 +24,7 @@
         <table class="withMargin">
             <tr>
                 <th><form:label for="countryCode" path="countryCode" cssErrorClass="ui-state-error-text"><fmt:message key="nationality.countryCode" /></form:label></th>
-                <td><form:input path="countryCode" size="2" maxlength="2" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="countryCode" size="2" maxlength="2" cssStyle="width: 2em;" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="countryCode" />
             </tr>
 

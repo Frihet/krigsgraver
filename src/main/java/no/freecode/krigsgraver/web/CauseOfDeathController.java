@@ -10,20 +10,29 @@
 package no.freecode.krigsgraver.web;
 
 import java.util.List;
+import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.CauseOfDeath;
+import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -32,78 +41,115 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Controller
-@RequestMapping(value = "/person/causeOfDeath")
+@RequestMapping(value = "/causeOfDeath")
 public class CauseOfDeathController {
 
     @Autowired
     private GenericDao genericDao;
 
+    @Autowired
+    private MessageSource messageSource;
+
+    @ModelAttribute("causeOfDeaths")
+    public List<CauseOfDeath> getCauseOfDeaths() {
+        return getList();
+    }
+    
     /**
-     * List all the people.
+     * List all the causeOfDeaths.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public @ResponseBody List<CauseOfDeath> getList() {
-        return genericDao.getAll(CauseOfDeath.class, Order.asc("cause"));
-    }
-
-    /**
-     * List all the people.
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "causeList")
-//    public @ResponseBody List<String> getIdList() {
-    public List<String> getCauseList() {
-//        return genericDao.getAll(CauseOfDeath.class);
-        return genericDao.test();
+        return genericDao.getAll(CauseOfDeath.class, Order.asc("name"));
     }
 
     /**
      * Create a new {@link CauseOfDeath}.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model) {
-        model.addAttribute(new CauseOfDeath());
-        return "person/causeOfDeath/edit";
-    }
-
-    /**
-     * Submit a new {@link CauseOfDeath}.
-     */
-    @RequestMapping(method = RequestMethod.POST, value = {"create"})
-    public String createNew(@Valid CauseOfDeath causeOfDeath, BindingResult result) {
-
-        if (result.hasErrors()) {
-            return "person/causeOfDeath/edit";
-        }
-
-        if (genericDao.containsEntry(CauseOfDeath.class, "cause", causeOfDeath.getCause())) {
-            result.rejectValue("cause", "errors.entry_already_exists");
-            return "person/causeOfDeath/edit";
-        }
-        
-        genericDao.save(causeOfDeath);
-
-        return "success";
+        model.addAttribute("causeOfDeath", new CauseOfDeath());
+        return "causeOfDeath/edit";
     }
 
     /**
      * Edit an existing {@link CauseOfDeath}.
      */
-    @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = {"{id}/edit"})
     public String getEditForm(@PathVariable long id, Model model) {
-        model.addAttribute(genericDao.get(CauseOfDeath.class, id));
-        return "person/causeOfDeath/edit";
+        model.addAttribute("causeOfDeath", genericDao.get(CauseOfDeath.class, id));
+        return "causeOfDeath/edit";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = {"edit"})
+    public String getEditFormRedirect(@RequestParam("id") long id, Model model) {
+        return "redirect:/causeOfDeath/" + id + "/edit";
+    }
+    
     /**
-     * Save {@link CauseOfDeath}.
+     * Submit a {@link CauseOfDeath}.
      */
-    @RequestMapping(method = RequestMethod.POST, value = "*/edit")
-    public String save(@Valid CauseOfDeath causeOfDeath, BindingResult result) {
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
+    public String save(@Valid @ModelAttribute("causeOfDeath") CauseOfDeath causeOfDeath, BindingResult result, Model model, HttpSession session, Locale locale) {
+        
         if (result.hasErrors()) {
-            return "person/causeOfDeath/edit";
+            return "causeOfDeath/edit";
+        }
+
+        /* Database validation. */
+        if (causeOfDeath.getId() == null && genericDao.containsEntry(CauseOfDeath.class, "name", causeOfDeath.getName())) {
+            result.rejectValue("name", "errors.entry_already_exists");
+            return "causeOfDeath/edit";
         }
 
         genericDao.save(causeOfDeath);
-        return "redirect:/person/list";  // TODO: handle success
+
+        String message = messageSource.getMessage("info.successfullySaved",
+                new Object[] { causeOfDeath.getName() }, locale);
+        session.setAttribute("standardInfo", message);
+
+//        return "redirect:/causeOfDeath/" + causeOfDeath.getId() + "/edit";
+        return "redirect:/causeOfDeath/create";
+    }
+
+    /**
+     * Delete a {@link CauseOfDeath}.
+     */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "delete")
+    public String deleteObject(@RequestParam("id") long id, Model model, HttpSession session, Locale locale) {
+
+        CauseOfDeath causeOfDeath = getObject(id);
+        String name = causeOfDeath.getName();
+
+        // Check if the element is in use to avoid a constraint violation.
+        if (!genericDao.containsEntry(Person.class, "causesOfDeath", causeOfDeath)) {
+            genericDao.delete(causeOfDeath);
+            String message = messageSource.getMessage("info.deleted", new Object[] { name }, locale);
+            session.setAttribute("standardInfo", message);
+
+        } else {
+            String message = messageSource.getMessage("errors.elementInUseCannotDelete", new Object[] { name }, locale);
+            session.setAttribute("standardError", message);
+        }
+
+        return "redirect:/causeOfDeath/create";
+    }
+    
+    /**
+     * Get an {@link CauseOfDeath}, e.g. in JSON.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    public @ResponseBody CauseOfDeath getObject(@PathVariable long id) {
+        return genericDao.get(CauseOfDeath.class, id);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(CauseOfDeath.class, new EntityPropertyEditor(CauseOfDeath.class, genericDao));
     }
 }

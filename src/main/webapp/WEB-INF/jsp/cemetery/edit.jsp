@@ -1,8 +1,21 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
+<spring:hasBindErrors name="cemetery">
+    <%@ include file="../inc/showBindErrors.jsp" %>
+</spring:hasBindErrors>
+
+<h1><fmt:message key="menu.elements.cemeteries"/></h1>
+
+<c:set var="currentItem" value="${cemetery}" />
+<c:set var="items" value="${cemeteries}" />
+<c:set var="editUrl"><c:url value="/cemetery/edit"/></c:set>
+<c:set var="deleteUrl"><c:url value="/cemetery/delete"/></c:set>
+<c:set var="createUrl"><c:url value="/cemetery/create"/></c:set>
+<%@ include file="../inc/itemSelector.jsp" %>
+
 <form:form id="cemeteryForm" modelAttribute="cemetery" method="post">
-    <form:hidden path="id" />
+    <form:hidden id="hiddenId" path="id" />
 
     <fieldset class="main ui-corner-all">
         <legend><fmt:message key="cemetery.title" /></legend>
@@ -34,18 +47,9 @@
         </table>
     </fieldset>
 
-    <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
-        <a class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button" href="#" onclick="$('#cemeteryForm').submit()">
-            <span class="ui-icon ui-icon-disk"></span><fmt:message key="button.save"/>
-        </a>
-        <input type="submit" style="display: none;" />
-    </p>
+	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
 </form:form>
 
-<script type="text/javascript">
-<!--
-    $('input:text:visible:first').focus();
-//-->
-</script>
+
 
 <%@ include file="../footer.jsp" %>

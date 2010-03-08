@@ -9,7 +9,6 @@
  */
 package no.freecode.krigsgraver.web;
 
-import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
@@ -53,15 +52,15 @@ public class TempController {
         return "welcome";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/insertBaseData")
-    public String test() {
-
-//        genericDao.save(new Nationality("RU", "Russland"));
-//        genericDao.save(new Nationality("UA", ""));
-//        genericDao.save(new Nationality("BY"));
-
-        return "welcome";
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = "/admin/insertBaseData")
+//    public String test() {
+//
+////        genericDao.save(new Nationality("RU", "Russland"));
+////        genericDao.save(new Nationality("UA", ""));
+////        genericDao.save(new Nationality("BY"));
+//
+//        return "welcome";
+//    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/admin/insertUser")
     public String insertUser() {

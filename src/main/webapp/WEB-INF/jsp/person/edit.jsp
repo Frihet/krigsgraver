@@ -203,7 +203,7 @@
                                             <option value="not_loaded"><fmt:message key="status.loading"/></option>
                                         </select>
                                         <script type="text/javascript">
-                                            populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'cause', '${causeOfDeath.id}', true, '<fmt:message key="value.notSet"/>');
+                                            populateSelectList('<c:url value="/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'name', '${causeOfDeath.id}', true, '<fmt:message key="value.notSet"/>');
                                         </script>
                                     </div>
                                 </c:forEach>
@@ -310,11 +310,11 @@
 
     /* Reload the causeOfDeath select box with JSON data. */
     function reloadCauseOfDeathSelector() {
-        $.getJSON('<c:url value="/person/causeOfDeath/list" />', function(data) {
+        $.getJSON('<c:url value="/causeOfDeath/list" />', function(data) {
             var html = '<option value="null">&lt;<fmt:message key="value.notSet"/>&gt;</option>';
             var len = data.length;
             $.each(data, function(i, item) {
-                html += '<option value=' + item.id + '>' + item.cause + '</option>';
+                html += '<option value=' + item.id + '>' + item.name + '</option>';
             });
             $('#causeOfDeathSelector').html(html);
         });
@@ -326,12 +326,14 @@
     reloadCauseOfDeathSelector();
     
     /* Make an AJAX call to load the data in the causeOfDeath dialog. */
+/*
     function loadCauseOfDeathForm() {
         $.get('<c:url value="/person/causeOfDeath/create" />', function(data) {
             $('#causeOfDeathDialog').html(data);
             $('#causeOfDeathForm input:text:visible:first').focus();
         });
     }
+*/
 
     /* POST the cause of death form. */
 /*     $('#dialog').bind('submit', function() {
@@ -341,46 +343,6 @@
         });
     });
 */
-
-    /* Prepare the causeOfDeath dialog box. */
-    $(function() {
-        var allFields = $([])
-                .add($("#cause"))
-                .add($("#causeGroup"))
-                .add($("#description"));
-
-        $("#causeOfDeathDialog").dialog({
-            bgiframe: true,
-            autoOpen: false,
-            modal: true,
-            title: '<fmt:message key="person.causeOfDeath"/>',
-            buttons: {
-                '<fmt:message key="button.save"/>': function() {
-                    $.post('<c:url value="/person/causeOfDeath/create" />', $('#causeOfDeathForm').serialize(), function(data, textStatus) {
-                        if (data == "SUCCESS") {
-                        	$("#causeOfDeathDialog").dialog('close');
-                            
-                        } else {
-                        	$('#causeOfDeathDialog').html(data);
-                        }
-                    });
-                },
-
-                '<fmt:message key="button.cancel"/>': function() {
-                    $(this).dialog('close');
-                }
-            },
-            open: function() {
-            	loadCauseOfDeathForm();
-            },
-            beforeclose: function() {
-                reloadCauseOfDeathSelector();
-            },
-            close: function() {
-                allFields.val('').removeClass('ui-state-error');
-            }
-        });
-    });
 
     /* Add a new grave to the list. */
     function addGrave() {
@@ -403,7 +365,7 @@
                 ']" class="ui-widget-content ui-corner-all">' + 
                 '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
         
-        populateSelectList('<c:url value="/person/causeOfDeath/list" />', 'causeOfDeath' + n, 'cause', 'null', true, '<fmt:message key="value.notSet"/>');
+        populateSelectList('<c:url value="/causeOfDeath/list" />', 'causeOfDeath' + n, 'name', 'null', true, '<fmt:message key="value.notSet"/>');
     }
 
     /* Gray out the row if 'delete' is checked.  */
@@ -417,7 +379,53 @@
 //-->
 </script>
 
+<%--
+<script type="text/javascript">
+<!--
+/* Prepare the causeOfDeath dialog box. */
+$(function() {
+    var allFields = $([])
+            .add($("#cause"))
+            .add($("#causeGroup"))
+            .add($("#description"));
+
+    $("#causeOfDeathDialog").dialog({
+        bgiframe: true,
+        autoOpen: false,
+        modal: true,
+        title: '<fmt:message key="person.causeOfDeath"/>',
+        buttons: {
+            '<fmt:message key="button.save"/>': function() {
+                $.post('<c:url value="/person/causeOfDeath/create" />', $('#causeOfDeathForm').serialize(), function(data, textStatus) {
+                    if (data == "SUCCESS") {
+                        $("#causeOfDeathDialog").dialog('close');
+                        
+                    } else {
+                        $('#causeOfDeathDialog').html(data);
+                    }
+                });
+            },
+
+            '<fmt:message key="button.cancel"/>': function() {
+                $(this).dialog('close');
+            }
+        },
+        open: function() {
+            loadCauseOfDeathForm();
+        },
+        beforeclose: function() {
+            reloadCauseOfDeathSelector();
+        },
+        close: function() {
+            allFields.val('').removeClass('ui-state-error');
+        }
+    });
+});
+//-->
+</script>
+
 <div class="dialog" id="causeOfDeathDialog"></div>
+ --%>
 
 <table style="display: none;">
     <%@ include file="../grave/graveTds_raw.jsp"%>
