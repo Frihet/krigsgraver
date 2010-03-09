@@ -12,9 +12,12 @@ package no.freecode.krigsgraver.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
 
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.dao.GenericDao;
@@ -68,6 +71,7 @@ public class SearchController {
                 @RequestParam(value = "q", required = false) String queryString,
                 @RequestParam(required = false, defaultValue = "false") boolean simple,
                 @RequestParam(value = "page", required = false) Integer page,
+                Locale locale,
                 Model model) throws ParseException {
 
         String formattedQueryString = queryString;
@@ -89,7 +93,8 @@ public class SearchController {
                 return "results";
 
             } catch (org.apache.lucene.queryParser.ParseException e) {
-                model.addAttribute("standardError", "search.invalidInput");
+                model.addAttribute("standardError",
+                        messageSource.getMessage("search.invalidInput", new Object[] {formattedQueryString}, locale));
                 return "simple_search";
             }
         }
@@ -104,80 +109,116 @@ public class SearchController {
     }
 
     // ivan krevenkov
-
     @RequestMapping(method = RequestMethod.POST, value = {"/queryBuilder"})
     public String queryBuilderPost(
-//                @RequestParam("params") HashMap<String, String> params,
+                @RequestParam(value = "fuzzyFields", required = false) ArrayList<String> fuzzyFields,
                 @RequestParam(required = false) String fullName,
-                @RequestParam(required = false, defaultValue = "false") boolean fuzzyName,
+                @RequestParam(required = false) String firstName,
+                @RequestParam(required = false) String nameOfFather,
+                @RequestParam(required = false) String lastName,
                 @RequestParam(required = false) String placeOfBirth,
-                @RequestParam(required = false, defaultValue = "false") boolean fuzzyPlaceOfBirth,
                 @RequestParam(required = false) Integer dateOfBirthFromYear,
                 @RequestParam(required = false) Integer dateOfBirthToYear,
                 @RequestParam(required = false) Integer dateOfBirthFromMonth,
                 @RequestParam(required = false) Integer dateOfBirthToMonth,
                 @RequestParam(required = false) Integer dateOfBirthFromDay,
                 @RequestParam(required = false) Integer dateOfBirthToDay,
-                @RequestParam(required = false, defaultValue = "") String countryCode,
-
-//                @RequestParam(required = false, defaultValue = "false") Integer fuzzyPlaceOfBirth,
-//                dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day
-//                @RequestParam(required = false, defaultValue = "") boolean name,
-//                @RequestParam(required = false, defaultValue = "") String placeOfBirth,
-//                @RequestParam(required = false) Date dateOfBirthFrom,
-//                @RequestParam(required = false) Date dateOfBirthTo,
+                @RequestParam(required = false) String placeOfDeath,
+                @RequestParam(required = false) Integer dateOfDeathFromYear,
+                @RequestParam(required = false) Integer dateOfDeathToYear,
+                @RequestParam(required = false) Integer dateOfDeathFromMonth,
+                @RequestParam(required = false) Integer dateOfDeathToMonth,
+                @RequestParam(required = false) Integer dateOfDeathFromDay,
+                @RequestParam(required = false) Integer dateOfDeathToDay,
+                @RequestParam(required = false) String countryCode,
                 Model model) throws ParseException, UnsupportedEncodingException {
 
+        QueryBuilder query = new QueryBuilder(fuzzyFields);
+        
+        query.append("fullName", fullName);
+        query.append("firstName", firstName);
+        query.append("nameOfFather", nameOfFather);
+        query.append("lastName", lastName);
+        query.append("placeOfBirth", placeOfBirth);
+        query.appendDateInterval("dateOfBirth", dateOfBirthFromYear, dateOfBirthFromMonth, dateOfBirthFromDay, dateOfBirthToYear, dateOfBirthToMonth, dateOfBirthToDay);
+        query.append("nationality.countryCode", countryCode);
+        query.append("placeOfDeath", placeOfDeath);
+        query.appendDateInterval("dateOfDeath", dateOfDeathFromYear, dateOfDeathFromMonth, dateOfDeathFromDay, dateOfDeathToYear, dateOfDeathToMonth, dateOfDeathToDay);
+
+        return "redirect:/?q=" + URLEncoder.encode(query.getQueryString(), "utf-8");
+    }
+
+    private class QueryBuilder {
+        
         GregorianCalendar calendar = new GregorianCalendar();
+        StringBuilder query = new StringBuilder();
+        private boolean firstEntry = true;
+        private List<String> fuzzyFields;
 
-        StringBuilder q = new StringBuilder();
-
-        if (StringUtils.isNotBlank(fullName)) {
-            q.append(" ");
-            q.append(QueryUtils.formatQuery(fullName, "fullName", fuzzyName));
+        public QueryBuilder(List<String> fuzzyFields) {
+            this.fuzzyFields = fuzzyFields;
         }
 
-        if (StringUtils.isNotBlank(placeOfBirth)) {
-            q.append(" ");
-            q.append(QueryUtils.formatQuery(placeOfBirth, "placeOfBirth", fuzzyPlaceOfBirth));
+        private void appendString(String string) {
+            if (firstEntry) {
+                firstEntry = false;
+            } else {
+                query.append(" ");
+            }
+            query.append("+");
+//                query.append("(");
+            query.append(string);
+//                query.append(")");
+        }
+
+        public void append(String fieldName, String text) {
+            if (StringUtils.isNotBlank(text)) {
+                appendString(QueryUtils.formatQuery(text, fieldName, fuzzyFields.contains(fieldName)));
+            }
+        }
+
+        public void appendDateInterval(
+                    String dateField,
+                    Integer fromYear, Integer fromMonth, Integer fromDay,
+                    Integer toYear, Integer toMonth, Integer toDay) {
+
+            if (fromYear != null || toYear != null) {
+                StringBuilder q = new StringBuilder();
+                q.append(dateField + ".year:[");
+                q.append(fromYear != null ? String.format("%04d", fromYear) : "0000");
+                q.append(" TO ");
+                q.append(toYear != null ? String.format("%04d", toYear) : calendar
+                        .get(Calendar.YEAR));
+                q.append("]");
+                appendString(q.toString());
+            }
+
+            if (fromMonth != null || toMonth != null) {
+                StringBuilder q = new StringBuilder();
+                q.append(dateField + ".month:[");
+                q.append(fromMonth != null ? String.format("%02d", fromMonth) : "00");
+                q.append(" TO ");
+                q.append(toMonth != null ? String.format("%02d", toMonth) : calendar
+                        .get(Calendar.MONTH) + 1);
+                q.append("]");
+                appendString(q.toString());
+            }
+
+            if (fromDay != null || toDay != null) {
+                StringBuilder q = new StringBuilder();
+                q.append(dateField + ".day:[");
+                q.append(fromDay != null ? String.format("%02d", fromDay) : "00");
+                q.append(" TO ");
+                q.append(toDay != null ? String.format("%02d", toDay) : calendar
+                        .get(Calendar.DAY_OF_MONTH));
+                q.append("]");
+                appendString(q.toString());
+            }
         }
         
-        if (dateOfBirthFromYear != null || dateOfBirthToYear != null) {
-            q.append(" dateOfBirth.year:[");
-            q.append(dateOfBirthFromYear != null ? String.format("%04d", dateOfBirthFromYear): "0");
-            q.append(" TO ");
-            q.append(dateOfBirthToYear != null ? String.format("%04d", dateOfBirthToYear) : calendar.get(Calendar.YEAR));
-            q.append("]");
+        public String getQueryString() {
+            return query.toString();
         }
-
-        if (dateOfBirthFromMonth != null || dateOfBirthToMonth != null) {
-            q.append(" dateOfBirth.month:[");
-            q.append(dateOfBirthFromMonth != null ? String.format("%02d", dateOfBirthFromMonth): "0");
-            q.append(" TO ");
-            q.append(dateOfBirthToMonth != null ? String.format("%02d", dateOfBirthToMonth) : calendar.get(Calendar.MONTH) + 1);
-            q.append("]");
-        }
-
-        if (dateOfBirthFromDay != null || dateOfBirthToDay != null) {
-            q.append(" dateOfBirth.day:[");
-            q.append(dateOfBirthFromDay != null ? String.format("%02d", dateOfBirthFromDay): "0");
-            q.append(" TO ");
-            q.append(dateOfBirthToDay != null ? String.format("%02d", dateOfBirthToDay) : calendar.get(Calendar.DAY_OF_MONTH));
-            q.append("]");
-        }
-
-        if (StringUtils.isNotBlank(countryCode)) {
-            q.append(" nationality.countryCode:(");
-            q.append(countryCode);
-            q.append(")");
-        }
-
-
-//        model.addAttribute("placeOfBirth", placeOfBirth);
-//        model.addAttribute("nationality", nationality);
-
-        return "redirect:/?q=" + URLEncoder.encode(q.toString(), "utf-8");
-        // return "advanced_search";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/test2"})
@@ -192,9 +233,8 @@ public class SearchController {
         model.addAttribute("paginator", paginator);
         return "results";
     }
-    
-    
-    
+
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

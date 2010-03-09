@@ -1,5 +1,6 @@
 <%@ include file="includes.jsp"%>
 
+<div id="menuArea">
 <div class="menuTitle">
     <fmt:message key="menu.search"/>
 </div>
@@ -36,5 +37,6 @@
         <fmt:message key="menu.admin"/>
     </div>
     
-    <a href='<c:url value="/admin/users" />'><fmt:message key="menu.admin.users"/></a> (kommer snart)
+    <a href='<c:url value="/admin/user" />'><fmt:message key="menu.admin.users"/></a>
 </sec:authorize>
+</div>

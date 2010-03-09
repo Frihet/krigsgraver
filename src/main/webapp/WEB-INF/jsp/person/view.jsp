@@ -1,6 +1,6 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
-
+<%@ page session="false" %>
 
 <style>
 <!--

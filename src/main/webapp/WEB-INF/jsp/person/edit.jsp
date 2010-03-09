@@ -100,7 +100,7 @@
                             <span class="soft">-</span>
                             <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
                             <span class="soft">(<fmt:message key="type.date.formatDescription"/>)</span>
-                            
+
                             <span style="padding-right: 2em;"></span>
                             <fmt:message key="grave.approximateDate"/>
                             <form:checkbox path="person.dateOfBirth.approximate" />

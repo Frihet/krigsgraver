@@ -26,7 +26,7 @@
 <body>
 <table id="wholePage">
 <tr>
-    <td id="headerLogo" style="background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);"></td>
+    <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'></td>
     <td id="rightHeader">
         <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR">
             <a id="loginLink" href='<c:url value="/login" />'><fmt:message key="link.login"/></a>
@@ -43,7 +43,6 @@
 
     <td id="mainContentWrapper"><div id="mainContent">
 
-
     <%-- If a standardInfo/standardError String is present in the model,
          draw it at the top of the page. --%>
     <c:if test="${standardInfo != Null}">
@@ -53,7 +52,7 @@
                 <strong><fmt:message key="info.title"/>:</strong> <c:out value="${standardInfo}" /></p>
             </div>
         </div>
-        <c:remove var="standardInfo" scope="session" />
+        <c:remove var="standardInfo" />
     </c:if>
 
     <c:if test="${standardError != Null}">
@@ -63,5 +62,5 @@
                 <strong><fmt:message key="error.title"/>:</strong> <c:out value="${standardError}" /></p>
             </div>
         </div>
-        <c:remove var="standardError" scope="session" />
+        <c:remove var="standardError" />
     </c:if>

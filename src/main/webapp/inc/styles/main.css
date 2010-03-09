@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+
 /* falstad-fargen (grønt): #919100 */ /* blått: #003366 */
 html,body {
 	font-family: verdana, "Tahoma MS", Helvetica, Arial, Sans-Serif;
@@ -13,17 +14,16 @@ html,body {
 }
 
 table#wholePage {
+	width: 100%;
 	height: 100%;
 	overflow: auto;
 	border-collapse: collapse;
-	width: 100%;
-	height: 100%;
 }
 
 td#rightHeader {
 	background-color: #919100;
+	/* height: 98px; */
 	height: 98px;
-	width: 100%;
 	padding: 0;
 	margin: 0;
 	vertical-align: top;
@@ -38,7 +38,6 @@ a#loginLink {
 }
 
 td#headerLogo {
-	float: left;
 	height: 98px;
 	width: 190px;
 	padding: 0;
@@ -51,12 +50,16 @@ td#headerLogo {
 
 td#menuArea {
 	font-size: 11px;
-	padding: 2em 2em 0;
+	/* padding: 2em 2em 0; */
 	width: 190px;
 	vertical-align: top;
 	background-color: black;
 	color: white;
 	text-align: left;
+}
+
+div#menuArea {
+    padding: 2em 2em 0;
 }
 
 td#menuArea a {
@@ -111,6 +114,10 @@ span.soft {
 	color: grey;
 }
 
+legend {
+    color: #222222;
+}
+
 /* Horizontal line. */
 div.ruler {
 	margin: 0 2em 1em 2em;
@@ -138,7 +145,6 @@ th {
 /* Widgets. */
 .button {
 	cursor: pointer;
-	margin: 0 4px 0 0;
 	padding: 0.1em 0.3em 0.2em 0.3em;
 	position: relative;
 	text-align: center;
@@ -146,6 +152,13 @@ th {
 	color: black !important;
 }
 
+a.button {
+    margin: 0 4px 0 0;
+}
+
+button {
+    margin-left: 0.5em;
+}
 
 /*
 a.button {
@@ -181,7 +194,9 @@ fieldset.main legend { /* color: #003366; */ /* color: #919100; */
 fieldset.sub {
 	border: solid 1px #cccccc;
 	margin-bottom: 0.5em;
+    padding: 0.5em 0.7em 0;
 }
+
 
 fieldset.sub legend {
 	color: #000000;
@@ -223,8 +238,9 @@ div.searchContainer {
 	white-space: nowrap;
 }
 
-.searchMenu tr,td {
+.searchMenu tr, .searchMenu td {
 	padding: 0;
+	margin: 0.5em;
 }
 
 .searchMenu a {
@@ -234,4 +250,8 @@ div.searchContainer {
 
 .searchMenu span {
 	padding-right: 1em;
+}
+
+form.advancedSearch th {
+    vertical-align: middle;
 }

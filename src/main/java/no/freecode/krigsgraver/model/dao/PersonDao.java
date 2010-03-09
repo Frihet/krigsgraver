@@ -124,15 +124,14 @@ public class PersonDao {
         Session currentSession = sessionFactory.getCurrentSession();
 
         String[] fields = new String[] { 
-//                "westernDetails.firstName", "westernDetails.nameOfFather", "westernDetails.lastName",
-                "fullName", "placeOfBirth",
-//                "westernDetails.placeOfBirth",
-//                "cyrillicDetails.firstName", "cyrillicDetails.nameOfFather", "cyrillicDetails.lastName",
-//                "cyrillicDetails.placeOfBirth",
+                "firstName", "nameOfFather", "lastName",
+                "fullName",
+                "placeOfBirth",
                 "dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day",
                 "nationality.countryCode", "nationality.name", "prisonerNumber", "obdNumber",
                 "rank.name", "camp.name", "stalag.name",
                 "placeOfDeath",
+                "dateOfDeath.year", "dateOfDeath.month", "dateOfDeath.day",
                 "causeOfDeathDescription", "remarks",
                 "causesOfDeath.name", "causesOfDeath.causeGroup", "graves.cemetery.name"
                 };

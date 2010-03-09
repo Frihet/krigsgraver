@@ -40,10 +40,12 @@
     $(function() {
         $('#searchField').focus();
 
+/*
         $('#search').hover(
             function() { $(this).addClass('ui-state-hover'); }, 
             function() { $(this).removeClass('ui-state-hover'); }
         );
+*/
     });
 //-->
 </script>

@@ -52,12 +52,12 @@ public class Person extends IndexedEntity {
     private Date createdDate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @IndexedEmbedded
+//    @IndexedEmbedded
     @Valid
     private PersonDetails westernDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @IndexedEmbedded
+//    @IndexedEmbedded
     @Valid
     private PersonDetails cyrillicDetails;
 
@@ -277,6 +277,24 @@ public class Person extends IndexedEntity {
     @Boost(3.0f)
     public String getFullName() {
         return mixCharsets(getWesternDetails().toString(), getCyrillicDetails().toString());
+    }
+
+    @Transient
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    public String getFirstName() {
+        return mixCharsets(getWesternDetails().getFirstName(), getCyrillicDetails().getFirstName());
+    }
+
+    @Transient
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    public String getNameOfFather() {
+        return mixCharsets(getWesternDetails().getNameOfFather(), getCyrillicDetails().getNameOfFather());
+    }
+
+    @Transient
+    @Field(index = Index.TOKENIZED, store = Store.NO)
+    public String getLastName() {
+        return mixCharsets(getWesternDetails().getLastName(), getCyrillicDetails().getLastName());
     }
     
     /* (non-Javadoc)

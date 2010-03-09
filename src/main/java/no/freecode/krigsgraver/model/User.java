@@ -17,8 +17,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.apache.log4j.Logger;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,18 +37,23 @@ public class User extends BaseEntity implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Column(unique = true)
+    @Size(max = 255)
+    @NotEmpty
     private String username;
 
+    @Size(max = 255)
     private String password;
 
+    @Size(max = 255)
+    @NotEmpty
+    private String name;
+    
     @Enumerated(EnumType.STRING)
     private Role role = Role.ROLE_EDITOR;
 
     private boolean credentialsNonExpired = true;
 
     private boolean enabled = true;
-
-    private String name;
 
 
     /** Empty constructor. Needed for Hibernate. */

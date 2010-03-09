@@ -27,15 +27,12 @@ import org.hibernate.search.annotations.Store;
 public class FlexibleDate extends BaseEntity {
 
     @Min(1) @Max(31)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer day;
 
     @Min(1) @Max(12)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer month;
 
     @Min(1000) @Max(9999)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer year;
     
     /** Used to indicate that this date is not to be completely trusted. */
@@ -57,6 +54,16 @@ public class FlexibleDate extends BaseEntity {
         this.day = day;
     }
 
+    @Field(name = "day", index = Index.TOKENIZED, store = Store.NO)
+    public String getDayString() {
+        if (day != null) {
+            return String.format("%02d", day);
+
+        } else {
+            return null;
+        }
+    }
+
     public Integer getMonth() {
         return month;
     }
@@ -65,6 +72,19 @@ public class FlexibleDate extends BaseEntity {
         this.month = month;
     }
 
+    /**
+     * Make a special indexed version to get interval searches right. 
+     */
+    @Field(name = "month", index = Index.TOKENIZED, store = Store.NO)
+    public String getMonthString() {
+        if (month != null) {
+            return String.format("%02d", month);
+
+        } else {
+            return null;
+        }
+    }
+    
     public Integer getYear() {
         return year;
     }
@@ -73,6 +93,19 @@ public class FlexibleDate extends BaseEntity {
         this.year = year;
     }
 
+    /**
+     * Make a special indexed version to get interval searches right. 
+     */
+    @Field(name = "year", index = Index.TOKENIZED, store = Store.NO)
+    public String getYearString() {
+        if (year != null) {
+            return String.format("%02d", year);
+
+        } else {
+            return null;
+        }
+    }
+    
     public boolean isApproximate() {
         return approximate;
     }

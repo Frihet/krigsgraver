@@ -1,8 +1,7 @@
-<%@ page isErrorPage='true' %>
-
-<%@ include file="../includes.jsp"%>
 <%@ include file="../header.jsp"%>
+<%@ include file="../includes.jsp"%>
 
+<%@ page isErrorPage='true' %>
 
 <div class="error ui-widget">
     <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
@@ -10,12 +9,16 @@
         <strong><fmt:message key="error.title"/>:</strong> <c:out value="${standardError}" /></p>
 
         <p>
+<%--
             <% out.print(exception.getLocalizedMessage()); %>
+ --%>
         </p>
         
     </div>
 </div>
+<%--
 <c:remove var="standardError" scope="session" />
+ --%>
 
 
 <div class="standardError">
@@ -25,7 +28,9 @@
     <div class="content">
         <p>
             <fmt:message key="errors.illegalDatabaseOperation" />
+<%--
             <% out.print(exception.getLocalizedMessage()); %>
+ --%>
         </p>
     </div>
 </div>
