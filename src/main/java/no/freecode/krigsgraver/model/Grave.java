@@ -11,9 +11,11 @@ package no.freecode.krigsgraver.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -36,7 +38,8 @@ public class Grave extends BaseEntity {
 
     private Integer graveNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("year, month, day")
     private FlexibleDate dateOfBurial;
 
     private boolean moved;

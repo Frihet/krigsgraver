@@ -37,6 +37,24 @@
                 </td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="description" />
             </tr>
+
+            <tr>
+                <th><form:label for="latitude" path="latitude" cssErrorClass="ui-state-error-text"><fmt:message key="latitude" /></form:label></th>
+                <td>
+                    <form:input cssStyle="width: 15em;" path="latitude" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/>
+                    <span class="soft">(<fmt:message key="latitude.example"/>)</span>
+                </td>
+                <form:errors element="td" cssClass="ui-state-error-text" path="latitude" />
+            </tr>
+
+            <tr>
+                <th><form:label for="longitude" path="longitude" cssErrorClass="ui-state-error-text"><fmt:message key="longitude" /></form:label></th>
+                <td>
+                    <form:input cssStyle="width: 15em;" path="longitude" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/>
+                    <span class="soft">(<fmt:message key="longitude.example"/>)</span>
+                </td>
+                <form:errors element="td" cssClass="ui-state-error-text" path="longitude" />
+            </tr>
         </table>
     </fieldset>
 

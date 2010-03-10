@@ -23,13 +23,13 @@
         <table class="withMargin">
             <tr>
                 <th><form:label for="username" path="username" cssErrorClass="ui-state-error-text"><fmt:message key="user.username" /></form:label></th>
-                <td><form:input path="username" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input autocomplete="off" path="username" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="username" />
             </tr>
 
             <tr>
                 <th><form:label for="password" path="password" cssErrorClass="ui-state-error-text"><fmt:message key="user.password" /></form:label></th>
-                <td><form:password path="password" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:password autocomplete="off" path="password" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="password" />
             </tr>
 

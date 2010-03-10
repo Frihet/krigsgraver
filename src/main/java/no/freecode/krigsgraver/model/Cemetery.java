@@ -11,11 +11,13 @@ package no.freecode.krigsgraver.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -36,14 +38,10 @@ public class Cemetery extends BaseEntity {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String address;
 
-    // TODO: replace with a separate class (PostalDistrict?) with data from
-    // posten.no
-    @Size(max = 255)
-    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
-    private String postalDistrict;
-
-    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
-    private Integer postcode;
+    @ManyToOne
+//    @Valid
+    @IndexedEmbedded
+    private PostalDistrict postalDistrict;
 
     // Geolocation
     private Double latitude;
@@ -65,19 +63,27 @@ public class Cemetery extends BaseEntity {
         this.address = address;
     }
 
-    public String getPostalDistrict() {
+    public PostalDistrict getPostalDistrict() {
         return postalDistrict;
     }
 
-    public void setPostalDistrict(String postalDistrict) {
+    public void setPostalDistrict(PostalDistrict postalDistrict) {
         this.postalDistrict = postalDistrict;
     }
 
-    public Integer getPostcode() {
-        return postcode;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setPostcode(Integer postcode) {
-        this.postcode = postcode;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

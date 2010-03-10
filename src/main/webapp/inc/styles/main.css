@@ -255,3 +255,7 @@ div.searchContainer {
 form.advancedSearch th {
     vertical-align: middle;
 }
+
+input.long {
+    width: 25em;
+}

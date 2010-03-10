@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
+import no.freecode.krigsgraver.model.GraveComparator;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
@@ -81,15 +83,16 @@ public class PersonDao {
      */
     public void savePersonCommandObject(PersonCommandObject command) {
         Person person = command.getPerson();
-        
-        ArrayList<Grave> graves = new ArrayList<Grave>();
+
+        TreeSet<Grave> graves = new TreeSet<Grave>(new GraveComparator());
+//        ArrayList<Grave> graves = new ArrayList<Grave>();
         for (Grave grave : command.getLazyGraves()) {
             if (!grave.isDelete()) {
                 graves.add(grave);
             }
         }
         person.setGraves(graves);
-
+        
         ArrayList<CauseOfDeath> causesOfDeath = new ArrayList<CauseOfDeath>();
         for (CauseOfDeath cause : command.getLazyCausesOfDeath()) {
             if (cause != null) {
@@ -107,6 +110,18 @@ public class PersonDao {
     @Transactional(readOnly = true)
     public Person getPerson(long id) {
         return (Person) sessionFactory.getCurrentSession().get(Person.class, id);
+    }
+    
+    /**
+     * Fetch a person from the DB.
+     */
+    @Transactional(readOnly = true)
+    public Person getPersonWithGraves(long id) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Person person = (Person) session.get(Person.class, id);
+//        
+        return (Person) sessionFactory.getCurrentSession().get(Person.class, id);
+//        return person;
     }
 
     /**

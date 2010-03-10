@@ -17,7 +17,7 @@
         <tr>
             <th> <fmt:message key="person.fullName"/> </th>
             <td>
-                <input name="fullName" class="ui-widget-content ui-corner-all" />
+                <input name="fullName" class="long ui-widget-content ui-corner-all" />
                 <input type="checkbox" name="fuzzyFields" value="fullName" checked="checked" />
                 <fmt:message key="search.findSimilarWords" />
             </td>

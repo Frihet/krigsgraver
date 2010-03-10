@@ -116,7 +116,7 @@ public class PersonController {
         if (result.hasErrors()) {
             return "person/edit";
         }
-
+        
         personDao.savePersonCommandObject(command);
 
         String message = messageSource.getMessage("person.successfullySaved",

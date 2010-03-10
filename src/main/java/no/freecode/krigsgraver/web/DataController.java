@@ -13,6 +13,7 @@ import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
+import no.freecode.krigsgraver.model.dao.PostalDistrictDao;
 import no.freecode.krigsgraver.model.dao.UserDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 //@RequestMapping(value = "/search")
-public class TempController {
+public class DataController {
 
     @Autowired
     private PersonDao personDao;
@@ -36,6 +37,9 @@ public class TempController {
     @Autowired
     private GenericDao genericDao;
 
+    @Autowired
+    private PostalDistrictDao postalDistrictDao;
+    
     @Autowired
     private UserDao userDao;
     
@@ -62,6 +66,7 @@ public class TempController {
 //        return "welcome";
 //    }
 
+    
     @RequestMapping(method = RequestMethod.GET, value = "/admin/insertUser")
     public String insertUser() {
 

@@ -21,8 +21,6 @@ scp target/krigsgraver.war tomcat@java-dev:/srv/tomcat/webapps/
 
 ssh tomcat@java-dev "/etc/init.d/tomcat start"
 
-exit
-
 echo -n "Waiting for the application to load"
 ssh tomcat@java-dev '\
 while [ "$(curl -sI http://localhost:8080/krigsgraver/ | head -n 1 | grep 200)" == "" ]; do \
@@ -33,6 +31,6 @@ done \
 echo
 echo "Inserting data..."
 cd notes
-./prepare_remote.sh
+#./prepare_remote.sh
 #./upload_csv_tiny_java-dev.sh
 ./upload_csv_java-dev.sh

@@ -7,6 +7,8 @@
 
 <form id="selectorForm">
     <select id="itemSelector" name="id" class="ui-widget-content ui-corner-all">
+        <option value="null">&lt;<fmt:message key="value.chooseOne"/>&gt;</option>
+
         <c:forEach items="${items}" var="item">
             <c:choose>
                 <c:when test="${item.id == currentItem.id}">
@@ -48,21 +50,38 @@
 
 <script type="text/javascript">
 <!--
-    $('#editItem').click(function() {
-        var form = $('#selectorForm');
-        form.attr('action', '${editUrl}');
-        form.submit();
-    });
+    $('#itemSelector').click(function() {
+        if ($('#itemSelector option:selected').val() == "null") {
+        	$('#editItem').addClass('ui-state-disabled');
+        	$('#editItem').unbind('click'); 
+            $('#deleteItem').addClass('ui-state-disabled');
+            $('#deleteItem').unbind('click');
 
-    $('#deleteItem').click(function() {
-        var form = $('#selectorForm');
-
-        if (confirm('<fmt:message key="message.confirmDelete"/>')) {
-            form.attr('action', '${deleteUrl}');
-            form.submit();
         } else {
-            return false;
-        } 
+            $('#deleteItem').removeClass('ui-state-disabled');
+            $('#deleteItem').click(function() {
+                var form = $('#selectorForm');
+
+                if (confirm('<fmt:message key="message.confirmDelete"/>')) {
+                    form.attr('action', '${deleteUrl}');
+                    form.submit();
+                } else {
+                    return false;
+                } 
+            });
+
+            $('#editItem').removeClass('ui-state-disabled');
+            $('#editItem').click(function() {
+                var form = $('#selectorForm');
+                form.attr('action', '${editUrl}');
+                form.submit();
+            });
+            
+        }
     });
+
+
+
+
 //-->
 </script>

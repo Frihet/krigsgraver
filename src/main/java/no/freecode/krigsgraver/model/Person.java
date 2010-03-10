@@ -12,6 +12,8 @@ package no.freecode.krigsgraver.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +32,8 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -112,7 +116,11 @@ public class Person extends IndexedEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @IndexedEmbedded
-    private List<Grave> graves;
+//    @OrderBy("dateOfBurial.year, dateOfBurial.month, dateOfBurial.day")
+//    @OrderBy("dateOfBurial")
+    @Sort(type = SortType.COMPARATOR, comparator = GraveComparator.class)
+    private SortedSet<Grave> graves;
+//    private List<Grave> graves;
 
     
     public PersonDetails getWesternDetails() {
@@ -237,22 +245,36 @@ public class Person extends IndexedEntity {
         this.createdDate = createdDate;
     }
 
-    public List<Grave> getGraves() {
-        
+//    public List<Grave> getGraves() {
+//        
+//        if (graves == null) {
+//            graves = new ArrayList<Grave>();
+//        }
+//        
+//        return graves;
+//    }
+//
+//    public void setGraves(List<Grave> graves) {
+//        this.graves = graves;
+//    }
+
+    public SortedSet<Grave> getGraves() {
         if (graves == null) {
-            graves = new ArrayList<Grave>();
+            graves = new TreeSet<Grave>(new GraveComparator());
         }
-        
+
         return graves;
     }
-
-    public void setGraves(List<Grave> graves) {
+    
+    public void setGraves(SortedSet<Grave> graves) {
         this.graves = graves;
     }
+    
 
     public Camp getCamp() {
         return camp;
     }
+
 
     public void setCamp(Camp camp) {
         this.camp = camp;

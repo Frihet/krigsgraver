@@ -87,5 +87,6 @@
     <bean id="graveDao" class="no.freecode.krigsgraver.model.dao.GraveDao" />
     <bean id="genericDao" class="no.freecode.krigsgraver.model.dao.GenericDao" />
     <bean id="userDao" class="no.freecode.krigsgraver.model.dao.UserDaoImpl" />
+    <bean id="postalDistrictDao" class="no.freecode.krigsgraver.model.dao.PostalDistrictDao" />
 
 </beans>

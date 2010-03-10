@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
@@ -29,6 +30,7 @@ public class Stalag extends BaseEntity {
     @Size(max = 255)
     @OrderBy
     @Field(index = Index.TOKENIZED, store = Store.NO)
+    @NotEmpty
     private String name;
 
     @Lob
@@ -52,5 +54,21 @@ public class Stalag extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

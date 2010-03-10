@@ -28,10 +28,12 @@
             <td> ${person.placeOfBirth} </td>
         </tr>
     </c:if>
-    <tr>
-        <th> <fmt:message key="person.dateOfBirth"/> </th>
-        <td> <c:if test="${person.dateOfBirth.approximate}"><fmt:message key="date.approximate"/></c:if> ${person.dateOfBirth} </td>
-    </tr>
+    <c:if test="${person.dateOfBirth != '?'}">
+        <tr>
+            <th> <fmt:message key="person.dateOfBirth"/> </th>
+            <td> <c:if test="${person.dateOfBirth.approximate}"><fmt:message key="date.approximate"/></c:if> ${person.dateOfBirth} </td>
+        </tr>
+    </c:if>
     <c:if test="${!empty person.nationality}">
         <tr>
             <th> <fmt:message key="person.nationality"/> </th>
@@ -64,11 +66,12 @@
 
 <h2><fmt:message key="person.death.title"/></h2>
 <table>
-    <tr>
-        <th> <fmt:message key="person.dateOfDeath"/> </th>
-        <td> <c:if test="${person.dateOfDeath.approximate}"><fmt:message key="date.approximate"/></c:if> ${person.dateOfBirth} </td>
-    </tr>
-    
+    <c:if test="${person.dateOfDeath != '?'}">
+        <tr>
+            <th> <fmt:message key="person.dateOfDeath"/> </th>
+            <td> <c:if test="${person.dateOfDeath.approximate}"><fmt:message key="date.approximate"/></c:if> ${person.dateOfDeath} </td>
+        </tr>
+    </c:if>
     <c:if test="${!empty person.placeOfDeath}">
         <tr>
             <th> <fmt:message key="person.placeOfDeath"/> </th>
@@ -108,10 +111,12 @@
     </c:if>
 
     <table>
-        <tr>
-            <th> <fmt:message key="type.date"/> </th>
-            <td> <c:if test="${grave.dateOfBurial.approximate}"><fmt:message key="date.approximate"/></c:if> ${grave.dateOfBurial} </td>
-        </tr>
+        <c:if test="${grave.dateOfBurial != '?'}">
+            <tr>
+                <th> <fmt:message key="type.date"/> </th>
+                <td> <c:if test="${grave.dateOfBurial.approximate}"><fmt:message key="date.approximate"/></c:if> ${grave.dateOfBurial} </td>
+            </tr>
+        </c:if>
 
         <c:if test="${!empty grave.cemetery}">
             <tr>
@@ -119,6 +124,28 @@
                 <td> ${grave.cemetery.name} </td>
             </tr>
         </c:if>
+
+        <c:if test="${!empty grave.cemetery.address}">
+            <tr>
+                <th> <fmt:message key="cemetery.address"/> </th>
+                <td> ${grave.cemetery.address} </td>
+            </tr>
+        </c:if>
+
+        <c:if test="${!empty grave.cemetery.postalDistrict.postcode}">
+            <tr>
+                <th> <fmt:message key="cemetery.postalDistrict"/> </th>
+                <td> ${grave.cemetery.postalDistrict.postcode} ${grave.cemetery.postalDistrict.name} </td>
+            </tr>
+        </c:if>
+
+        <c:if test="${!empty grave.cemetery.postalDistrict.county}">
+            <tr>
+                <th> <fmt:message key="cemetery.county"/> </th>
+                <td> ${grave.cemetery.postalDistrict.county} </td>
+            </tr>
+        </c:if>
+
 
         <c:if test="${!empty grave.graveField}">
             <tr>

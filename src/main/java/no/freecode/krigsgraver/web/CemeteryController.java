@@ -9,6 +9,7 @@
  */
 package no.freecode.krigsgraver.web;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,8 +18,11 @@ import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.Grave;
+import no.freecode.krigsgraver.model.PostalDistrict;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.model.dao.PostalDistrictDao;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -48,6 +52,9 @@ public class CemeteryController {
     private GenericDao genericDao;
 
     @Autowired
+    private PostalDistrictDao postalDistrictDao;
+    
+    @Autowired
     private MessageSource messageSource;
 
     @ModelAttribute("cemeteries")
@@ -63,6 +70,15 @@ public class CemeteryController {
         return genericDao.getAll(Cemetery.class, Order.asc("name"));
     }
 
+    /**
+     * Show a {@link Cemetery}.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
+    public String getView(@PathVariable long id, Model model) {
+        model.addAttribute("cemetery", genericDao.get(Cemetery.class, id));
+        return "cemetery/view";
+    }
+    
     /**
      * Create a new {@link Cemetery}.
      */
@@ -151,5 +167,26 @@ public class CemeteryController {
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         dataBinder.registerCustomEditor(Cemetery.class, new EntityPropertyEditor(Cemetery.class, genericDao));
+        
+        // Create a custom property editor for PostalDistrict objects (mapping a postcode to an object).
+        dataBinder.registerCustomEditor(PostalDistrict.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (StringUtils.isNotBlank(text)) {
+                    setValue(postalDistrictDao.get(Integer.parseInt(text)));
+                }
+            }
+
+            @Override
+            public String getAsText() {
+                PostalDistrict d = (PostalDistrict) getValue();
+                if (d == null) {
+                    return null;
+                } else {
+                    return d.getPostcodeString();
+                }
+            }
+        });
+
     }
 }
