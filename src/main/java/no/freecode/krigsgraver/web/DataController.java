@@ -78,11 +78,10 @@ public class DataController {
         user.setPassword(passwordEncoder.encodePassword("kg", null));
         userDao.saveUser(user);
 
-
         user = new User();
-        user.setName("Reidar Øksnevad");
+        user.setName("KG");
         user.setUsername("kg");
-        user.setRole(Role.ROLE_EDITOR);
+        user.setRole(Role.ROLE_ADMIN);
         user.setPassword(passwordEncoder.encodePassword("kg", null));
         userDao.saveUser(user);
         

@@ -78,10 +78,10 @@ public class PersonDetails extends BaseEntity {
     }
 
     /**
-     * @return true if none of the fields have been set.
+     * @return true if none of the name fields have been set.
      */
     @Transient
-    public boolean isEmpty() {
+    public boolean hasNoName() {
         if (StringUtils.isBlank(firstName) && StringUtils.isBlank(nameOfFather) && StringUtils.isBlank(lastName)) {
             return true;
         } else {

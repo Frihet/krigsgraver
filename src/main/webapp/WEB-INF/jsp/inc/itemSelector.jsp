@@ -80,8 +80,8 @@
         }
     });
 
-
-
-
+    $(function() {
+    	$('#itemSelector').click();
+    });
 //-->
 </script>

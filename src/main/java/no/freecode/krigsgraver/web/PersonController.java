@@ -157,7 +157,7 @@ public class PersonController {
     }
 
     private static void validatePerson(Person person, Errors errors) {
-        if (person.getCyrillicDetails().isEmpty() && person.getWesternDetails().isEmpty()) {
+        if (person.getCyrillicDetails().hasNoName() && person.getWesternDetails().hasNoName()) {
             errors.reject("person.error.missingName");
         }
     }
