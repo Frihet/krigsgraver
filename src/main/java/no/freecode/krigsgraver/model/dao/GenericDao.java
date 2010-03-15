@@ -105,16 +105,6 @@ public class GenericDao {
     }
     
     /**
-     * Fetch a list of all objects of a given class from the DB.
-     */
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
-    public List<String> test() {
-//        return sessionFactory.getCurrentSession().createCriteria(clazz).list();
-        return sessionFactory.getCurrentSession().createQuery("select cause from CauseOfDeath").list();
-    }
-
-    /**
      * Index all objects of a given class in the search engine.
      */
     public <T extends IndexedEntity> void indexData(Class<T> clazz) {

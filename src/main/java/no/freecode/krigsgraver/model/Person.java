@@ -101,7 +101,8 @@ public class Person extends IndexedEntity {
     @Size(max = 255)
     private String placeOfDeath;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
+//    @ManyToMany
     @Valid
     @IndexedEmbedded
     private List<CauseOfDeath> causesOfDeath;
@@ -114,13 +115,11 @@ public class Person extends IndexedEntity {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String remarks;
 
-    @OneToMany(cascade = CascadeType.ALL)
+//    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @IndexedEmbedded
-//    @OrderBy("dateOfBurial.year, dateOfBurial.month, dateOfBurial.day")
-//    @OrderBy("dateOfBurial")
     @Sort(type = SortType.COMPARATOR, comparator = GraveComparator.class)
     private SortedSet<Grave> graves;
-//    private List<Grave> graves;
 
     
     public PersonDetails getWesternDetails() {
@@ -342,9 +341,5 @@ public class Person extends IndexedEntity {
         } else {
             return s2;
         }
-    }
-    
-    public static void main(String[] args) {
-        
     }
 }

@@ -215,6 +215,10 @@ table.withMargin {
 	margin: 1em;
 }
 
+div.rightLink {
+    float: right;
+}
+
 /* Dialogs */
 div.dialog fieldset {
 	padding: 0;

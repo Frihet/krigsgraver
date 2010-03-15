@@ -127,10 +127,25 @@ public class PersonController {
     }
 
     /**
+     * Delete a {@link Person}.
+     */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "{id}/delete")
+    public String deletePerson(@PathVariable long id, Model model, HttpSession session, Locale locale) {
+
+        Person person = personDao.getPerson(id);
+        String name = person.getFullName();
+        personDao.delete(id);
+
+        String message = messageSource.getMessage("info.deleted", new Object[] { name }, locale);
+        session.setAttribute("standardInfo", message);
+        
+        return "redirect:/person/create";
+    }
+
+    /**
      * Upload people.
      */
-    // TODO: secure
-//    @Secured({"ROLE_ADMIN"})
     @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "upload")
     public String getUploadForm() {
@@ -143,7 +158,6 @@ public class PersonController {
      * @throws IOException 
      */
     @RequestMapping(method = RequestMethod.POST, value = "upload")
-    // TODO: secure
     @Secured({"ROLE_ADMIN"})
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
 

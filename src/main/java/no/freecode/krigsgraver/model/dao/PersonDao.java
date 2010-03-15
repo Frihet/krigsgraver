@@ -42,11 +42,8 @@ import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projections;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -104,6 +101,11 @@ public class PersonDao {
         sessionFactory.getCurrentSession().merge(person);
     }
 
+    public void delete(long id) {
+        Person person = getPerson(id);
+        sessionFactory.getCurrentSession().delete(person);
+    }
+
     /**
      * Fetch a person from the DB.
      */
@@ -113,18 +115,6 @@ public class PersonDao {
     }
     
     /**
-     * Fetch a person from the DB.
-     */
-    @Transactional(readOnly = true)
-    public Person getPersonWithGraves(long id) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Person person = (Person) session.get(Person.class, id);
-//        
-        return (Person) sessionFactory.getCurrentSession().get(Person.class, id);
-//        return person;
-    }
-
-    /**
      * Fetch a list of all Person objects from the DB.
      */
     @SuppressWarnings("unchecked")
@@ -133,6 +123,14 @@ public class PersonDao {
         return sessionFactory.getCurrentSession().createCriteria(Person.class).list();
     }
 
+    /**
+     * Search for people based on a Lucene query string.
+     * 
+     * @param queryString
+     * @param paginator
+     * @return
+     * @throws ParseException
+     */
     @Transactional(readOnly = true)
     public List<Person> search(String queryString, Paginator paginator) throws ParseException {
 
@@ -161,10 +159,6 @@ public class PersonDao {
 
         fullTextQuery.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
         fullTextQuery.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
-
-//        Criteria crit = currentSession.createCriteria(Person.class);
-//        crit.add(Restrictions.eq("rank.name", "soldat"));
-//        fullTextQuery.setCriteriaQuery(crit);
         
         @SuppressWarnings("unchecked")
         List<Person> results = fullTextQuery.list();
@@ -173,44 +167,43 @@ public class PersonDao {
         paginator.setNumberOfResults(fullTextQuery.getResultSize());
 
         return paginator.paginate(results);
-//        return results;
     }
 
 
-    @Transactional(readOnly = true)
-    public List<Person> search(Paginator paginator, Criterion... crits) throws ParseException {
-        
-        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
-        for (Criterion criterion : crits) {
-            crit.add(criterion);
-        }
-
-        crit.setProjection(Projections.rowCount());
-        paginator.setNumberOfResults((Integer) crit.uniqueResult());
-        
-        crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
-        for (Criterion criterion : crits) {
-            crit.add(criterion);
-        }
-        
-//        crit.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-////        paginator.setNumberOfResults((Integer) crit.uniqueResult());
-////
-////        // wipe out the projection, keep the criteria
-//        crit.setProjection(null);
-        
-        crit.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
-        crit.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
-        
-        @SuppressWarnings("unchecked")
-        List<Person> results = crit.list();
-
-//        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results. List size=" + results.size());
-//        paginator.setNumberOfResults(fullTextQuery.getResultSize());
-
-        return paginator.paginate(results);
-//        return results;
-    }
+//    @Transactional(readOnly = true)
+//    public List<Person> search(Paginator paginator, Criterion... crits) throws ParseException {
+//        
+//        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
+//        for (Criterion criterion : crits) {
+//            crit.add(criterion);
+//        }
+//
+//        crit.setProjection(Projections.rowCount());
+//        paginator.setNumberOfResults((Integer) crit.uniqueResult());
+//        
+//        crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
+//        for (Criterion criterion : crits) {
+//            crit.add(criterion);
+//        }
+//        
+////        crit.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+//////        paginator.setNumberOfResults((Integer) crit.uniqueResult());
+//////
+//////        // wipe out the projection, keep the criteria
+////        crit.setProjection(null);
+//        
+//        crit.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
+//        crit.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
+//        
+//        @SuppressWarnings("unchecked")
+//        List<Person> results = crit.list();
+//
+////        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results. List size=" + results.size());
+////        paginator.setNumberOfResults(fullTextQuery.getResultSize());
+//
+//        return paginator.paginate(results);
+////        return results;
+//    }
     
     /**
      * Index all Person objects in the search engine.
@@ -416,15 +409,6 @@ public class PersonDao {
                 // ignore it for now. XXX
                 return null;
             }
-        }
-    }
-    
-    public static void main(String[] args) {
-        try {
-            System.out.println(new SimpleDateFormat("MM/dd/yyyy").parse("11/3/1943"));
-            
-        } catch (java.text.ParseException e) {
-            // ignore...
         }
     }
 }

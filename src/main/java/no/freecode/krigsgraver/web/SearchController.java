@@ -221,18 +221,18 @@ public class SearchController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/test2"})
-    public String advancedSearch(
-                @RequestParam(value = "page", required = false) Integer page,
-                Model model) throws ParseException {
-        
-        // Restrictions.eq("rank.name", "soldat");
-        
-        Paginator paginator = new Paginator(page);
-        model.addAttribute("persons", personDao.search(paginator));
-        model.addAttribute("paginator", paginator);
-        return "results";
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = {"/test2"})
+//    public String advancedSearch(
+//                @RequestParam(value = "page", required = false) Integer page,
+//                Model model) throws ParseException {
+//        
+//        // Restrictions.eq("rank.name", "soldat");
+//        
+//        Paginator paginator = new Paginator(page);
+//        model.addAttribute("persons", personDao.search(paginator));
+//        model.addAttribute("paginator", paginator);
+//        return "results";
+//    }
 
 
     @InitBinder

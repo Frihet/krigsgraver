@@ -13,18 +13,22 @@
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
 
-<h1>
-    <c:choose>
-        <c:when test="${command.person.id == Null}">
-            <fmt:message key="person.createNew"/>
-        </c:when>
-        <c:otherwise>
+<c:choose>
+    <c:when test="${command.person.id == Null}">
+        <h1><fmt:message key="person.createNew"/></h1>
+    </c:when>
+    <c:otherwise>
+        <div class="rightLink">
+            <fmt:message key="person.delete.confirm" var="confirmMessage" />
+            <a id="deletePerson" href="delete" onclick="return confirm('${confirmMessage}')"><fmt:message key="person.delete"/></a>
+        </div>
+        <h1>
             <fmt:message key="person.editExisting">
                 <fmt:param value="${command.person.fullName}" />
             </fmt:message>
-        </c:otherwise>
-    </c:choose>
-</h1>
+        </h1>
+    </c:otherwise>
+</c:choose>
 
 <div class="ui-widget">
     <div>

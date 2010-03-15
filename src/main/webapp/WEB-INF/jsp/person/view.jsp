@@ -8,8 +8,6 @@
     
     th { padding-left: 0; } 
     td, th { vertical-align: top; }
-    
-    div.rightLink { float: right; }
 -->
 </style>
 
