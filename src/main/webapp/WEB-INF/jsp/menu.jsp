@@ -6,7 +6,7 @@
 </div>
 
 <div>
-    <a href='<c:url value='/'/>'><fmt:message key="menu.search.simple"/></a><br />
+    <a href='<c:url value='/search'/>'><fmt:message key="menu.search.simple"/></a><br />
 </div>
 
 <div>

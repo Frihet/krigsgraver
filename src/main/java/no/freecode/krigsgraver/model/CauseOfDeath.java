@@ -19,6 +19,8 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * There may be different sources of information about the same person/grave. A
  * single reference is one source.
@@ -26,6 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+@XStreamAlias("causeOfDeath")
 public class CauseOfDeath extends BaseEntity {
 
     @Size(max = 255)

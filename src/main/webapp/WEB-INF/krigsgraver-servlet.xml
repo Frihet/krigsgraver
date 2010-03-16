@@ -13,19 +13,11 @@
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven  />
 
+    <mvc:view-controller path="/" view-name="redirect:/search" />
     <mvc:view-controller path="/login" view-name="login" />
-
-<!-- 
-    <mvc:view-controller path="/" view-name="search"/>
- -->
-
-<!--    <context:annotation-config />-->
+    <mvc:view-controller path="/krigsgraver/**" view-name="redirect:/" />
 
     <security:global-method-security secured-annotations="enabled" />
-
-<!--
-    <import resource="classpath:applicationContext-mail.xml" />
--->
 
     <context:property-placeholder location="classpath:krigsgraver.properties" />
 
@@ -33,24 +25,16 @@
     <context:component-scan base-package="no.freecode.krigsgraver.web" />
 
 <!-- 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/api/*"/>
-            <bean class="WebRe" />
-        </mvc:interceptor>
-    </mvc:interceptors>
- -->
-
-<!-- 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
     </bean>
  -->
-    
+
+    <!-- How to handle different types of content (JSON, XML, HTML). -->
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="defaultContentType" value="text/html"/>
-    
+
         <property name="mediaTypes">
             <map>
                 <entry key="json" value="application/json" />
@@ -61,32 +45,44 @@
 
         <property name="defaultViews">
             <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-                </bean>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
                     <constructor-arg>
                         <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
-                            <property name="aliases">
-                                <map>
-                                    <entry key="Grave" value="no.freecode.krigsgraver.model.Grave" />
-                                    <entry key="Person" value="no.freecode.krigsgraver.model.Person" />
-                                </map>
+                            <property name="mode" value="1001" />
+                            
+                            <property name="annotatedClasses">
+                                <array>
+                                    <value>no.freecode.krigsgraver.model.Camp</value>
+                                    <value>no.freecode.krigsgraver.model.CauseOfDeath</value>
+                                    <value>no.freecode.krigsgraver.model.Cemetery</value>
+                                    <value>no.freecode.krigsgraver.model.Grave</value>
+                                    <value>no.freecode.krigsgraver.model.Nationality</value>
+                                    <value>no.freecode.krigsgraver.model.Person</value>
+                                    <value>no.freecode.krigsgraver.model.Rank</value>
+                                    <value>no.freecode.krigsgraver.model.Stalag</value>
+                                    <value>no.freecode.krigsgraver.model.dao.Paginator</value>
+                                    <value>no.freecode.krigsgraver.web.SearchResult</value>
+                                </array>
                             </property>
+
                             <property name="supportedClasses">
                                 <array>
+                                    <value>java.util.List</value>
+                                    <value>no.freecode.krigsgraver.model.Camp</value>
+                                    <value>no.freecode.krigsgraver.model.CauseOfDeath</value>
+                                    <value>no.freecode.krigsgraver.model.Cemetery</value>
                                     <value>no.freecode.krigsgraver.model.Grave</value>
+                                    <value>no.freecode.krigsgraver.model.Nationality</value>
                                     <value>no.freecode.krigsgraver.model.Person</value>
+                                    <value>no.freecode.krigsgraver.model.Rank</value>
+                                    <value>no.freecode.krigsgraver.model.Stalag</value>
+                                    <value>no.freecode.krigsgraver.model.dao.Paginator</value>
+                                    <value>no.freecode.krigsgraver.web.SearchResult</value>
                                 </array>
                             </property>
                         </bean>
-<!-- 
- -->
-
-<!-- 
-                        <bean class="org.springframework.oxm.castor.CastorMarshaller">
-                            <property name="targetPackages" value="no.freecode.krigsgraver.model" />
-                        </bean>
- -->
                     </constructor-arg>
                 </bean>
             </list>
@@ -99,34 +95,10 @@
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="prefix" value="/WEB-INF/jsp/"/>
                     <property name="suffix" value=".jsp"/>
-<!--                    <property name="viewNames" value=""/>-->
                 </bean>
             </list>
         </property>
     </bean>
-
-<!-- 
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="mediaTypes">
-            <map>
-                <entry key="json" value="application/json" />
-                <entry key="xml" value="application/xml" />
-                <entry key="tostring" value="text/toString" />
-            </map>
-        </property>
-        <property name="defaultViews">
-            <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-                <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
-                    <constructor-arg>
-                        <bean class="org.springframework.oxm.xstream.XStreamMarshaller" />
-                    </constructor-arg>
-                </bean>
-            </list>
-        </property>
-        <property name="ignoreAcceptHeader" value="true" />
-    </bean> 
- -->    
 
     <!-- Application Message Bundle -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -172,6 +144,8 @@
         exceptions.
     -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="order" value="0" />
+
         <property name="exceptionMappings">
             <props>
                 <!--
@@ -184,15 +158,15 @@
                 
 <!--                <prop key="org.springframework.dao.DuplicateKeyException">errors/duplicateKeyException</prop>-->
 
-
+                <prop key="org.springframework.web.HttpMediaTypeNotAcceptableException">errors/HttpMediaTypeNotAcceptableException</prop>
+                
 <!--ConstraintViolationException-->
 
 <!--                <prop key="org.springframework.security.AccessDeniedException">errors/accessDenied</prop>-->
                 
             </props>
         </property>
+
+        <property name="defaultErrorView" value="errors/default" />
     </bean>
-
-
-    
 </beans>

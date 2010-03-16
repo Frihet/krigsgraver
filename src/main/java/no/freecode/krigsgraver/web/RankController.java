@@ -59,7 +59,7 @@ public class RankController {
      * List all the ranks.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<Rank> getList() {
+    public List<Rank> getList() {
         return genericDao.getAll(Rank.class, Order.asc("name"));
     }
 

@@ -23,14 +23,13 @@ ssh tomcat@java-dev "/etc/init.d/tomcat start"
 
 echo -n "Waiting for the application to load"
 ssh tomcat@java-dev '\
-while [ "$(curl -sI http://localhost:8080/krigsgraver/ | head -n 1 | grep 200)" == "" ]; do \
+while [ "$(curl -sIL http://java-dev/krigsgraver/inc/styles/main.css | head -n 1 | grep 200)" == "" ]; do \
     echo -n "." ;\
     sleep 1s ;\
 done \
 '
+
 echo
 echo "Inserting data..."
 cd notes
-#./prepare_remote.sh
-#./upload_csv_tiny_java-dev.sh
-./upload_csv_java-dev.sh
+./prepare_remote.sh

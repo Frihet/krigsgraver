@@ -12,7 +12,7 @@ package no.freecode.krigsgraver.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
@@ -41,18 +41,24 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
 @Indexed
+@XStreamAlias("person")
 public class Person extends IndexedEntity {
 
-    /* Auto-generate timestamp. I've tested this on postgres and oracle. */
+    /* Auto-generate timestamp. I've tested this on postgres, mysql and oracle. */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false, insertable = false, nullable = false, 
             columnDefinition = "timestamp default current_timestamp")
     @Generated(GenerationTime.ALWAYS)
+    @XStreamOmitField
     private Date createdDate;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -105,6 +111,7 @@ public class Person extends IndexedEntity {
 //    @ManyToMany
     @Valid
     @IndexedEmbedded
+    @XStreamImplicit(itemFieldName = "causeOfDeath")
     private List<CauseOfDeath> causesOfDeath;
 
     @Size(max = 255)
@@ -115,13 +122,13 @@ public class Person extends IndexedEntity {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String remarks;
 
-//    @OneToMany(cascade = CascadeType.ALL)
     @OneToMany(cascade = CascadeType.MERGE)
     @IndexedEmbedded
     @Sort(type = SortType.COMPARATOR, comparator = GraveComparator.class)
-    private SortedSet<Grave> graves;
+    @XStreamImplicit(itemFieldName = "grave")
+    private Set<Grave> graves;
 
-    
+
     public PersonDetails getWesternDetails() {
         if (westernDetails == null) {
             westernDetails = new PersonDetails();
@@ -244,20 +251,7 @@ public class Person extends IndexedEntity {
         this.createdDate = createdDate;
     }
 
-//    public List<Grave> getGraves() {
-//        
-//        if (graves == null) {
-//            graves = new ArrayList<Grave>();
-//        }
-//        
-//        return graves;
-//    }
-//
-//    public void setGraves(List<Grave> graves) {
-//        this.graves = graves;
-//    }
-
-    public SortedSet<Grave> getGraves() {
+    public Set<Grave> getGraves() {
         if (graves == null) {
             graves = new TreeSet<Grave>(new GraveComparator());
         }
@@ -265,7 +259,7 @@ public class Person extends IndexedEntity {
         return graves;
     }
     
-    public void setGraves(SortedSet<Grave> graves) {
+    public void setGraves(Set<Grave> graves) {
         this.graves = graves;
     }
     

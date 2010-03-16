@@ -18,7 +18,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.IndexedEmbedded;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 
@@ -26,6 +30,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+@XStreamAlias("grave")
+@JsonIgnoreProperties(value = "delete")
 public class Grave extends BaseEntity {
 
     @ManyToOne
@@ -55,6 +61,7 @@ public class Grave extends BaseEntity {
     private Double longitude;
     
     @Transient
+    @XStreamOmitField
     private boolean delete;
 
     public Cemetery getCemetery() {

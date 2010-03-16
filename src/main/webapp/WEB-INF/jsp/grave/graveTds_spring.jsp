@@ -15,7 +15,7 @@
             <option value="not_loaded"><fmt:message key="status.loading"/></option>
         </form:select>
         <script type="text/javascript">
-            populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves${index}Cemetery', 'name', '${grave.cemetery.id}', true, '<fmt:message key="value.notSet"/>');
+            populateSelectList('<c:url value="/cemetery/list.json" />', 'lazyGraves${index}Cemetery', 'name', 'cemeteries', '${grave.cemetery.id}', true, '<fmt:message key="value.notSet"/>');
         </script>
     </td>
     <td>

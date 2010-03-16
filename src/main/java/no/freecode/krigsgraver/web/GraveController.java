@@ -15,15 +15,13 @@ import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.dao.GraveDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.request.WebRequestInterceptor;
 
 /**
  * Edit and display Person objects.
@@ -42,7 +40,6 @@ public class GraveController {
      * Create a new grave.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{graveId}")
-//    public @ResponseBody Grave getGrave(@PathVariable long graveId) {
     public Grave getGrave(@PathVariable long graveId) {
         return graveDao.getGrave(graveId);
     }
@@ -51,28 +48,9 @@ public class GraveController {
      * Create a new grave.
      */
     @RequestMapping(method = RequestMethod.GET, value = "create")
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String getCreateForm(Model model) {
         model.addAttribute(new Grave());
-        new WebRequestInterceptor() {
-            
-            @Override
-            public void preHandle(WebRequest request) throws Exception {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void postHandle(WebRequest request, ModelMap model) throws Exception {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void afterCompletion(WebRequest request, Exception ex) throws Exception {
-                // TODO Auto-generated method stub
-                
-            }
-        };
         return "grave/edit";
     }
 
@@ -80,12 +58,14 @@ public class GraveController {
      * Edit an existing grave.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{graveId}/edit")
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String getEditForm(@PathVariable long graveId, Model model) {
         model.addAttribute(graveDao.getGrave(graveId));
         return "grave/edit";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "*/edit")
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String save(@Valid Grave grave, BindingResult result) {
         if (result.hasErrors()) {
             return "grave/edit";
@@ -100,6 +80,7 @@ public class GraveController {
      * Submit a grave.
      */
     @RequestMapping(method = RequestMethod.POST, value = {"create"})
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String create(@Valid Grave grave, BindingResult result) {
         if (result.hasErrors()) {
             return "grave/edit";
@@ -108,13 +89,4 @@ public class GraveController {
         graveDao.saveGrave(grave);
         return "redirect:/grave/create";
     }
-    
-    /**
-     * Upload people.
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "upload")
-    public String getUploadForm() {
-        return "grave/upload";
-    }
-
 }

@@ -60,7 +60,7 @@ public class StalagController {
      * List all the stalags.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<Stalag> getList() {
+    public List<Stalag> getList() {
         return genericDao.getAll(Stalag.class, Order.asc("name"));
     }
 

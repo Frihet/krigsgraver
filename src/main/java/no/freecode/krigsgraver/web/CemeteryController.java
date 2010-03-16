@@ -66,7 +66,7 @@ public class CemeteryController {
      * List all the cemeteries.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<Cemetery> getList() {
+    public List<Cemetery> getList() {
         return genericDao.getAll(Cemetery.class, Order.asc("name"));
     }
 

@@ -59,7 +59,7 @@ public class CauseOfDeathController {
      * List all the causeOfDeaths.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<CauseOfDeath> getList() {
+    public List<CauseOfDeath> getList() {
         return genericDao.getAll(CauseOfDeath.class, Order.asc("name"));
     }
 

@@ -17,10 +17,13 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+@XStreamAlias("rank")
 public class Rank extends BaseEntity {
 
     @Column(unique = true)

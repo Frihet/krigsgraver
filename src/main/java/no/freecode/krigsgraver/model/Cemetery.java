@@ -21,10 +21,13 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+@XStreamAlias("cemetery")
 public class Cemetery extends BaseEntity {
 
     @Column(nullable = false, unique = true)

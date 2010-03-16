@@ -68,7 +68,7 @@ public class UserController {
      * List all the users.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<User> getList() {
+    public List<User> getList() {
         return genericDao.getAll(User.class, Order.asc("username"));
     }
 

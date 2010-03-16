@@ -3,7 +3,7 @@
 
 <c:forEach items="${persons}" var="person">
     <p>
-        <a href="${person.id}/edit">${person.westernDetails} (${person.cyrillicDetails})</a>
+        <a href="${person.id}/view">${person.fullName}</a>
     </p>
 </c:forEach>
 

@@ -11,20 +11,25 @@ package no.freecode.krigsgraver.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Paginator class for getting and setting the current page info.
  * 
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
+@XStreamAlias("paginator")
 public class Paginator {
 
-    public static int ITEMS_PER_PAGE = 10;
+//    public static int ITEMS_PER_PAGE = 10;
+    private int itemsPerPage = 10;
     
     private int pageNumber;
     
     private int numberOfResults;
 
     private boolean hasNext;
+
     
     public Paginator(Integer pageNumber) {
         if (pageNumber == null) {
@@ -32,6 +37,16 @@ public class Paginator {
         } else {
             this.pageNumber = pageNumber;
         }
+    }
+    
+    public Paginator(Integer pageNumber, Integer itemsPerPage) {
+        if (pageNumber == null) {
+            this.pageNumber = 1;
+        } else {
+            this.pageNumber = pageNumber;
+        }
+        
+        this.itemsPerPage = itemsPerPage;
     }
 
     public int getPageNumber() {
@@ -76,11 +91,23 @@ public class Paginator {
     public void setNumberOfResults(int numberOfResults) {
         this.numberOfResults = numberOfResults;
     }
+    
+    public int getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    public void setItemsPerPage(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
 
     public <T> List<T> paginate(List<T> results) {
         List<T> copy = new ArrayList<T>(results);
 
-        if (copy.size() > ITEMS_PER_PAGE) {
+        if (copy.size() > getItemsPerPage()) {
             copy.remove(copy.size() - 1);  // remove the last result, as it was only there to see if there is another page.
             setHasNext(true);
         }

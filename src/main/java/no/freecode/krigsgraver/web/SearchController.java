@@ -66,13 +66,18 @@ public class SearchController {
      * 
      * @throws ParseException 
      */
-    @RequestMapping(method = RequestMethod.GET, value = {"/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/search"})
     public String simpleSearch(
                 @RequestParam(value = "q", required = false) String queryString,
                 @RequestParam(required = false, defaultValue = "false") boolean simple,
                 @RequestParam(value = "page", required = false) Integer page,
+                @RequestParam(value = "itemsPerPage", required = false, defaultValue = "10") int itemsPerPage,
                 Locale locale,
                 Model model) throws ParseException {
+
+        if (itemsPerPage > 100) {
+            itemsPerPage = 100;
+        }
 
         String formattedQueryString = queryString;
 
@@ -85,9 +90,11 @@ public class SearchController {
 
         } else {
             try {
-                Paginator paginator = new Paginator(page);
-                model.addAttribute("persons", personDao.search(formattedQueryString, paginator));
-                model.addAttribute("paginator", paginator);
+                Paginator paginator = new Paginator(page, itemsPerPage);
+//                model.addAttribute("persons", personDao.search(formattedQueryString, paginator));
+//                model.addAttribute("paginator", paginator);
+                model.addAttribute("searchResult", new SearchResult(personDao.search(formattedQueryString, paginator), paginator));
+
                 model.addAttribute("simple", simple);
                 model.addAttribute("q", queryString);
                 return "results";
@@ -145,7 +152,7 @@ public class SearchController {
         query.append("placeOfDeath", placeOfDeath);
         query.appendDateInterval("dateOfDeath", dateOfDeathFromYear, dateOfDeathFromMonth, dateOfDeathFromDay, dateOfDeathToYear, dateOfDeathToMonth, dateOfDeathToDay);
 
-        return "redirect:/?q=" + URLEncoder.encode(query.getQueryString(), "utf-8");
+        return "redirect:/search?q=" + URLEncoder.encode(query.getQueryString(), "utf-8");
     }
 
     private class QueryBuilder {

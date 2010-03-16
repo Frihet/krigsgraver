@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 //@RequestMapping(value = "/search")
-public class DataController {
+public class BaseController {
 
     @Autowired
     private PersonDao personDao;
@@ -56,17 +56,6 @@ public class DataController {
         return "welcome";
     }
 
-//    @RequestMapping(method = RequestMethod.GET, value = "/admin/insertBaseData")
-//    public String test() {
-//
-////        genericDao.save(new Nationality("RU", "Russland"));
-////        genericDao.save(new Nationality("UA", ""));
-////        genericDao.save(new Nationality("BY"));
-//
-//        return "welcome";
-//    }
-
-    
     @RequestMapping(method = RequestMethod.GET, value = "/admin/insertUser")
     public String insertUser() {
 
@@ -84,7 +73,7 @@ public class DataController {
         user.setRole(Role.ROLE_ADMIN);
         user.setPassword(passwordEncoder.encodePassword("kg", null));
         userDao.saveUser(user);
-        
+
         return "welcome";
     }
 }

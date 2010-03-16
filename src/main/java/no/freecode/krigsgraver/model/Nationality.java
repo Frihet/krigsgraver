@@ -16,11 +16,14 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@XStreamAlias("nationality")
 public class Nationality extends BaseEntity {
 
 //    @Column(unique = true)

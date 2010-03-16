@@ -18,10 +18,13 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Entity
+@XStreamAlias("camp")
 public class Camp extends BaseEntity {
 
     @Column(unique = true)

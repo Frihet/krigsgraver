@@ -54,12 +54,12 @@ public class NationalityController {
     public List<Nationality> getNationalities() {
         return getList();
     }
-    
+
     /**
      * List all the nationalities.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<Nationality> getList() {
+    public List<Nationality> getList() {
         return genericDao.getAll(Nationality.class, Order.asc("name"));
     }
 

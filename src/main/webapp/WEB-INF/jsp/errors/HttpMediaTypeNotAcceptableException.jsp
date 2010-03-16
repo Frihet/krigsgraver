@@ -9,7 +9,7 @@
 
 <div class="content">
     <p>
-        <fmt:message key="errors.unableToProcess"/>
+        Could not find acceptable representation.
     </p>
 </div>
 

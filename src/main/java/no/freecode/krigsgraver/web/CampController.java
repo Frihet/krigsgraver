@@ -59,7 +59,7 @@ public class CampController {
      * List all the camps.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
-    public @ResponseBody List<Camp> getList() {
+    public List<Camp> getList() {
         return genericDao.getAll(Camp.class, Order.asc("name"));
     }
 

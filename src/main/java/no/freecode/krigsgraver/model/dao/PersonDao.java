@@ -42,8 +42,11 @@ import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -113,7 +116,19 @@ public class PersonDao {
     public Person getPerson(long id) {
         return (Person) sessionFactory.getCurrentSession().get(Person.class, id);
     }
-    
+
+    /**
+     * Fetch a person, including graves etc. from the DB.
+     */
+    @Transactional(readOnly = true)
+    public Person getCompletelyLoadedPerson(long id) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
+        crit.add(Restrictions.idEq(id));
+        crit.setFetchMode("graves", FetchMode.JOIN);
+        crit.setFetchMode("causesOfDeath", FetchMode.JOIN);
+        return (Person) crit.uniqueResult();
+    }
+
     /**
      * Fetch a list of all Person objects from the DB.
      */
@@ -157,8 +172,8 @@ public class PersonDao {
 
         FullTextQuery fullTextQuery = Search.getFullTextSession(currentSession).createFullTextQuery(query, Person.class);
 
-        fullTextQuery.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
-        fullTextQuery.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
+        fullTextQuery.setFirstResult(paginator.getItemsPerPage() * (paginator.getPageNumber() - 1));
+        fullTextQuery.setMaxResults(paginator.getItemsPerPage() + 1);
         
         @SuppressWarnings("unchecked")
         List<Person> results = fullTextQuery.list();

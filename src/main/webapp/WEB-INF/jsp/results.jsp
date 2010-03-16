@@ -15,6 +15,9 @@
     .hover { color: white !important; background-color: #919152 !important; cursor: pointer; }
 --></style>
 
+<c:set var="persons" value="${searchResult.persons}" />
+<c:set var="paginator" value="${searchResult.paginator}" />
+
 <h1><fmt:message key="search.title"/></h1>
 
 <div style="margin: 0 auto; padding-bottom: 1em; width: 50%;">

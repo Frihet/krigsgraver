@@ -98,10 +98,25 @@
     </error-page>
  -->
 
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/jsp/errors/defaultNoLocale.jsp</location>
+    </error-page>
+
+<!-- 
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/jsp/errors/default.jsp</location>
+        <location>/errors/default</location>
+    </error-page>
+ -->
+
+<!-- 
    <error-page>
         <error-code>403</error-code>
         <location>/errors/accessDenied.do</location>
     </error-page>
+ -->
 
     <!-- 1 hour before session timeout. -->
     <session-config>

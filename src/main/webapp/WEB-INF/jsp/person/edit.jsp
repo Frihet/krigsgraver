@@ -207,12 +207,12 @@
                                             <option value="not_loaded"><fmt:message key="status.loading"/></option>
                                         </select>
                                         <script type="text/javascript">
-                                            populateSelectList('<c:url value="/causeOfDeath/list" />', 'causeOfDeath${status.index}', 'name', '${causeOfDeath.id}', true, '<fmt:message key="value.notSet"/>');
+                                            populateSelectList('<c:url value="/causeOfDeath/list.json" />', 'causeOfDeath${status.index}', 'name', 'causeOfDeathList', '${causeOfDeath.id}', true, '<fmt:message key="value.notSet"/>');
                                         </script>
                                     </div>
                                 </c:forEach>
                             </div>
-                        
+
                             <div>
                                 <a class="clickie" onclick="javascript:addCauseOfDeath();"><fmt:message key="person.causeOfDeath.add"/></a>
                             </div>
@@ -314,7 +314,7 @@
 
     /* Reload the causeOfDeath select box with JSON data. */
     function reloadCauseOfDeathSelector() {
-        $.getJSON('<c:url value="/causeOfDeath/list" />', function(data) {
+        $.getJSON('<c:url value="/causeOfDeath/list.json" />', function(data) {
             var html = '<option value="null">&lt;<fmt:message key="value.notSet"/>&gt;</option>';
             var len = data.length;
             $.each(data, function(i, item) {
@@ -324,9 +324,9 @@
         });
     }
 
-    populateSelectList('<c:url value="/rank/list" />', 'rank', 'name', '${command.person.rank.id}', true, '<fmt:message key="value.notSet"/>');
-    populateSelectList('<c:url value="/stalag/list" />', 'stalag', 'name', '${command.person.stalag.id}', true, '<fmt:message key="value.notSet"/>');
-    populateSelectList('<c:url value="/camp/list" />', 'camp', 'name', '${command.person.camp.id}', true, '<fmt:message key="value.notSet"/>');
+    populateSelectList('<c:url value="/rank/list.json" />', 'rank', 'name', 'ranks', '${command.person.rank.id}', true, '<fmt:message key="value.notSet"/>');
+    populateSelectList('<c:url value="/stalag/list.json" />', 'stalag', 'name', 'stalags', '${command.person.stalag.id}', true, '<fmt:message key="value.notSet"/>');
+    populateSelectList('<c:url value="/camp/list.json" />', 'camp', 'name', 'camps', '${command.person.camp.id}', true, '<fmt:message key="value.notSet"/>');
     reloadCauseOfDeathSelector();
     
     /* Make an AJAX call to load the data in the causeOfDeath dialog. */
@@ -357,7 +357,7 @@
         var graveTds = document.getElementById('graveTrNNN').innerHTML.replace(/NNN/gi, rowId);
         $('#graveTable').append('<tr id="graveTr' + rowId + '">' + graveTds + '</tr>');
 
-        populateSelectList('<c:url value="/cemetery/list" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'null', true, '<fmt:message key="value.notSet"/>');
+        populateSelectList('<c:url value="/cemetery/list.json" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'cemeteries', 'null', true, '<fmt:message key="value.notSet"/>');
     };
 
     /* Add another "cause of death" select box. */
@@ -368,8 +368,8 @@
     	$('#causeOfDeathSection').append('<div><select id="causeOfDeath' + n + 'Selector" name="lazyCausesOfDeath[' + n + 
                 ']" class="ui-widget-content ui-corner-all">' + 
                 '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
-        
-        populateSelectList('<c:url value="/causeOfDeath/list" />', 'causeOfDeath' + n, 'name', 'null', true, '<fmt:message key="value.notSet"/>');
+
+        populateSelectList('<c:url value="/causeOfDeath/list.json" />', 'causeOfDeath' + n, 'name', 'causeOfDeathList', 'null', true, '<fmt:message key="value.notSet"/>');
     }
 
     /* Gray out the row if 'delete' is checked.  */
