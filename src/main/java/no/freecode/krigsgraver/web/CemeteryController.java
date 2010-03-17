@@ -70,14 +70,13 @@ public class CemeteryController {
         return genericDao.getAll(Cemetery.class, Order.asc("name"));
     }
 
-    /**
-     * Show a {@link Cemetery}.
-     */
-    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
-    public String getView(@PathVariable long id, Model model) {
-        model.addAttribute("cemetery", genericDao.get(Cemetery.class, id));
-        return "cemetery/view";
-    }
+//    /**
+//     * Show a {@link Cemetery}.
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
+//    public @ResponseBody Cemetery getView(@PathVariable long id) { //, Model model) {
+//        return genericDao.get(Cemetery.class, id);
+//    }
     
     /**
      * Create a new {@link Cemetery}.

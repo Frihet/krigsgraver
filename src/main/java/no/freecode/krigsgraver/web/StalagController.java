@@ -65,6 +65,15 @@ public class StalagController {
     }
 
     /**
+     * Show a {@link Stalag}.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
+    public String getView(@PathVariable long id, Model model) {
+        model.addAttribute("stalag", genericDao.get(Stalag.class, id));
+        return "stalag/view";
+    }
+
+    /**
      * Create a new {@link Stalag}.
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})

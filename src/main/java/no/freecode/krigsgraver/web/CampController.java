@@ -63,6 +63,15 @@ public class CampController {
         return genericDao.getAll(Camp.class, Order.asc("name"));
     }
 
+//    /**
+//     * Show a {@link Mmmm}.
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
+//    public String getView(@PathVariable long id, Model model) {
+//        model.addAttribute("mmmm", genericDao.get(Mmmm.class, id));
+//        return "mmmm/view";
+//    }
+    
     /**
      * Create a new {@link Camp}.
      */

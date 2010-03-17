@@ -72,6 +72,15 @@ public class NationalityController {
         model.addAttribute("nationality", new Nationality());
         return "nationality/edit";
     }
+    
+//    /**
+//     * Show a {@link Mmmm}.
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
+//    public String getView(@PathVariable long id, Model model) {
+//        model.addAttribute("mmmm", genericDao.get(Mmmm.class, id));
+//        return "mmmm/view";
+//    }
 
     /**
      * Edit an existing {@link Nationality}.

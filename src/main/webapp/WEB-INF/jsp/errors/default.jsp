@@ -1,4 +1,6 @@
+<%--
 <%@ page isErrorPage='true' %>
+ --%>
 
 <%@ include file="../includes.jsp"%>
 <%@ include file="../header.jsp"%>

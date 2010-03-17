@@ -17,6 +17,8 @@
     <mvc:view-controller path="/login" view-name="login" />
     <mvc:view-controller path="/krigsgraver/**" view-name="redirect:/" />
 
+    <mvc:view-controller path="/errors/default" view-name="errors/default" />
+
     <security:global-method-security secured-annotations="enabled" />
 
     <context:property-placeholder location="classpath:krigsgraver.properties" />
