@@ -16,7 +16,6 @@
     <mvc:view-controller path="/" view-name="redirect:/search" />
     <mvc:view-controller path="/login" view-name="login" />
     <mvc:view-controller path="/krigsgraver/**" view-name="redirect:/" />
-
     <mvc:view-controller path="/errors/default" view-name="errors/default" />
 
     <security:global-method-security secured-annotations="enabled" />
@@ -137,6 +136,41 @@
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="1000000"/>
     </bean>
+
+    <!-- Set up regular re-indexing. -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        
+        <property name="jobFactory">
+            <bean class="org.springframework.scheduling.quartz.SpringBeanJobFactory" />
+        </property>
+
+        <property name="schedulerContextAsMap">
+            <map> <entry key="personDao" value-ref="personDao" /> </map>   
+        </property>
+
+        <property name="triggers">
+            <list>
+                <bean class="org.springframework.scheduling.quartz.CronTriggerBean">
+                    <property name="jobDetail">
+                        <bean class="org.quartz.JobDetail">
+                        
+                            <property name="name" value="indexJobDetail" />
+                            <property name="jobClass" value="no.freecode.krigsgraver.search.IndexJob" />
+                        </bean>
+                    </property>
+
+                    <!-- Specify the time using a cron expression (slightly different
+                        from normal cron in that it allows you to specify seconds). -->
+                    <property name="cronExpression" value="0 20 0 * * ?" />
+<!--                    <property name="cronExpression" value="0 * * * * ?" />-->
+                </bean>
+            </list>
+            
+            
+           
+        </property>
+    </bean>
+    
 
     <!--
         This bean resolves specific types of exceptions to corresponding

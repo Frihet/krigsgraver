@@ -9,6 +9,10 @@
  */
 package no.freecode.krigsgraver.web;
 
+import java.io.IOException;
+
+import javax.servlet.ServletResponse;
+
 import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
@@ -49,11 +53,12 @@ public class BaseController {
 
     /**
      * Index all the data in the search engine.
+     * @throws IOException 
      */
     @RequestMapping(method = RequestMethod.GET, value = "/admin/indexData")
-    public String indexData() {
+    public void indexData(ServletResponse response) throws IOException {
         personDao.indexData();
-        return "welcome";
+        response.getWriter().println("Updated search index.");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/admin/insertUser")

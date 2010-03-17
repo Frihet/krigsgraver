@@ -9,8 +9,8 @@
  */
 package no.freecode.search;
 
-import static no.freecode.search.QueryUtils.formatQuery;
-import static no.freecode.search.QueryUtils.makeFuzzy;
+import static no.freecode.krigsgraver.search.QueryUtils.formatQuery;
+import static no.freecode.krigsgraver.search.QueryUtils.makeFuzzy;
 import junit.framework.TestCase;
 
 /**

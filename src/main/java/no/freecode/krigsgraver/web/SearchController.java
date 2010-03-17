@@ -23,7 +23,7 @@ import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.Paginator;
 import no.freecode.krigsgraver.model.dao.PersonDao;
-import no.freecode.search.QueryUtils;
+import no.freecode.krigsgraver.search.QueryUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
