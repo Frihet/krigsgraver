@@ -25,7 +25,7 @@
     </tr>
  --%>
     <tr>
-        <td style="width: 100%; padding: 0 0.5em 0 1px">
+        <td style="width: 100%; padding: 0 0.5em 0 1px; vertical-align: middle;">
             <input id="searchField" name="q" size="50" class="text ui-widget-content ui-corner-all" style="width: 100%;" value='${q}' />
         </td>
         <td>

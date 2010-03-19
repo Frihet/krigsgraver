@@ -21,30 +21,8 @@
 </p>
 
 <div class="searchContainer ui-widget">
-<%--
-    <table>
-        <tr>
-            <td style="width: 100%; padding: 0 0.5em 0 0">
-                <div class="searchMenu">
-                    <span><fmt:message key="search.simple"/></span>
-                    <span><a href='<c:url value='/queryBuilder'/>'><fmt:message key="search.advanced"/></a></span>
-                </div>
-            </td>
-        </tr>
-    </table>
- --%>
-
     <form style="text-align: center;">
         <%@ include file="simple_search_bar.jsp"%>
-<%--
-        <input type="checkbox" name="fuzzy" value="true" />
-        <fmt:message key="search.findSimilarWords" />
- --%>
- 
-<%--
-        <input type="checkbox" class="ui-state-default" style="vertical-align: middle;" name="fuzzy" value="true" />
-        <fmt:message key="search.findSimilarWords" />
- --%>
     </form>
 </div>
 

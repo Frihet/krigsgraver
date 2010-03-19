@@ -1,6 +1,8 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
+<div class="subContent">
+
 <spring:hasBindErrors name="cemetery">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
@@ -23,13 +25,13 @@
         <table class="withMargin">
             <tr>
                 <th><form:label for="name" path="name" cssErrorClass="ui-state-error-text"><fmt:message key="cemetery.name" /></form:label></th>
-                <td><form:input path="name" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="name" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="name" />
             </tr>
 
             <tr>
                 <th><form:label for="address" path="address" cssErrorClass="ui-state-error-text"><fmt:message key="cemetery.address" /></form:label></th>
-                <td><form:input path="address" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="address" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="address" />
             </tr>
 
@@ -73,6 +75,8 @@
 	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
 </form:form>
 
+</div>
+
 <script type="text/javascript">
 <!--
     /* Load the current postal district based on what's in the 'postcode' field. */
@@ -88,6 +92,5 @@
     }
 //-->
 </script>
-
 
 <%@ include file="../footer.jsp" %>

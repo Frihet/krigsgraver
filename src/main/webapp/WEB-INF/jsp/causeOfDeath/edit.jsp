@@ -1,6 +1,8 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
+<div class="subContent">
+
 <spring:hasBindErrors name="causeOfDeath">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
@@ -23,19 +25,19 @@
         <table class="withMargin">
             <tr>
                 <th><form:label for="name" path="name" cssErrorClass="ui-state-error-text"><fmt:message key="type.name" /></form:label></th>
-                <td><form:input path="name" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="name" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="name" />
             </tr>
             
             <tr>
                 <th><form:label for="causeGroup" path="causeGroup" cssErrorClass="ui-state-error-text"><fmt:message key="causeOfDeath.causeGroup" /></form:label></th>
-                <td><form:input path="causeGroup" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="causeGroup" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="causeGroup" />
             </tr>
 
             <tr>
                 <th><form:label for="description" path="description" cssErrorClass="ui-state-error-text"><fmt:message key="type.description" /></form:label></th>
-                <td><form:input path="description" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                <td><form:input path="description" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="description" />
             </tr>
         </table>
@@ -43,5 +45,7 @@
 
 	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
 </form:form>
+
+</div>
 
 <%@ include file="../footer.jsp" %>

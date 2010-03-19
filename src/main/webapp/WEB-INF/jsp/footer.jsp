@@ -16,4 +16,4 @@ $(function(){
 //-->
 </script>
 
-<c:out escapeXml="false" value="</td></tr></table></body></html>" />
+<c:out escapeXml="false" value="</div></td></tr></table></body></html>" />

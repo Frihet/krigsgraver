@@ -9,6 +9,8 @@
     th,td { padding-bottom: 0.5em; }
 </style>
 
+<div class="subContent">
+
 <spring:hasBindErrors name="command">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
@@ -434,6 +436,6 @@ $(function() {
 <table style="display: none;">
     <%@ include file="../grave/graveTds_raw.jsp"%>
 </table>
-
+</div>
 
 <%@ include file="../footer.jsp" %>

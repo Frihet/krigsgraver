@@ -1,6 +1,8 @@
 <%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
 
+<div class="subContent">
+
 <spring:hasBindErrors name="rank">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
@@ -16,23 +18,26 @@
 
 
 <form:form id="rankForm" modelAttribute="rank" method="post">
-    <form:hidden id="hiddenId" path="id" />
-
-    <fieldset class="main ui-corner-all">
-        <legend><fmt:message key="rank.title" /></legend>
-
-        <table class="withMargin">
-            <tr>
-                <th><form:label for="name" path="name" cssErrorClass="ui-state-error-text"><fmt:message key="type.name" /></form:label></th>
-                <td><form:input path="name" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
-                <form:errors element="td" cssClass="ui-state-error-text" path="name" />
-            </tr>
-        </table>
-    </fieldset>
-
-	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
+    <div>
+        <form:hidden id="hiddenId" path="id" />
+    
+        <fieldset class="main ui-corner-all">
+            <legend><fmt:message key="rank.title" /></legend>
+    
+            <table class="withMargin">
+                <tr>
+                    <th><form:label for="name" path="name" cssErrorClass="ui-state-error-text"><fmt:message key="type.name" /></form:label></th>
+                    <td><form:input path="name" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
+                    <form:errors element="td" cssClass="ui-state-error-text" path="name" />
+                </tr>
+            </table>
+        </fieldset>
+    
+    	<button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="button.save"/></button>
+    </div>
 </form:form>
 
+</div>
 
 <script type="text/javascript">
 <!--

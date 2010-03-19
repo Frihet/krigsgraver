@@ -1,6 +1,8 @@
 <%-- <%@ include file="../header.jsp"%> --%>
 <%@ include file="../includes.jsp"%>
 
+<div class="subContent">
+
 <form:form modelAttribute="grave" method="post">
     <form:hidden path="id" />
 
@@ -32,5 +34,7 @@
         </p>
     </fieldset>
 </form:form>
+
+</div>
 
 <%@ include file="../footer.jsp" %>

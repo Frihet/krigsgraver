@@ -4,8 +4,8 @@
 
 <style>
 <!--
-    #mainContent { max-width: 80em; }
-    
+    /* #mainContent { max-width: 80em; } */
+
     th { padding-left: 0; } 
     td, th { vertical-align: top; }
 -->
@@ -17,6 +17,7 @@
     </div>
 </sec:authorize>
 
+<div class="subContent">
 <h1>${person}</h1>
 
 <table>
@@ -182,5 +183,7 @@
         ${person.remarks}
     </p>
 </c:if>
+
+</div>
 
 <%@ include file="../footer.jsp" %>

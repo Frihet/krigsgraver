@@ -199,10 +199,11 @@
 <!--ConstraintViolationException-->
 
 <!--                <prop key="org.springframework.security.AccessDeniedException">errors/accessDenied</prop>-->
-                
+                <prop key="PageNotFound">errors/default</prop>
             </props>
         </property>
-
+<!-- 
         <property name="defaultErrorView" value="errors/default" />
+ -->
     </bean>
 </beans>

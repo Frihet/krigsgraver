@@ -1,6 +1,6 @@
 <%@ include file="includes.jsp"%>
 
-<div id="menuArea">
+<div class="menuArea">
 <div class="menuTitle">
     <fmt:message key="menu.search"/>
 </div>

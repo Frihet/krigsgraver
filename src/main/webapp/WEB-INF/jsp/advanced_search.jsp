@@ -2,12 +2,6 @@
 <%@ include file="includes.jsp" %>
 <%@ page session="false" %>
 
-<style type="text/css">
-    #mainContent {
-        max-width: 200em;
-    }
-</style>
-
 <h1><fmt:message key="menu.search.advanced"/></h1>
 
 <p><fmt:message key="search.advanced.instructions"/></p>
