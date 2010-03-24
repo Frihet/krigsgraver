@@ -118,6 +118,7 @@ public class SearchController {
     // ivan krevenkov
     @RequestMapping(method = RequestMethod.POST, value = {"/queryBuilder"})
     public String queryBuilderPost(
+                Model model,
                 @RequestParam(value = "fuzzyFields", required = false) ArrayList<String> fuzzyFields,
                 @RequestParam(required = false) String fullName,
                 @RequestParam(required = false) String firstName,
@@ -138,7 +139,16 @@ public class SearchController {
                 @RequestParam(required = false) Integer dateOfDeathFromDay,
                 @RequestParam(required = false) Integer dateOfDeathToDay,
                 @RequestParam(required = false) String countryCode,
-                Model model) throws ParseException, UnsupportedEncodingException {
+
+                @RequestParam(required = false) String rank,
+                @RequestParam(required = false) String camp,
+                @RequestParam(required = false) String stalag,
+                @RequestParam(required = false) String cemetery,
+                @RequestParam(required = false) String causeOfDeath,
+                @RequestParam(required = false) String prisonerNumber
+
+//                BindingResult result
+                ) throws ParseException, UnsupportedEncodingException {
 
         QueryBuilder query = new QueryBuilder(fuzzyFields);
         
@@ -152,7 +162,21 @@ public class SearchController {
         query.append("placeOfDeath", placeOfDeath);
         query.appendDateInterval("dateOfDeath", dateOfDeathFromYear, dateOfDeathFromMonth, dateOfDeathFromDay, dateOfDeathToYear, dateOfDeathToMonth, dateOfDeathToDay);
 
-        return "redirect:/search?q=" + URLEncoder.encode(query.getQueryString(), "utf-8");
+        query.append("rank.name", rank);
+        query.append("camp.name", camp);
+        query.append("stalag.name", stalag);
+        query.append("graves.cemetery.name", cemetery);
+        query.append("causesOfDeath.name", causeOfDeath);
+        query.append("prisonerNumber", prisonerNumber);
+
+        String queryString = query.getQueryString();
+
+        if (StringUtils.isBlank(queryString)) {
+//            result.reject("search.error.noFieldsSet");
+            return "redirect:/queryBuilder";
+        } else {
+            return "redirect:/search?q=" + URLEncoder.encode(queryString, "utf-8");
+        }
     }
 
     private class QueryBuilder {

@@ -80,10 +80,10 @@ public class Person extends IndexedEntity {
     @IndexedEmbedded
     private Nationality nationality;
 
-    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private Integer prisonerNumber;
 
-    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     @Size(max = 255)
     private String obdNumber;
 

@@ -2,6 +2,10 @@
 <%@ include file="includes.jsp" %>
 <%@ page session="false" %>
 
+<spring:hasBindErrors name="command">
+    <%@ include file="inc/showBindErrors.jsp" %>
+</spring:hasBindErrors>
+
 <h1><fmt:message key="menu.search.advanced"/></h1>
 
 <p><fmt:message key="search.advanced.instructions"/></p>
@@ -45,7 +49,9 @@
                 <fmt:message key="search.findSimilarWords" />
             </td>
         </tr>
-        
+
+        <tr><td>&nbsp;</td></tr>
+
         <tr>
             <th> <fmt:message key="person.nationality"/> </th>
             <td>
@@ -56,6 +62,35 @@
                         <option value="${nationality.countryCode}">${nationality.name}</option>
                     </c:forEach>
                 </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th> <fmt:message key="person.rank"/> </th>
+            <td>
+                <input name="rank" class="ui-widget-content ui-corner-all" />
+                <input type="checkbox" name="fuzzyFields" value="rank" checked="checked" />
+                <fmt:message key="search.findSimilarWords" />
+            </td>
+        </tr>
+        
+        <tr>
+            <th> <fmt:message key="stalag.title"/> </th>
+            <td>
+                <input name="stalag" class="ui-widget-content ui-corner-all" />
+                <input type="checkbox" name="fuzzyFields" value="stalag" checked="checked" />
+                <fmt:message key="search.findSimilarWords" />
+                
+                <span style="font-weight: bold; padding-left: 3em; padding-right: 1em;"><fmt:message key="person.prisonerNumber"/> </span><input name="prisonerNumber" class="ui-widget-content ui-corner-all" />
+            </td>
+        </tr>
+
+        <tr>
+            <th> <fmt:message key="camp.title"/> </th>
+            <td>
+                <input name="camp" class="ui-widget-content ui-corner-all" />
+                <input type="checkbox" name="fuzzyFields" value="camp" checked="checked" />
+                <fmt:message key="search.findSimilarWords" />
             </td>
         </tr>
 
@@ -122,6 +157,26 @@
                 </td></tr>
                 </table>
         </tr>
+
+        <tr>
+            <th> <fmt:message key="cemetery.title"/> </th>
+            <td>
+                <input name="cemetery" class="ui-widget-content ui-corner-all" />
+                <input type="checkbox" name="fuzzyFields" value="cemetery" checked="checked" />
+                <fmt:message key="search.findSimilarWords" />
+            </td>
+        </tr>
+
+        <tr>
+            <th> <fmt:message key="person.causeOfDeath"/> </th>
+            <td>
+                <input name="causeOfDeath" class="ui-widget-content ui-corner-all" />
+                <input type="checkbox" name="fuzzyFields" value="causeOfDeath" checked="checked" />
+                <fmt:message key="search.findSimilarWords" />
+            </td>
+        </tr>
+
+        
     </table>
 
 <!--

@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser.Operator;
@@ -164,8 +164,8 @@ public class PersonDao {
                 "causesOfDeath.name", "causesOfDeath.causeGroup", "graves.cemetery.name"
                 };
 
-//        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+//        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
         parser.setDefaultOperator(Operator.AND);
 
         org.apache.lucene.search.Query query = parser.parse(queryString);
@@ -183,42 +183,6 @@ public class PersonDao {
 
         return paginator.paginate(results);
     }
-
-
-//    @Transactional(readOnly = true)
-//    public List<Person> search(Paginator paginator, Criterion... crits) throws ParseException {
-//        
-//        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
-//        for (Criterion criterion : crits) {
-//            crit.add(criterion);
-//        }
-//
-//        crit.setProjection(Projections.rowCount());
-//        paginator.setNumberOfResults((Integer) crit.uniqueResult());
-//        
-//        crit = sessionFactory.getCurrentSession().createCriteria(Person.class);
-//        for (Criterion criterion : crits) {
-//            crit.add(criterion);
-//        }
-//        
-////        crit.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-//////        paginator.setNumberOfResults((Integer) crit.uniqueResult());
-//////
-//////        // wipe out the projection, keep the criteria
-////        crit.setProjection(null);
-//        
-//        crit.setFirstResult(Paginator.ITEMS_PER_PAGE * (paginator.getPageNumber() - 1));
-//        crit.setMaxResults(Paginator.ITEMS_PER_PAGE + 1);
-//        
-//        @SuppressWarnings("unchecked")
-//        List<Person> results = crit.list();
-//
-////        logger.debug("Search returned " + fullTextQuery.getResultSize() + " results. List size=" + results.size());
-////        paginator.setNumberOfResults(fullTextQuery.getResultSize());
-//
-//        return paginator.paginate(results);
-////        return results;
-//    }
     
     /**
      * Index all Person objects in the search engine.
