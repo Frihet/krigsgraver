@@ -59,6 +59,7 @@ public class StalagController {
     /**
      * List all the stalags.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public List<Stalag> getList() {
         return genericDao.getAll(Stalag.class, Order.asc("name"));
@@ -67,6 +68,7 @@ public class StalagController {
     /**
      * Show a {@link Stalag}.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
     public String getView(@PathVariable long id, Model model) {
         model.addAttribute("stalag", genericDao.get(Stalag.class, id));
@@ -153,6 +155,7 @@ public class StalagController {
     /**
      * Get an {@link Stalag}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody Stalag getObject(@PathVariable long id) {
         return genericDao.get(Stalag.class, id);

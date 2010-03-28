@@ -81,9 +81,7 @@
         <tr>
             <th> <fmt:message key="person.causeOfDeath"/> </th>
             <td>
-                <c:forEach items="${person.causesOfDeath}" var="causeOfDeath" varStatus="status">
-                    ${causeOfDeath}
-                </c:forEach>
+                <c:forEach items="${person.causesOfDeath}" var="causeOfDeath" varStatus="status"><c:if test="${status.index > 0}">; </c:if>${causeOfDeath}</c:forEach>
             </td>
         </tr>
     </c:if>
@@ -177,12 +175,14 @@
     </table>
 </c:forEach>
 
-<c:if test="${!empty person.remarks}">
-    <h2><fmt:message key="person.remarks"/></h2>
-    <p>
-        ${person.remarks}
-    </p>
-</c:if>
+<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR">
+    <c:if test="${!empty person.remarks}">
+        <h2><fmt:message key="person.remarks"/></h2>
+        <p>
+            ${person.remarks}
+        </p>
+    </c:if>
+</sec:authorize>
 
 </div>
 

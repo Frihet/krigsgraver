@@ -39,6 +39,7 @@ public class GraveController {
     /**
      * Create a new grave.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{graveId}")
     public Grave getGrave(@PathVariable long graveId) {
         return graveDao.getGrave(graveId);

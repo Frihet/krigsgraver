@@ -15,12 +15,12 @@
                 </c:choose>
             </c:forEach>
         </select>
-    
-        <a id="editItem" class="button ui-state-default ui-corner-all">
+
+        <a id="editItem" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
             <fmt:message key="link.edit" />
         </a>
-    
-        <a id="deleteItem" class="button ui-state-default ui-corner-all">
+
+        <a id="deleteItem" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
             <fmt:message key="link.delete"/>
         </a>
         
@@ -47,7 +47,7 @@
 
 <script type="text/javascript">
 <!--
-    $('#itemSelector').click(function() {
+    $('#itemSelector').change(function() {
         if ($('#itemSelector option:selected').val() == "null") {
         	$('#editItem').addClass('ui-state-disabled');
         	$('#editItem').unbind('click'); 
@@ -77,8 +77,12 @@
         }
     });
 
+    $('#itemSelector').keypress(function() {
+        $('#itemSelector').change();
+    });
+
     $(function() {
-    	$('#itemSelector').click();
+    	$('#itemSelector').change();
     });
 //-->
 </script>

@@ -45,8 +45,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */
 @Controller
-@RequestMapping(value = "/admin/user")
 @Secured({"ROLE_ADMIN"})
+@RequestMapping(value = "/admin/user")
 public class UserController {
 
     @Autowired
@@ -94,7 +94,7 @@ public class UserController {
     public String getEditFormRedirect(@RequestParam("id") long id, Model model) {
         return "redirect:/admin/user/" + id + "/edit";
     }
-    
+
     /**
      * Submit a {@link User}.
      */
@@ -159,6 +159,7 @@ public class UserController {
         ArrayList<Role> roles = new ArrayList<Role>();
         roles.add(Role.ROLE_EDITOR);
         roles.add(Role.ROLE_ADMIN);
+        roles.add(Role.ROLE_PARTNER);
         return roles;
     }
 

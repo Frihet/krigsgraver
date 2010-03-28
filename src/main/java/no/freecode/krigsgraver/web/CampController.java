@@ -54,11 +54,12 @@ public class CampController {
     public List<Camp> getCamps() {
         return getList();
     }
-    
+
     /**
      * List all the camps.
      */
     @RequestMapping(method = RequestMethod.GET, value = "list")
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     public List<Camp> getList() {
         return genericDao.getAll(Camp.class, Order.asc("name"));
     }
@@ -152,6 +153,7 @@ public class CampController {
     /**
      * Get an {@link Camp}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody Camp getObject(@PathVariable long id) {
         return genericDao.get(Camp.class, id);

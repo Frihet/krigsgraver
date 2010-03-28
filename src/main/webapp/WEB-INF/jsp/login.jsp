@@ -28,8 +28,8 @@
     
             <c:if test="${not empty param.login_error}">
                 <div class="loginContent" style="color: red; padding: 1em;" title="Reason: <%= ((AuthenticationException) session.getAttribute(AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>.">
-                    Your login attempt was not successful. Please check your user name and password and try again.
-    
+                    <fmt:message key="login.invalid" />
+
     <%-- Uncomment to get an error description (e.g "Reason: Bad credidentials").
             Reason: <%= ((AuthenticationException) session.getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY)).getMessage() %>
      --%>

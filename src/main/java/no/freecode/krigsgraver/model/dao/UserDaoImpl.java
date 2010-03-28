@@ -14,6 +14,7 @@ import java.util.List;
 import no.freecode.krigsgraver.model.User;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -61,6 +62,15 @@ public class UserDaoImpl implements UserDao, UserDetailsService {
 //        return paginator.paginate(results);
         
         return results;
+    }
+    
+    /* (non-Javadoc)
+     * @see no.freecode.krigsgraver.model.dao.UserDao#getNumberOfUsers()
+     */
+    @Override
+    public long getNumberOfUsers() {
+        Query q = sessionFactory.getCurrentSession().createQuery("select count(*) from KgUser");
+        return (Long) q.uniqueResult();
     }
 
     public void saveUser(User user) {

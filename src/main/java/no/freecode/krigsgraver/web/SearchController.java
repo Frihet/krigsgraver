@@ -20,6 +20,11 @@ import java.util.List;
 import java.util.Locale;
 
 import no.freecode.krigsgraver.model.Nationality;
+import no.freecode.krigsgraver.model.Person;
+import no.freecode.krigsgraver.model.Rank;
+import no.freecode.krigsgraver.model.Stalag;
+import no.freecode.krigsgraver.model.User;
+import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.Paginator;
 import no.freecode.krigsgraver.model.dao.PersonDao;
@@ -32,6 +37,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -82,6 +88,10 @@ public class SearchController {
         String formattedQueryString = queryString;
 
         if (simple) {
+            // Remove any special lucene characters when doing a simple search (replace with a space).
+            formattedQueryString = StringUtils.replaceChars(formattedQueryString, "+-&|!(){}[]^\"~*?:\\", "                    ");
+            
+            // Make the query fuzzy. Don't know if this is the best way of doing this...
             formattedQueryString = QueryUtils.makeFuzzy(formattedQueryString);
         }
 
@@ -90,11 +100,21 @@ public class SearchController {
 
         } else {
             try {
+                logger.debug("Actual query: '" + formattedQueryString + "'");
+                
                 Paginator paginator = new Paginator(page, itemsPerPage);
-//                model.addAttribute("persons", personDao.search(formattedQueryString, paginator));
-//                model.addAttribute("paginator", paginator);
-                model.addAttribute("searchResult", new SearchResult(personDao.search(formattedQueryString, paginator), paginator));
+                
+                List<Person> people;
+                Role role = getOwnRole();
+                if (role != null && (role == Role.ROLE_ADMIN || role == Role.ROLE_EDITOR)) {
+                    // Full search for internal users.
+                    people = personDao.search(formattedQueryString, paginator, false);
+                } else {
+                    // Anonymous, slightly restricted search.
+                    people = personDao.search(formattedQueryString, paginator, true);
+                }
 
+                model.addAttribute("searchResult", new SearchResult(people, paginator));
                 model.addAttribute("simple", simple);
                 model.addAttribute("q", queryString);
                 return "results";
@@ -110,12 +130,12 @@ public class SearchController {
     @RequestMapping(method = RequestMethod.GET, value = {"/queryBuilder"})
     public String queryBuilderGet(Model model) {
 
-        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
-        
+        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
+        model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
+        model.addAttribute("stalags", genericDao.getAll(Stalag.class, Order.asc("name")));
         return "advanced_search";
     }
 
-    // ivan krevenkov
     @RequestMapping(method = RequestMethod.POST, value = {"/queryBuilder"})
     public String queryBuilderPost(
                 Model model,
@@ -138,7 +158,7 @@ public class SearchController {
                 @RequestParam(required = false) Integer dateOfDeathToMonth,
                 @RequestParam(required = false) Integer dateOfDeathFromDay,
                 @RequestParam(required = false) Integer dateOfDeathToDay,
-                @RequestParam(required = false) String countryCode,
+                @RequestParam(required = false) String nationality,
 
                 @RequestParam(required = false) String rank,
                 @RequestParam(required = false) String camp,
@@ -158,7 +178,7 @@ public class SearchController {
         query.append("lastName", lastName);
         query.append("placeOfBirth", placeOfBirth);
         query.appendDateInterval("dateOfBirth", dateOfBirthFromYear, dateOfBirthFromMonth, dateOfBirthFromDay, dateOfBirthToYear, dateOfBirthToMonth, dateOfBirthToDay);
-        query.append("nationality.countryCode", countryCode);
+        query.append("nationality.name", nationality);
         query.append("placeOfDeath", placeOfDeath);
         query.appendDateInterval("dateOfDeath", dateOfDeathFromYear, dateOfDeathFromMonth, dateOfDeathFromDay, dateOfDeathToYear, dateOfDeathToMonth, dateOfDeathToDay);
 
@@ -166,6 +186,7 @@ public class SearchController {
         query.append("camp.name", camp);
         query.append("stalag.name", stalag);
         query.append("graves.cemetery.name", cemetery);
+        query.append("causeOfDeathDescription", causeOfDeath);
         query.append("causesOfDeath.name", causeOfDeath);
         query.append("prisonerNumber", prisonerNumber);
 
@@ -265,7 +286,19 @@ public class SearchController {
 //        return "results";
 //    }
 
+    /**
+     * @return own role, or null in the case of an anonymous user.
+     */
+    private User.Role getOwnRole() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        if (principal != null && principal.getClass() == User.class) {
+            return ((User) principal).getRole();
+        }
+        
+        return null;
+    }
+    
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

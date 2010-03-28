@@ -37,6 +37,10 @@
         <form:form method="post" id="personForm">
             <form:hidden path="person.id"/>
 
+            <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
+                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all"><fmt:message key="person.button.save"/></button>
+            </p>
+
             <fieldset class="main ui-corner-all">
                 <legend><fmt:message key="person.title"/></legend>
 
@@ -53,7 +57,7 @@
                                     </tr>
                                     <tr>
                                         <th><form:label for="person.westernDetails.nameOfFather" path="person.westernDetails.nameOfFather" cssErrorClass="ui-state-error-text"><fmt:message key="person.nameOfFather"/></form:label></th>
-                                        <td><form:input cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-allui-state-error" path="person.westernDetails.nameOfFather" /> </td>
+                                        <td><form:input cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.westernDetails.nameOfFather" /> </td>
                                     </tr>
                                     <tr>
                                         <th><form:label for="person.westernDetails.lastName" path="person.westernDetails.lastName" cssErrorClass="ui-state-error-text"><fmt:message key="person.lastName"/></form:label></th>
@@ -216,7 +220,7 @@
                             </div>
 
                             <div>
-                                <a class="clickie" onclick="javascript:addCauseOfDeath();"><fmt:message key="person.causeOfDeath.add"/></a>
+                                <a class="clickie" id="addCauseOfDeathLink" href="javascript:addCauseOfDeath()"><fmt:message key="person.causeOfDeath.add"/></a>
                             </div>
                         </td>
                         <td><fmt:message key="person.causeOfDeathDescription"/></td>
@@ -266,7 +270,7 @@
                 </table>
                 
                 <div style="text-align: center; padding-top: 1em;">
-                    <a class="clickie" onclick="javascript:addGrave();"><fmt:message key="grave.addGrave"/></a>
+                    <a class="clickie" id="addGraveLink" href="javascript:addGrave();"><fmt:message key="grave.addGrave"/></a>
                 </div>
             </fieldset>
 
@@ -275,7 +279,7 @@
 
                 <table class="fixedWidth withMargin">
                     <tr>
-                        <th style="vertical-align: top;"><form:label for="person.remarks" path="person.remarks"><fmt:message key="person.remarks"/></form:label></th>
+                        <th style="vertical-align: top;"><form:label for="person.remarks" path="person.remarks"><fmt:message key="person.remarks"/><span class="soft"> (<fmt:message key="person.remarks.comment"/>)</span></form:label></th>
                         <td>
                             <div style="padding-right: 1.5em;">
                                 <form:textarea cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.remarks" rows="4" cols="50" cssStyle="width: 100%;" />
@@ -287,7 +291,7 @@
             </fieldset>
 
             <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
-                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button"><fmt:message key="person.button.save"/></button>
+                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all"><fmt:message key="person.button.save"/></button>
 <%--
                 <a class="button ui-priority-primary ui-state-default ui-corner-all" id="save_button" href="#" onclick="$('#personForm').submit()">
                     <fmt:message key="person.button.save"/>
@@ -306,7 +310,7 @@
 <script type="text/javascript">
 <!--
     $(function(){
-        $('#save_button, select').hover(
+        $('button, select').hover(
             function() { $(this).addClass('ui-state-hover'); }, 
             function() { $(this).removeClass('ui-state-hover'); }
         );
@@ -356,22 +360,35 @@
         var graveRows = graveTable.getElementsByTagName('tr');
         var rowId = graveRows.length - 1;
 
-        var graveTds = document.getElementById('graveTrNNN').innerHTML.replace(/NNN/gi, rowId);
-        $('#graveTable').append('<tr id="graveTr' + rowId + '">' + graveTds + '</tr>');
+        if (rowId < 5) {
+            var graveTds = document.getElementById('graveTrNNN').innerHTML.replace(/NNN/gi, rowId);
+            $('#graveTable').append('<tr id="graveTr' + rowId + '">' + graveTds + '</tr>');
+            $('#graveTr' + rowId + ' input:text:first:visible').focus();
+            populateSelectList('<c:url value="/cemetery/list.json" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'cemeteries', 'null', true, '<fmt:message key="value.notSet"/>');
+        }
 
-        populateSelectList('<c:url value="/cemetery/list.json" />', 'lazyGraves' + rowId + 'Cemetery', 'name', 'cemeteries', 'null', true, '<fmt:message key="value.notSet"/>');
+        if (rowId == 4) {
+            $('#addGraveLink').addClass('ui-state-disabled');
+        }
     };
 
-    /* Add another "cause of death" select box. */
+    /* Add another "cause of death" select box, and place the focus on it. */
     function addCauseOfDeath() {
         var causeOfDeathSection = document.getElementById('causeOfDeathSection');
         var elements = causeOfDeathSection.getElementsByTagName('div');
         var n = elements.length;
-    	$('#causeOfDeathSection').append('<div><select id="causeOfDeath' + n + 'Selector" name="lazyCausesOfDeath[' + n + 
-                ']" class="ui-widget-content ui-corner-all">' + 
-                '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
+        if (n < 5) {
+            $('#causeOfDeathSection').append('<div><select id="causeOfDeath' + n + 'Selector" name="lazyCausesOfDeath[' + n + 
+                    ']" class="ui-widget-content ui-corner-all">' + 
+                    '<option value="not_loaded"><fmt:message key="status.loading"/></option></select></div>');
+    
+            populateSelectList('<c:url value="/causeOfDeath/list.json" />', 'causeOfDeath' + n, 'name', 'causeOfDeathList', 'null', true, '<fmt:message key="value.notSet"/>');
+            $('#causeOfDeath' + n + 'Selector').focus();
+        }
 
-        populateSelectList('<c:url value="/causeOfDeath/list.json" />', 'causeOfDeath' + n, 'name', 'causeOfDeathList', 'null', true, '<fmt:message key="value.notSet"/>');
+        if (n == 4) {
+            $('#addCauseOfDeathLink').addClass('ui-state-disabled');
+        }
     }
 
     /* Gray out the row if 'delete' is checked.  */

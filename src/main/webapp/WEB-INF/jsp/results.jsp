@@ -26,12 +26,14 @@
     <tr class="header">
         <th class="ui-corner-tl"><fmt:message key="person.name" /></th>
         <th><fmt:message key="person.nationality" /></th>
-        <th class="ui-corner-tr"><fmt:message key="person.dateOfBirth" /></th>
+        <th><fmt:message key="person.dateOfBirth" /></th>
+        <th><fmt:message key="person.dateOfDeath" /></th>
+        <th class="ui-corner-tr"><fmt:message key="person.placeOfDeath" /></th>
     </tr>
 
     <c:if test="${empty persons}">
         <tr class="line tr0">
-            <td colspan="3">
+            <td colspan="5">
                 <div style="text-align: center; font-style: italic; padding-top: 1em;">
                     <fmt:message key="search.noResults" />
                 </div>
@@ -39,6 +41,8 @@
         </tr>
     </c:if>
 
+    <fmt:message key="type.unknown" var="unknown" />
+    
     <c:forEach items="${persons}" var="person" varStatus="status">
         <tr class="line tr${status.index % 2}">
 <%--
@@ -47,10 +51,21 @@
             <td><a href='<c:url value="/person/${person.id}/view"/>'>${person.fullName}</a></td>
             <td>${person.nationality.name}</td>
             <td>${person.dateOfBirth}</td>
+            <td>${person.dateOfDeath}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${!empty person.placeOfDeath}">
+                        ${person.placeOfDeath}
+                    </c:when>
+                    <c:otherwise>
+                        <span style="font-style: italic">${unknown}</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>            
         </tr>
     </c:forEach>
     <tr>
-        <th colspan="3" class="ui-corner-bottom">
+        <th colspan="5" class="ui-corner-bottom">
             <%@ include file="paginator.jsp"%>
         </th>
     </tr>

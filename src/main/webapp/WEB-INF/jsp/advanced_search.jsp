@@ -55,11 +55,11 @@
         <tr>
             <th> <fmt:message key="person.nationality"/> </th>
             <td>
-                <select name="countryCode" class="ui-widget-content ui-corner-all">
+                <select name="nationality" class="medium ui-widget-content ui-corner-all">
                     <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
 
                     <c:forEach items="${nationalities}" var="nationality">
-                        <option value="${nationality.countryCode}">${nationality.name}</option>
+                        <option value="${nationality.name}">${nationality.name}</option>
                     </c:forEach>
                 </select>
             </td>
@@ -68,18 +68,32 @@
         <tr>
             <th> <fmt:message key="person.rank"/> </th>
             <td>
-                <input name="rank" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="rank" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <select name="rank" class="medium ui-widget-content ui-corner-all">
+                    <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
+
+                    <c:forEach items="${ranks}" var="rank">
+                        <option value="${rank.name}">${rank.name}</option>
+                    </c:forEach>
+                </select>
             </td>
         </tr>
         
         <tr>
             <th> <fmt:message key="stalag.title"/> </th>
             <td>
+                <select name="stalag" class="medium ui-widget-content ui-corner-all">
+                    <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
+
+                    <c:forEach items="${stalags}" var="stalag">
+                        <option value="${stalag.name}">${stalag.name}</option>
+                    </c:forEach>
+                </select>
+
+<%--
                 <input name="stalag" class="ui-widget-content ui-corner-all" />
                 <input type="checkbox" name="fuzzyFields" value="stalag" checked="checked" />
                 <fmt:message key="search.findSimilarWords" />
+ --%>
                 
                 <span style="font-weight: bold; padding-left: 3em; padding-right: 1em;"><fmt:message key="person.prisonerNumber"/> </span><input name="prisonerNumber" class="ui-widget-content ui-corner-all" />
             </td>
@@ -167,6 +181,7 @@
             </td>
         </tr>
 
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR">
         <tr>
             <th> <fmt:message key="person.causeOfDeath"/> </th>
             <td>
@@ -175,7 +190,7 @@
                 <fmt:message key="search.findSimilarWords" />
             </td>
         </tr>
-
+        </sec:authorize>
         
     </table>
 

@@ -65,6 +65,7 @@ public class CemeteryController {
     /**
      * List all the cemeteries.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public List<Cemetery> getList() {
         return genericDao.getAll(Cemetery.class, Order.asc("name"));
@@ -158,6 +159,7 @@ public class CemeteryController {
     /**
      * Get an {@link Cemetery}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody Cemetery getObject(@PathVariable long id) {
         return genericDao.get(Cemetery.class, id);

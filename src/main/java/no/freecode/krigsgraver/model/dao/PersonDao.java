@@ -147,22 +147,36 @@ public class PersonDao {
      * @throws ParseException
      */
     @Transactional(readOnly = true)
-    public List<Person> search(String queryString, Paginator paginator) throws ParseException {
+    public List<Person> search(String queryString, Paginator paginator, boolean anonymous) throws ParseException {
 
         Session currentSession = sessionFactory.getCurrentSession();
 
-        String[] fields = new String[] { 
-                "firstName", "nameOfFather", "lastName",
-                "fullName",
+        String[] fields;
+        if (anonymous) {
+           fields = new String[] { 
+                "firstName", "nameOfFather", "lastName", "fullName",
                 "placeOfBirth",
                 "dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day",
-                "nationality.countryCode", "nationality.name", "prisonerNumber", "obdNumber",
+                "nationality.name", "prisonerNumber",
                 "rank.name", "camp.name", "stalag.name",
                 "placeOfDeath",
                 "dateOfDeath.year", "dateOfDeath.month", "dateOfDeath.day",
-                "causeOfDeathDescription", "remarks",
-                "causesOfDeath.name", "causesOfDeath.causeGroup", "graves.cemetery.name"
+                "graves.cemetery.name"
                 };
+        } else {
+            fields = new String[] { 
+                    "firstName", "nameOfFather", "lastName", "fullName",
+                    "placeOfBirth",
+                    "dateOfBirth.year", "dateOfBirth.month", "dateOfBirth.day",
+                    "nationality.name", "prisonerNumber",
+                    "rank.name", "camp.name", "stalag.name",
+                    "placeOfDeath",
+                    "dateOfDeath.year", "dateOfDeath.month", "dateOfDeath.day",
+                    "causeOfDeathDescription", "causesOfDeath.name", "causesOfDeath.causeGroup",
+                    "remarks",
+                    "graves.cemetery.name"
+                    };
+        }
 
         MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
 //        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new SimpleAnalyzer());
@@ -188,6 +202,8 @@ public class PersonDao {
      * Index all Person objects in the search engine.
      */
     public void indexData() {
+        logger.info("Updating search index.");
+        
         FullTextSession fullTextSession = Search.getFullTextSession(sessionFactory.getCurrentSession());
         
         @SuppressWarnings("unchecked")
@@ -218,7 +234,7 @@ public class PersonDao {
             
             Person person = new Person();
             
-            person.setObdNumber(v[i++]);
+            person.setObdNumber(createLong(v[i++]));
 
             PersonDetails cyrillicDetails = new PersonDetails();
             cyrillicDetails.setLastName(v[i++]);
@@ -317,7 +333,7 @@ public class PersonDao {
             }
             
             Grave grave = new Grave();
-            grave.setGraveNumber(createInteger(graveNumber));
+            grave.setGraveNumber(graveNumber);
             if (graveDate != null) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(graveDate);
@@ -384,6 +400,19 @@ public class PersonDao {
         } else {
             try {
                 return NumberUtils.createInteger(new String(str).replaceFirst("^0+", ""));
+            } catch (NumberFormatException e) {
+                // ignore it for now. XXX
+                return null;
+            }
+        }
+    }
+
+    private static Long createLong(String str) {
+        if (StringUtils.isBlank(str)) {
+            return null;
+        } else {
+            try {
+                return NumberUtils.createLong(new String(str).replaceFirst("^0+", ""));
             } catch (NumberFormatException e) {
                 // ignore it for now. XXX
                 return null;

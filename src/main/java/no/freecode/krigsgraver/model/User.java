@@ -181,7 +181,8 @@ public class User extends BaseEntity implements UserDetails {
      */
     public enum Role {
         ROLE_ADMIN("role.admin"),
-        ROLE_EDITOR("role.editor");
+        ROLE_EDITOR("role.editor"),
+        ROLE_PARTNER("role.partner");
 
         private String descriptionId;
 

@@ -58,6 +58,7 @@ public class NationalityController {
     /**
      * List all the nationalities.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public List<Nationality> getList() {
         return genericDao.getAll(Nationality.class, Order.asc("name"));
@@ -154,6 +155,7 @@ public class NationalityController {
     /**
      * Get an {@link Nationality}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody Nationality getObject(@PathVariable long id) {
         return genericDao.get(Nationality.class, id);

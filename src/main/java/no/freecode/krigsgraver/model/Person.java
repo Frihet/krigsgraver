@@ -84,8 +84,7 @@ public class Person extends IndexedEntity {
     private Integer prisonerNumber;
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
-    @Size(max = 255)
-    private String obdNumber;
+    private Long obdNumber;
 
     @ManyToOne
     @IndexedEmbedded
@@ -187,11 +186,11 @@ public class Person extends IndexedEntity {
         this.prisonerNumber = prisonerNumber;
     }
 
-    public String getObdNumber() {
+    public Long getObdNumber() {
         return obdNumber;
     }
 
-    public void setObdNumber(String obdNumber) {
+    public void setObdNumber(Long obdNumber) {
         this.obdNumber = obdNumber;
     }
 

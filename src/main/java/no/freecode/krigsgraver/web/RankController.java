@@ -58,6 +58,7 @@ public class RankController {
     /**
      * List all the ranks.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public List<Rank> getList() {
         return genericDao.getAll(Rank.class, Order.asc("name"));
@@ -148,10 +149,11 @@ public class RankController {
 
         return "redirect:/rank/create";
     }
-    
+
     /**
      * Get an {@link Rank}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody Rank getObject(@PathVariable long id) {
         return genericDao.get(Rank.class, id);

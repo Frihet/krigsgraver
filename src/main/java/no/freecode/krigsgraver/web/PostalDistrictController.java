@@ -10,6 +10,9 @@
 package no.freecode.krigsgraver.web;
 
 import java.io.IOException;
+import java.util.Locale;
+
+import javax.servlet.http.HttpSession;
 
 import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.PostalDistrict;
@@ -44,6 +47,7 @@ public class PostalDistrictController {
     /**
      * Show a {@link PostalDistrict}.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = {"{postcode}"})
     public @ResponseBody PostalDistrict getView(@PathVariable("postcode") int postcode) {
         return postalDistrictDao.get(postcode);
@@ -56,11 +60,14 @@ public class PostalDistrictController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "upload")
     @Secured({"ROLE_ADMIN"})
-    public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public String handleUpload(@RequestParam("file") MultipartFile file, HttpSession session, Locale locale) throws IOException {
 
         if (!file.isEmpty()) {
             postalDistrictDao.loadCsvData(file.getInputStream());
-            return "success";
+
+            String message = messageSource.getMessage("admin.various.uploadCsv.success", null, locale);
+            session.setAttribute("standardInfo", message);
+            return "redirect:/admin/various";
 
         } else {
             return "redirect:uploadFailure";

@@ -28,12 +28,19 @@
 <tr>
     <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'></td>
     <td id="rightHeader">
-        <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR">
-            <a id="loginLink" href='<c:url value="/login" />'><fmt:message key="link.login"/></a>
-        </sec:authorize>
-        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR">
-            <a id="loginLink" href='<c:url value="/j_spring_security_logout" />'><fmt:message key="link.logout"/></a>
-        </sec:authorize>
+        <div id="loginData">
+            <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR,ROLE_PARTNER">
+                <a id="loginLink" tabindex="-1" href='<c:url value="/login" />'><fmt:message key="link.login"/></a>
+            </sec:authorize>
+            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR,ROLE_PARTNER">
+                    <fmt:message key="login.loggedInAs">
+                        <fmt:param><sec:authentication property="principal.name" /></fmt:param>
+                    </fmt:message>
+                    <br />
+                    <a id="loginLink" tabindex="-1" href='<c:url value="/user/editProfile" />'><fmt:message key="login.editProfile"/></a> |
+                    <a id="loginLink" tabindex="-1" href='<c:url value="/j_spring_security_logout" />'><fmt:message key="link.logout"/></a>
+            </sec:authorize>
+        </div>
     </td>
 </tr>
 <tr>

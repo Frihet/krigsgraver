@@ -13,7 +13,7 @@ warning "Deleting work dirs and redeploying tomcat"
 
 ssh tomcat@java-dev "/etc/init.d/tomcat stop"
 
-ssh tomcat@java-dev "rm -rf /srv/krigsgraver/lucene"
+# ssh tomcat@java-dev "rm -rf /srv/krigsgraver/lucene"
 ssh tomcat@java-dev "rm -rf /srv/tomcat/work/Catalina/localhost/krigsgraver /srv/tomcat/webapps/krigsgraver"
 
 mvn clean package
@@ -29,7 +29,7 @@ while [ "$(curl -sIL http://java-dev/krigsgraver/inc/styles/main.css | head -n 1
 done \
 '
 
-echo
-echo "Inserting data..."
-cd notes
-./prepare_remote.sh
+#echo
+#echo "Inserting data..."
+#cd notes
+#./prepare_remote.sh

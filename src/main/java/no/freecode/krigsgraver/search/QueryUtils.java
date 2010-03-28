@@ -62,12 +62,19 @@ public class QueryUtils {
         if (!StringUtils.isBlank(query)) {
             String[] elements = StringUtils.split(query, " ");
             for (int i = 0; i < elements.length; i++) {
+                String element = elements[i];
+                
                 if (i > 0) {
                     q.append(" ");
                 }
+
+//                q.append(elements[i]);
+                q.append(element);
                 
-                q.append(elements[i]);
-                q.append("~");
+                if (!StringUtils.isNumeric(element)) {
+                    // Make sure everything but numbers are treated in a fuzzy manner.
+                    q.append("~");
+                }
             }
 
             return q.toString();

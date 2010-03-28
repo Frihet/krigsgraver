@@ -27,10 +27,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class Nationality extends BaseEntity {
 
 //    @Column(unique = true)
-    @Size(max = 2)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
-    private String countryCode;
-
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
@@ -38,17 +34,8 @@ public class Nationality extends BaseEntity {
 
     public Nationality() { }
     
-    public Nationality(String countryCode, String name) {
-        this.countryCode = countryCode;
+    public Nationality(String name) {
         this.name = name;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     /**
@@ -70,6 +57,6 @@ public class Nationality extends BaseEntity {
      */
     @Override
     public String toString() {
-        return countryCode;
+        return name;
     }
 }

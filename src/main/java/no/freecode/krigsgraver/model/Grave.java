@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -38,11 +39,14 @@ public class Grave extends BaseEntity {
     @IndexedEmbedded
     private Cemetery cemetery;
 
-    private Integer graveField;
+    @Size(max = 255)
+    private String graveField;
 
-    private Integer graveRow;
+    @Size(max = 255)
+    private String graveRow;
 
-    private Integer graveNumber;
+    @Size(max = 255)
+    private String graveNumber;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("year, month, day")
@@ -59,7 +63,7 @@ public class Grave extends BaseEntity {
     // Geolocation
     private Double latitude;
     private Double longitude;
-    
+
     @Transient
     @XStreamOmitField
     private boolean delete;
@@ -72,27 +76,27 @@ public class Grave extends BaseEntity {
         this.cemetery = cemetery;
     }
 
-    public Integer getGraveField() {
+    public String getGraveField() {
         return graveField;
     }
 
-    public void setGraveField(Integer graveField) {
+    public void setGraveField(String graveField) {
         this.graveField = graveField;
     }
 
-    public Integer getGraveRow() {
+    public String getGraveRow() {
         return graveRow;
     }
 
-    public void setGraveRow(Integer graveRow) {
+    public void setGraveRow(String graveRow) {
         this.graveRow = graveRow;
     }
 
-    public Integer getGraveNumber() {
+    public String getGraveNumber() {
         return graveNumber;
     }
 
-    public void setGraveNumber(Integer graveNumber) {
+    public void setGraveNumber(String graveNumber) {
         this.graveNumber = graveNumber;
     }
 

@@ -23,6 +23,8 @@ public interface UserDao {
     
     List<User> getUsers();
 
+    long getNumberOfUsers();
+    
     void saveUser(User user);
 
     void deleteUser(User user);

@@ -63,6 +63,7 @@ public class PersonController {
     @Autowired
     private MessageSource messageSource;
 
+
     /**
      * List all the people.
      */
@@ -79,7 +80,7 @@ public class PersonController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model) {
-        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
+        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(new Person()));
         return "person/edit";
     }
@@ -90,7 +91,7 @@ public class PersonController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
     public String getEditForm(@PathVariable long id, Model model) {
-        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("countryCode")));
+        model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(personDao.getPerson(id)));
         return "person/edit";
     }
@@ -123,6 +124,7 @@ public class PersonController {
         validatePerson(command.getPerson(), result);
         
         if (result.hasErrors()) {
+            model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
             return "person/edit";
         }
         
@@ -152,15 +154,7 @@ public class PersonController {
         return "redirect:/person/create";
     }
 
-    /**
-     * Upload people.
-     */
-    @Secured({"ROLE_ADMIN"})
-    @RequestMapping(method = RequestMethod.GET, value = "upload")
-    public String getUploadForm() {
-        return "person/upload";
-    }
-
+    
     /**
      * Upload a batch of people.
      * 
@@ -168,12 +162,14 @@ public class PersonController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "upload")
     @Secured({"ROLE_ADMIN"})
-    public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public String handleUpload(@RequestParam("file") MultipartFile file, HttpSession session, Locale locale) throws IOException {
 
         if (!file.isEmpty()) {
             personDao.loadCsvData(file.getInputStream());
-            return "redirect:/person/list";
-            
+            String message = messageSource.getMessage("admin.various.uploadCsv.success", null, locale);
+            session.setAttribute("standardInfo", message);
+            return "redirect:/admin/various";
+
         } else {
             return "redirect:uploadFailure";
         }

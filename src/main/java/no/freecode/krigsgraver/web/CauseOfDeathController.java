@@ -58,6 +58,7 @@ public class CauseOfDeathController {
     /**
      * List all the causeOfDeaths.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public List<CauseOfDeath> getList() {
         return genericDao.getAll(CauseOfDeath.class, Order.asc("name"));
@@ -152,6 +153,7 @@ public class CauseOfDeathController {
     /**
      * Get an {@link CauseOfDeath}, e.g. in JSON.
      */
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public @ResponseBody CauseOfDeath getObject(@PathVariable long id) {
         return genericDao.get(CauseOfDeath.class, id);

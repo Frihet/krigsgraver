@@ -26,12 +26,22 @@ td#rightHeader {
     vertical-align: top;
 }
 
-a#loginLink {
+div#loginData {
     padding: 0.5em;
     float: right;
     color: white;
-    text-decoration: none;
     font-size: 80%;
+    text-align: right;
+    font-weight: bold;
+}
+
+/* 
+ */
+a#loginLink {
+    font-weight: normal;
+    color: white;
+    text-decoration: none;
+    /* font-size: 80%; */
 }
 
 td#headerLogo {
@@ -263,6 +273,11 @@ form.advancedSearch th {
 input.long {
     width: 25em;
 }*/
+
+.medium {
+    width: 20em;
+}
+
 .long {
     width: 35em;
 }

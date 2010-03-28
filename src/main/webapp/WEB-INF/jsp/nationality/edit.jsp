@@ -24,11 +24,13 @@
         <legend><fmt:message key="nationality.title" /></legend>
 
         <table class="withMargin">
+<%--
             <tr>
                 <th><form:label for="countryCode" path="countryCode" cssErrorClass="ui-state-error-text"><fmt:message key="nationality.countryCode" /></form:label></th>
                 <td><form:input path="countryCode" size="2" maxlength="2" cssStyle="width: 2em;" cssClass="ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="countryCode" />
             </tr>
+ --%>
 
             <tr>
                 <th><form:label for="name" path="name" cssErrorClass="ui-state-error-text"><fmt:message key="nationality.name" /></form:label></th>
