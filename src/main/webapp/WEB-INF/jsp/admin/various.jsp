@@ -39,7 +39,7 @@
 </div>
 
 
-<div class="dialog" id="waitDialog" style="display: none; text-align: left; padding: 1.5em;">
+<div class="dialog" id="waitDialog" style="display: none;">
     <table>
         <tr>
             <td style="vertical-align: middle;">

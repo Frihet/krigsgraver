@@ -28,7 +28,17 @@
                 <td><form:input path="name" cssClass="long ui-widget-content ui-corner-all" cssErrorClass="ui-widget-content ui-corner-all ui-state-error"/></td>
                 <form:errors element="td" cssClass="ui-state-error-text" path="name" />
             </tr>
-            
+
+            <tr>
+                <th><form:label for="description" path="description" cssErrorClass="ui-state-error-text"><fmt:message key="type.description" /></form:label></th>
+                <td>
+                    <div style="padding-right: 1.5em;">
+                        <form:textarea cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="description" rows="4" cols="50" cssStyle="width: 100%;" />
+                    </div>
+                </td>
+                <form:errors element="td" cssClass="ui-state-error-text" path="description" />
+            </tr>
+
             <tr>
                 <th><form:label for="latitude" path="latitude" cssErrorClass="ui-state-error-text"><fmt:message key="latitude" /></form:label></th>
                 <td>

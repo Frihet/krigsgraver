@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("cemetery")
-public class Cemetery extends BaseEntity {
+public class Cemetery extends BaseEntity implements Geolocational {
 
     @Column(nullable = false, unique = true)
     @Size(max = 255)

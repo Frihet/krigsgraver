@@ -45,10 +45,30 @@
             <td> ${person.rank.name} </td>
         </tr>
     </c:if>
+
     <c:if test="${!empty person.stalag.name}">
         <tr>
             <th> <fmt:message key="stalag.title"/> </th>
-            <td> ${person.stalag.name} </td>
+            <td>${person.stalag.name}
+                <c:if test="${!empty person.stalag.description}">
+                    <img id="stalagDescriptionImg" class="imgLink" src="<c:url value='/inc/img/comment.gif'/>" title="<fmt:message key='type.description'/>" />
+                    <div class="dialog" id="stalagDescriptionDialog" style="display: none;">${person.stalag.description}</div>
+                    <script type="text/javascript">
+                    <!--
+                        $("#stalagDescriptionDialog").dialog({
+                            title: '<fmt:message key="stalag.title"/>: ${person.stalag.name}',
+                            modal: true,
+                            autoOpen: false
+                        });
+                
+                        $('#stalagDescriptionImg').click(function() {
+                            $("#stalagDescriptionDialog").dialog('open');
+                            $('.ui-widget-overlay').click(function() { $("#stalagDescriptionDialog").dialog("close"); });
+                        });
+                    //-->
+                    </script>
+                </c:if>
+            </td>
             <c:if test="${!empty person.prisonerNumber}">
                 <th> <fmt:message key="person.prisonerNumber"/> </th>
                 <td> ${person.prisonerNumber} </td>
@@ -58,7 +78,27 @@
     <c:if test="${!empty person.camp.name}">
         <tr>
             <th> <fmt:message key="camp.title"/> </th>
-            <td> ${person.camp.name} </td>
+            <td>${person.camp.name}
+                <c:if test="${!empty person.camp.description}">
+                    <img id="campDescriptionImg" class="imgLink" src="<c:url value='/inc/img/comment.gif'/>" title="<fmt:message key='type.description'/>" />
+                    <div class="dialog" id="campDescriptionDialog" style="display: none;">${person.camp.description}</div>
+                    <script type="text/javascript">
+                    <!--
+                        $("#campDescriptionDialog").dialog({
+                            title: '<fmt:message key="camp.title"/>: ${person.camp.name}',
+                            modal: true,
+                            autoOpen: false
+                        });
+                
+                        $('#campDescriptionImg').click(function() {
+                            $("#campDescriptionDialog").dialog('open');
+                            $('.ui-widget-overlay').click(function() { $("#campDescriptionDialog").dialog("close"); });
+                        });
+                    //-->
+                    </script>
+                </c:if>
+
+            </td>
         </tr>
     </c:if>
 </table>
@@ -185,5 +225,6 @@
 </sec:authorize>
 
 </div>
+
 
 <%@ include file="../footer.jsp" %>

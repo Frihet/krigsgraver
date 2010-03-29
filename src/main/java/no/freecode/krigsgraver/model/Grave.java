@@ -33,7 +33,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @Entity
 @XStreamAlias("grave")
 @JsonIgnoreProperties(value = "delete")
-public class Grave extends BaseEntity {
+public class Grave extends BaseEntity implements Geolocational {
 
     @ManyToOne
     @IndexedEmbedded
@@ -142,5 +142,21 @@ public class Grave extends BaseEntity {
 
     public void setDelete(boolean delete) {
         this.delete = delete;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

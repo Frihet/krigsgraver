@@ -11,6 +11,7 @@ package no.freecode.krigsgraver.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Field;
@@ -25,15 +26,15 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("camp")
-public class Camp extends BaseEntity {
+public class Camp extends BaseEntity implements Geolocational {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     @NotEmpty
     private String name;
 
-    @Size(max = 255)
+    @Lob
     private String description;
 
     // Geolocation

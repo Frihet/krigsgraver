@@ -12,7 +12,6 @@ package no.freecode.krigsgraver.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Field;
@@ -27,11 +26,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("stalag")
-public class Stalag extends BaseEntity {
+public class Stalag extends BaseEntity implements Geolocational {
 
     @Column(unique = true, nullable = false)
     @Size(max = 255)
-    @OrderBy
     @Field(index = Index.TOKENIZED, store = Store.NO)
     @NotEmpty
     private String name;

@@ -141,9 +141,12 @@ div.ruler {
 a {
     color: #222222;
 }
-
 a:hover {
     color: #919100;
+}
+img.imgLink {
+    vertical-align: middle;
+    cursor: pointer;
 }
 
 /* General table stuff. */
@@ -229,6 +232,13 @@ div.rightLink {
 }
 
 /* Dialogs */
+div.dialog {
+    text-align: left;
+    padding: 1em;
+    border: 0;
+}
+
+
 div.dialog fieldset {
     padding: 0;
     border: 0;
