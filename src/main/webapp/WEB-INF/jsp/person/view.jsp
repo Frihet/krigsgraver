@@ -1,5 +1,6 @@
-<%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
+<c:set var="pageTitle" value="${person}"/>
+<%@ include file="../header.jsp"%>
 <%@ page session="false" %>
 
 <style>

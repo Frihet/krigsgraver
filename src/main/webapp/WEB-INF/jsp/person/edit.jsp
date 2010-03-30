@@ -1,5 +1,6 @@
-<%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
+<fmt:message key="person.title" var="pageTitle" />
+<%@ include file="../header.jsp"%>
 
 <style type="text/css">
     input.text { margin-bottom:12px; width:100%; }

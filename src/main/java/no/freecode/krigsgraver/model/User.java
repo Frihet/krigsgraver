@@ -198,4 +198,12 @@ public class User extends BaseEntity implements UserDetails {
             return descriptionId;
         }
     }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return getName() + " (" + getUsername() + ")";
+    }
 }

@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.util.GeoUtils;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,15 +64,6 @@ public class CampController {
     public List<Camp> getList() {
         return genericDao.getAll(Camp.class, Order.asc("name"));
     }
-
-//    /**
-//     * Show a {@link Mmmm}.
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
-//    public String getView(@PathVariable long id, Model model) {
-//        model.addAttribute("mmmm", genericDao.get(Mmmm.class, id));
-//        return "mmmm/view";
-//    }
     
     /**
      * Create a new {@link Camp}.
@@ -105,6 +97,8 @@ public class CampController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("camp") Camp camp, BindingResult result, Model model, HttpSession session, Locale locale) {
+        
+        GeoUtils.validateGeolocational(result, camp);
         
         if (result.hasErrors()) {
             return "camp/edit";

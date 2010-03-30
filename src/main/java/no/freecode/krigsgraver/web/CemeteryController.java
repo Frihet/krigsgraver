@@ -21,6 +21,7 @@ import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.PostalDistrict;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PostalDistrictDao;
+import no.freecode.krigsgraver.util.GeoUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
@@ -111,7 +112,9 @@ public class CemeteryController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("cemetery") Cemetery cemetery, BindingResult result, Model model, HttpSession session, Locale locale) {
-        
+
+        GeoUtils.validateGeolocational(result, cemetery);
+
         if (result.hasErrors()) {
             return "cemetery/edit";
         }

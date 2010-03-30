@@ -22,6 +22,7 @@ import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.Stalag;
+import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
@@ -30,6 +31,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -130,6 +132,8 @@ public class PersonController {
         
         personDao.savePersonCommandObject(command);
 
+        logger.info(getOwnUser() + " saved/updated person " + command.getPerson() + " (" + command.getPerson().getId() + ")");
+
         String message = messageSource.getMessage("person.successfullySaved",
                 new Object[] { command.getPerson().toString() }, locale);
         session.setAttribute("standardInfo", message);
@@ -147,6 +151,8 @@ public class PersonController {
         Person person = personDao.getPerson(id);
         String name = person.getFullName();
         personDao.delete(id);
+
+        logger.info(getOwnUser() + " deleted the person " + person + " (" + person.getId() + ")");
 
         String message = messageSource.getMessage("info.deleted", new Object[] { name }, locale);
         session.setAttribute("standardInfo", message);
@@ -180,6 +186,20 @@ public class PersonController {
             errors.reject("person.error.missingName");
         }
     }
+    
+    /**
+     * @return own role, or null in the case of an anonymous user.
+     */
+    private User getOwnUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal != null && principal.getClass() == User.class) {
+            return (User) principal;
+        }
+        
+        return null;
+    }
+
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {

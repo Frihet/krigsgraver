@@ -19,6 +19,7 @@ import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.util.GeoUtils;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,8 @@ public class StalagController {
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(@Valid @ModelAttribute("stalag") Stalag stalag, BindingResult result, Model model, HttpSession session, Locale locale) {
         
+        GeoUtils.validateGeolocational(result, stalag);
+
         if (result.hasErrors()) {
             return "stalag/edit";
         }

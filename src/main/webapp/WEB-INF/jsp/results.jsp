@@ -1,5 +1,6 @@
-<%@ include file="header.jsp"%>
 <%@ include file="includes.jsp"%>
+<fmt:message key="search.results" var="pageTitle" />
+<%@ include file="header.jsp"%>
 <%@ page session="false"%>
 
 <c:set var="persons" value="${searchResult.persons}" />

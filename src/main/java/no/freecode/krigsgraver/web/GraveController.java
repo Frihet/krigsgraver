@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Grave;
 import no.freecode.krigsgraver.model.dao.GraveDao;
+import no.freecode.krigsgraver.util.GeoUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -77,6 +78,9 @@ public class GraveController {
     @RequestMapping(method = RequestMethod.POST, value = "*/edit")
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String save(@Valid Grave grave, BindingResult result) {
+        
+        GeoUtils.validateGeolocational(result, grave);
+
         if (result.hasErrors()) {
             return "grave/edit";
         }
@@ -92,6 +96,9 @@ public class GraveController {
     @RequestMapping(method = RequestMethod.POST, value = {"create"})
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     public String create(@Valid Grave grave, BindingResult result) {
+
+        GeoUtils.validateGeolocational(result, grave);
+
         if (result.hasErrors()) {
             return "grave/edit";
         }

@@ -1,5 +1,6 @@
-<%@ include file="header.jsp" %>
 <%@ include file="includes.jsp" %>
+<fmt:message key="menu.search.advanced" var="pageTitle" />
+<%@ include file="header.jsp" %>
 <%@ page session="false" %>
 
 <spring:hasBindErrors name="command">
@@ -27,8 +28,11 @@
             <th> <fmt:message key="person.firstName"/> </th>
             <td>
                 <input name="firstName" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="firstName" checked="checked" />
+                <input id="firstNameFuzzy" type="checkbox" name="fuzzyFields" value="firstName" checked="checked" />
                 <fmt:message key="search.findSimilarWords" />
+
+                <input id="firstNameBeginsWith" type="checkbox" name="beginsWithFields" value="firstName" />
+                <fmt:message key="search.findBeginsWith" />
             </td>
         </tr>
         
@@ -36,8 +40,11 @@
             <th> <fmt:message key="person.nameOfFather"/> </th>
             <td>
                 <input name="nameOfFather" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="nameOfFather" checked="checked" />
+                <input id="nameOfFatherFuzzy" type="checkbox" name="fuzzyFields" value="nameOfFather" checked="checked" />
                 <fmt:message key="search.findSimilarWords" />
+
+                <input id="nameOfFatherBeginsWith" type="checkbox" name="beginsWithFields" value="nameOfFather" />
+                <fmt:message key="search.findBeginsWith" />
             </td>
         </tr>
 
@@ -45,8 +52,11 @@
             <th> <fmt:message key="person.lastName"/> </th>
             <td>
                 <input name="lastName" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="lastName" checked="checked" />
+                <input id="lastNameFuzzy" type="checkbox" name="fuzzyFields" value="lastName" checked="checked" />
                 <fmt:message key="search.findSimilarWords" />
+                
+                <input id="lastNameBeginsWith" type="checkbox" name="beginsWithFields" value="lastName" />
+                <fmt:message key="search.findBeginsWith" />
             </td>
         </tr>
 
@@ -208,15 +218,35 @@
 
 <script type="text/javascript">
 <!--
-    $(function() {
-        // $('#searchField').focus();
+    function mutexCheckbox(fuzzy, beginsWith) {
+        $(fuzzy).change(function() {
+            if ($(this).is(':checked')) {
+                $(beginsWith).attr('checked', false);
+            }
+        });
+    
+        $(beginsWith).change(function() {
+            if ($(this).is(':checked')) {
+                $(fuzzy).attr('checked', false);
+            }
+        });
+    };
 
+    $(function() {
+    	mutexCheckbox('#firstNameFuzzy', '#firstNameBeginsWith');
+        mutexCheckbox('#nameOfFatherFuzzy', '#nameOfFatherBeginsWith');
+        mutexCheckbox('#lastNameFuzzy', '#lastNameBeginsWith');
+        
         $('#search').hover(
             function() { $(this).addClass('ui-state-hover'); }, 
             function() { $(this).removeClass('ui-state-hover'); }
         );
     });
-//-->
+
+
+
+    
+ //-->
 </script>
 
 <%@ include file="footer.jsp" %>

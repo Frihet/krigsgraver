@@ -148,6 +148,7 @@ public class SearchController {
     public String queryBuilderPost(
                 Model model,
                 @RequestParam(value = "fuzzyFields", required = false) ArrayList<String> fuzzyFields,
+                @RequestParam(value = "beginsWithFields", required = false) ArrayList<String> beginsWithFields,
                 @RequestParam(required = false) String fullName,
                 @RequestParam(required = false) String firstName,
                 @RequestParam(required = false) String nameOfFather,
@@ -178,7 +179,10 @@ public class SearchController {
 //                BindingResult result
                 ) throws ParseException, UnsupportedEncodingException {
 
-        QueryBuilder query = new QueryBuilder(fuzzyFields);
+        if (fuzzyFields == null) { fuzzyFields = new ArrayList<String>(); }
+        if (beginsWithFields == null) { beginsWithFields = new ArrayList<String>(); }
+
+        QueryBuilder query = new QueryBuilder(fuzzyFields, beginsWithFields);
         
         query.append("fullName", fullName);
         query.append("firstName", firstName);
@@ -214,9 +218,11 @@ public class SearchController {
         StringBuilder query = new StringBuilder();
         private boolean firstEntry = true;
         private List<String> fuzzyFields;
+        private List<String> beginsWithFields;
 
-        public QueryBuilder(List<String> fuzzyFields) {
+        public QueryBuilder(List<String> fuzzyFields, List<String> beginsWithFields) {
             this.fuzzyFields = fuzzyFields;
+            this.beginsWithFields = beginsWithFields;
         }
 
         private void appendString(String string) {
@@ -233,7 +239,7 @@ public class SearchController {
 
         public void append(String fieldName, String text) {
             if (StringUtils.isNotBlank(text)) {
-                appendString(QueryUtils.formatQuery(text, fieldName, fuzzyFields.contains(fieldName)));
+                appendString(QueryUtils.formatQuery(text, fieldName, fuzzyFields.contains(fieldName), beginsWithFields.contains(fieldName)));
             }
         }
 

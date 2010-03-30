@@ -24,7 +24,7 @@ public class QueryUtils {
      * 
      * @return A formatted query string.
      */
-    public static String formatQuery(String query, String field, boolean fuzzy) {
+    public static String formatQuery(String query, String field, boolean fuzzy, boolean beginsWith) {
         StringBuilder q = new StringBuilder();
 
         if (!StringUtils.isBlank(query)) {
@@ -37,9 +37,11 @@ public class QueryUtils {
                 }
                 
                 q.append(elements[i]);
-                
+
                 if (fuzzy) {
                     q.append("~");
+                } else if (beginsWith) {
+                    q.append("*");
                 }
             }
 

@@ -15,15 +15,16 @@ import junit.framework.TestCase;
 
 /**
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
- *
  */
 public class QueryUtilsTest extends TestCase {
 
     public void testFormatQuery() throws Exception {
-        assertEquals("fullName:(Taras Piliptschuk)", formatQuery("Taras Piliptschuk", "fullName", false));
-        assertEquals("fullName:(Taras~ Piliptschuk~)", formatQuery("Taras Piliptschuk", "fullName", true));
+        assertEquals("fullName:(Taras Piliptschuk)", formatQuery("Taras Piliptschuk", "fullName", false, false));
+        assertEquals("fullName:(Taras~ Piliptschuk~)", formatQuery("Taras Piliptschuk", "fullName", true, false));
+        assertEquals("fullName:(Taras~ Piliptschuk~)", formatQuery("Taras Piliptschuk", "fullName", true, true));
+        assertEquals("fullName:(Taras* Piliptschuk*)", formatQuery("Taras Piliptschuk", "fullName", false, true));
     }
-    
+
     public void testMakeFuzzy() throws Exception {
         assertEquals("Taras~ Piliptschuk~", makeFuzzy("Taras Piliptschuk"));
         assertEquals("", makeFuzzy(" "));
