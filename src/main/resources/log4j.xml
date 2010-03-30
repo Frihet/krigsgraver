@@ -22,11 +22,30 @@
 
     <appender name="userLog" class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="INFO" />
-        <param name="File" value="${catalina.base}/logs/${pom.artifactId}.users.log" />
+        <param name="File" value="${catalina.base}/logs/${pom.artifactId}-user.log" />
         <param name="MaxFileSize" value="10000KB" />
         <param name="MaxBackupIndex" value="20" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] %c{2} - %m%n" />
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="queryLog" class="org.apache.log4j.RollingFileAppender">
+        <param name="Threshold" value="INFO" />
+        <param name="File" value="${catalina.base}/logs/${pom.artifactId}-anonymous_search.log" />
+        <param name="MaxFileSize" value="10000KB" />
+        <param name="MaxBackupIndex" value="20" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="hibernateLog" class="org.apache.log4j.FileAppender">
+        <param name="Threshold" value="DEBUG" />
+        <param name="Append" value="false" />
+        <param name="File" value="${catalina.base}/logs/${pom.artifactId}-hibernate-schema.log" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n" />
         </layout>
     </appender>
 
@@ -54,10 +73,20 @@
         <priority value="debug" />
     </category>
  -->
+ 
+     <category name="org.hibernate.tool.hbm2ddl.SchemaExport">
+        <priority value="debug" />
+        <appender-ref ref="hibernateLog"/>
+    </category>
 
     <category name="userLog">
-        <priority value="info" />
+        <priority value="debug" />
         <appender-ref ref="userLog"/>
+    </category>
+
+    <category name="queryLog">
+        <priority value="info" />
+        <appender-ref ref="queryLog"/>
     </category>
 
     <root>

@@ -14,8 +14,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
-import no.freecode.krigsgraver.model.User;
-import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 import no.freecode.krigsgraver.model.dao.PostalDistrictDao;
@@ -83,27 +81,27 @@ public class BaseController {
 //        response.getWriter().println("Updated search index.");
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/createAdminUser")
-    public String insertBaseUser() {
-        String defaultAdminUser = "kg";
-        String defaultAdminPassword = "kg";
-
-        long numberOfUsers = userDao.getNumberOfUsers();
-
-        if (numberOfUsers == 0) {
-            logger.info("Creating initial '" + defaultAdminUser + "' user with password '" + defaultAdminPassword + "'.");
-
-            User user = new User();
-            user.setName("Site administrator");
-            user.setUsername(defaultAdminUser);
-            user.setRole(Role.ROLE_ADMIN);
-            user.setPassword(passwordEncoder.encodePassword(defaultAdminPassword, null));
-            userDao.saveUser(user);
-
-        } else {
-            logger.warn("NOT creating initial admin user, as there are already " + numberOfUsers + " other users on the system.");
-        }
-
-        return "redirect:/";
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = "/admin/createAdminUser")
+//    public String insertBaseUser() {
+//        String defaultAdminUser = "kg";
+//        String defaultAdminPassword = "kg";
+//
+//        long numberOfUsers = userDao.getNumberOfUsers();
+//
+//        if (numberOfUsers == 0) {
+//            logger.info("Creating initial '" + defaultAdminUser + "' user with password '" + defaultAdminPassword + "'.");
+//
+//            User user = new User();
+//            user.setName("Site administrator");
+//            user.setUsername(defaultAdminUser);
+//            user.setRole(Role.ROLE_ADMIN);
+//            user.setPassword(passwordEncoder.encodePassword(defaultAdminPassword, null));
+//            userDao.saveUser(user);
+//
+//        } else {
+//            logger.warn("NOT creating initial admin user, as there are already " + numberOfUsers + " other users on the system.");
+//        }
+//
+//        return "redirect:/";
+//    }
 }

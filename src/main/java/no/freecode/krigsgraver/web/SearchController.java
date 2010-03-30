@@ -19,6 +19,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Rank;
@@ -62,7 +64,7 @@ public class SearchController {
 
     @Autowired
     private GenericDao genericDao;
-    
+
     @Autowired
     private MessageSource messageSource;
 
@@ -78,6 +80,7 @@ public class SearchController {
                 @RequestParam(required = false, defaultValue = "false") boolean simple,
                 @RequestParam(value = "page", required = false) Integer page,
                 @RequestParam(value = "itemsPerPage", required = false, defaultValue = "10") int itemsPerPage,
+                HttpServletRequest request,
                 Locale locale,
                 Model model) throws ParseException {
 
@@ -112,6 +115,11 @@ public class SearchController {
                 } else {
                     // Anonymous, slightly restricted search.
                     people = personDao.search(formattedQueryString, paginator, true);
+
+                    if (paginator.getPageNumber() == 1) {
+                        // Log anonymous searches, but only for the first page.
+                        queryLogger.info(request.getRemoteAddr() + ": " + formattedQueryString);
+                    }
                 }
 
                 model.addAttribute("searchResult", new SearchResult(people, paginator));

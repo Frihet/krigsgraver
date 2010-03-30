@@ -145,7 +145,9 @@
         </property>
 
         <property name="schedulerContextAsMap">
-            <map> <entry key="personDao" value-ref="personDao" /> </map>   
+            <map>
+                <entry key="personDao" value-ref="personDao" />
+            </map>   
         </property>
 
         <property name="triggers">
@@ -161,17 +163,15 @@
 
                     <!-- Specify the time using a cron expression (slightly different
                         from normal cron in that it allows you to specify seconds). -->
-                    <property name="cronExpression" value="0 20 0 * * ?" />
+                    <property name="cronExpression" value="0 20 4 * * ?" />
 <!--                    <property name="cronExpression" value="0 * * * * ?" />-->
                 </bean>
             </list>
-            
-            
-           
         </property>
     </bean>
-    
 
+    <bean class="no.freecode.krigsgraver.util.StartupJob" init-method="execute"/>
+    
     <!--
         This bean resolves specific types of exceptions to corresponding
         logical view names for error views. The default behaviour of

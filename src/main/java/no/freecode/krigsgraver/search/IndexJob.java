@@ -26,7 +26,6 @@ public class IndexJob implements Job {
     private static final Logger logger = Logger.getLogger(IndexJob.class);
 
     private PersonDao personDao;
-    
 
     /* (non-Javadoc)
      * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
