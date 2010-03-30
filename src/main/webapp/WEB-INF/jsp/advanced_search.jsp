@@ -17,8 +17,8 @@
             <th> <fmt:message key="person.fullName"/> </th>
             <td>
                 <input name="fullName" class="long ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="fullName" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="fullName" type="checkbox" name="fuzzyFields" value="fullName" checked="checked" />
+                <label for="fullName"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
 
@@ -29,10 +29,10 @@
             <td>
                 <input name="firstName" class="ui-widget-content ui-corner-all" />
                 <input id="firstNameFuzzy" type="checkbox" name="fuzzyFields" value="firstName" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <label for="firstNameFuzzy"><fmt:message key="search.findSimilarWords" /></label>
 
                 <input id="firstNameBeginsWith" type="checkbox" name="beginsWithFields" value="firstName" />
-                <fmt:message key="search.findBeginsWith" />
+                <label for="firstNameBeginsWith"><fmt:message key="search.findBeginsWith" /></label>
             </td>
         </tr>
         
@@ -41,10 +41,10 @@
             <td>
                 <input name="nameOfFather" class="ui-widget-content ui-corner-all" />
                 <input id="nameOfFatherFuzzy" type="checkbox" name="fuzzyFields" value="nameOfFather" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <label for="nameOfFatherFuzzy"><fmt:message key="search.findSimilarWords" /></label>
 
                 <input id="nameOfFatherBeginsWith" type="checkbox" name="beginsWithFields" value="nameOfFather" />
-                <fmt:message key="search.findBeginsWith" />
+                <label for="nameOfFatherBeginsWith"><fmt:message key="search.findBeginsWith" /></label>
             </td>
         </tr>
 
@@ -53,10 +53,10 @@
             <td>
                 <input name="lastName" class="ui-widget-content ui-corner-all" />
                 <input id="lastNameFuzzy" type="checkbox" name="fuzzyFields" value="lastName" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <label for="lastNameFuzzy"><fmt:message key="search.findSimilarWords" /></label>
                 
                 <input id="lastNameBeginsWith" type="checkbox" name="beginsWithFields" value="lastName" />
-                <fmt:message key="search.findBeginsWith" />
+                <label for="lastNameBeginsWith"><fmt:message key="search.findBeginsWith" /></label>
             </td>
         </tr>
 
@@ -113,8 +113,8 @@
             <th> <fmt:message key="camp.title"/> </th>
             <td>
                 <input name="camp" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="camp" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="checkCamp" type="checkbox" name="fuzzyFields" value="camp" checked="checked" />
+                <label for="checkCamp"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
 
@@ -124,8 +124,8 @@
             <th> <fmt:message key="person.placeOfBirth"/> </th>
             <td>
                 <input name="placeOfBirth" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="placeOfBirth" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="checkPlaceOfBirth" type="checkbox" name="fuzzyFields" value="placeOfBirth" checked="checked" />
+                <label for="checkPlaceOfBirth"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
 
@@ -156,8 +156,8 @@
             <th> <fmt:message key="person.placeOfDeath"/> </th>
             <td>
                 <input name="placeOfDeath" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="placeOfDeath" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="checkPlaceOfDeath" type="checkbox" name="fuzzyFields" value="placeOfDeath" checked="checked" />
+                <label for="checkPlaceOfDeath"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
 
@@ -186,8 +186,8 @@
             <th> <fmt:message key="cemetery.title"/> </th>
             <td>
                 <input name="cemetery" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="cemetery" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="checkCemetery" type="checkbox" name="fuzzyFields" value="cemetery" checked="checked" />
+                <label for="checkCemetery"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
 
@@ -196,8 +196,8 @@
             <th> <fmt:message key="person.causeOfDeath"/> </th>
             <td>
                 <input name="causeOfDeath" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="causeOfDeath" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
+                <input id="checkCauseOfDeath" type="checkbox" name="fuzzyFields" value="causeOfDeath" checked="checked" />
+                <label for="checkCauseOfDeath"><fmt:message key="search.findSimilarWords" /></label>
             </td>
         </tr>
         </sec:authorize>
