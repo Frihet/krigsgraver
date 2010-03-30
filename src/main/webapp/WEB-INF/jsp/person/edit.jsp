@@ -2,6 +2,14 @@
 <fmt:message key="person.title" var="pageTitle" />
 <%@ include file="../header.jsp"%>
 
+<fmt:message key="date.year" var="msgYear"/>
+<fmt:message key="date.month" var="msgMonth"/>
+<fmt:message key="date.day" var="msgDay"/>
+<fmt:message key="warning" var="msgWarning"/>
+<fmt:message key="warning.shouldBeBetween" var="msgShouldBeBetween" />
+<fmt:message key="warning.shouldNotBeBefore" var="msgShouldNotBeBefore" />
+<fmt:message key="warning.and" var="msgAnd" />
+
 <style type="text/css">
     input.text { margin-bottom:12px; width:100%; }
     input { vertical-align: middle; }
@@ -103,20 +111,51 @@
 
                 <table class="fixedWidth withMargin ui-corner-all">
                     <tr>
+
                         <th><form:label for="person.dateOfBirth" path="person.dateOfBirth" cssErrorClass="ui-state-error-text"><fmt:message key="person.dateOfBirth"/></form:label></th>
                         <td>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.year" size="4" maxlength="4" />
+                            <spring:bind path="person.dateOfBirth">
+                                <c:if test="${!empty status.errorMessages}">
+                                    <c:set var="dateOfBirthErrorClass" value="ui-state-error" />
+                                </c:if>
+                            </spring:bind>
+
+                            <form:input id="yearOfBirthInput" cssClass="ui-widget-content ui-corner-all ${dateOfBirthErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.year" size="4" maxlength="4" />
                             <span class="soft">-</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.month" size="1" maxlength="2" />
+                            <form:input id="monthOfBirthInput" cssClass="ui-widget-content ui-corner-all ${dateOfBirthErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.month" size="1" maxlength="2" />
                             <span class="soft">-</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
+                            <form:input id="dayOfBirthInput" cssClass="ui-widget-content ui-corner-all ${dateOfBirthErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfBirth.day" size="1" maxlength="2" />
                             <span class="soft">(<fmt:message key="type.date.formatDescription"/>)</span>
 
                             <span style="padding-right: 2em;"></span>
                             <fmt:message key="grave.approximateDate"/>
                             <form:checkbox path="person.dateOfBirth.approximate" />
+
+<script type="text/javascript">
+<!--
+$('#yearOfBirthInput').change(function() {
+    var warnings = "";
+
+	var yearOfBirth = $(this).val();
+	var yearOfBirthNum = parseInt(yearOfBirth);
+
+    if (yearOfBirthNum < 1870 || yearOfBirthNum > 1930) {
+    	warnings += '${msgWarning}: ${msgYear} ${msgShouldBeBetween} 1870 ${msgAnd} 1930<br/>';
+        $(this).addClass('ui-state-error');
+    } else {
+        $(this).removeClass('ui-state-error');
+    }
+
+    $('#dateOfBirthErrors').html(warnings);
+});
+//-->
+</script>
+
                         </td>
-                        <form:errors element="td" cssClass="ui-state-error-text" path="person.dateOfBirth.*" />
+                        <td id="dateOfBirthErrors" class="ui-state-error-text">
+                            <form:errors element="span" path="person.dateOfBirth*" />
+                        </td>
+
                     </tr>
 
                     <tr>
@@ -185,17 +224,46 @@
                     <tr>
                         <th><form:label for="person.dateOfDeath" path="person.dateOfDeath" cssErrorClass="ui-state-error-text"><fmt:message key="person.dateOfDeath"/></form:label></th>
                         <td>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.year" size="4" maxlength="4" />
+                            <spring:bind path="person.dateOfDeath">
+                                <c:if test="${!empty status.errorMessages}">
+                                    <c:set var="dateOfDeathErrorClass" value="ui-state-error" />
+                                </c:if>
+                            </spring:bind>
+
+                            <form:input id="yearOfDeathInput" cssClass="ui-widget-content ui-corner-all ${dateOfDeathErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.year" size="4" maxlength="4" />
                             <span class="soft">-</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.month" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all ${dateOfDeathErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.month" size="1" maxlength="2" />
                             <span class="soft">-</span>
-                            <form:input cssClass="ui-widget-content ui-corner-all"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.day" size="1" maxlength="2" />
+                            <form:input cssClass="ui-widget-content ui-corner-all ${dateOfDeathErrorClass}"  cssErrorClass="ui-widget-content ui-corner-all ui-state-error" path="person.dateOfDeath.day" size="1" maxlength="2" />
                             <span class="soft">(<fmt:message key="type.date.formatDescription"/>)</span>
                             <span style="padding-right: 2em;"></span>
                             <fmt:message key="grave.approximateDate"/>
                             <form:checkbox path="person.dateOfDeath.approximate" />
+
+<script type="text/javascript">
+<!--
+$('#yearOfDeathInput').change(function() {
+    var warnings = "";
+    
+    var yearOfDeath = $(this).val();
+    var yearOfDeathNum = parseInt(yearOfDeath);
+
+    if (yearOfDeathNum < 1940 || yearOfDeathNum > 1946) {
+        warnings += '${msgWarning}: ${msgYear} ${msgShouldBeBetween} 1940 ${msgAnd} 1946<br/>';
+        $(this).addClass('ui-state-error');
+    } else {
+        $(this).removeClass('ui-state-error');
+    }
+
+    $('#dateOfDeathErrors').html(warnings);
+});
+//-->
+</script>
                         </td>
-                        <form:errors element="td" cssClass="ui-state-error-text" path="person.dateOfDeath.*" />
+
+                        <td id="dateOfDeathErrors" class="ui-state-error-text" colspan="2">
+                            <form:errors element="span" cssClass="ui-state-error-text" path="person.dateOfDeath*" />
+                        </td>
                     </tr>
 
                     <tr>
@@ -249,7 +317,8 @@
             <fieldset class="main ui-corner-all">
                 <legend><fmt:message key="person.graves.title"/></legend>
 
-                <form:errors element="div" cssClass="ui-state-error-text" cssStyle="text-align: center;" path="lazyGraves*" />
+                <div id="graveErrors" class="ui-state-error-text" style="text-align: center"></div>
+                <form:errors element="div" cssClass="ui-state-error-text" cssStyle="text-align: center" path="lazyGraves*" />
 
                 <table id="graveTable" class="withMargin" style="width: 100%;">
                     <tr>

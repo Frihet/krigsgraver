@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import no.freecode.krigsgraver.util.ValidFlexibleDate;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -74,6 +76,7 @@ public class Person extends IndexedEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @IndexedEmbedded
+    @ValidFlexibleDate
     private FlexibleDate dateOfBirth;
 
     @ManyToOne
@@ -100,6 +103,7 @@ public class Person extends IndexedEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @IndexedEmbedded
+    @ValidFlexibleDate
     private FlexibleDate dateOfDeath;
 
     @Field(index = Index.TOKENIZED, store = Store.NO)

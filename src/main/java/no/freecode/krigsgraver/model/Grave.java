@@ -19,6 +19,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import no.freecode.krigsgraver.util.ValidFlexibleDate;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -50,6 +52,7 @@ public class Grave extends BaseEntity implements Geolocational {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("year, month, day")
+    @ValidFlexibleDate
     private FlexibleDate dateOfBurial;
 
     private boolean moved;

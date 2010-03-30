@@ -1,7 +1,7 @@
 <%@ include file="../includes.jsp"%>
 <tr id="graveTr${index}">
     <td>
-        <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.year" name="lazyGraves[${index}].dateOfBurial.year" type="text" value="" size="4" maxlength="4"/>
+        <input id="graveYear${index}" class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.year" name="lazyGraves[${index}].dateOfBurial.year" type="text" value="" size="4" maxlength="4"/>
         <span class="soft">-</span>
         <input class="ui-widget-content ui-corner-all" id="lazyGraves${index}.dateOfBurial.month" name="lazyGraves[${index}].dateOfBurial.month" type="text" value="" size="1" maxlength="2"/>
         <span class="soft">-</span>
@@ -38,6 +38,25 @@
     </td>
 
     <td>
+<script type="text/javascript">
+<!--
+$('#graveYear${index}').change(function() {
+    var warnings = "";
+    
+    var year = $('#graveYear${index}').val();
+    var yearNum = parseInt(year);
+
+    if (yearNum < 1940) {
+        warnings += '${msgWarning}: ${msgYear} ${msgShouldNotBeBefore} 1940<br/>';
+        $(this).addClass('ui-state-error');
+    } else {
+        $(this).removeClass('ui-state-error');
+    }
+    
+    $('#graveErrors').html(warnings);
+});
+//-->
+</script>
     </td>
 </tr>
 

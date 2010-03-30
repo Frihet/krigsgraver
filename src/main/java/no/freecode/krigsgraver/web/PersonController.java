@@ -124,7 +124,7 @@ public class PersonController {
 
         // A little more validation.
         validatePerson(command.getPerson(), result);
-        
+
         if (result.hasErrors()) {
             model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
             return "person/edit";
