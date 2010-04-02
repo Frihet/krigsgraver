@@ -22,6 +22,7 @@ import no.freecode.krigsgraver.model.PostalDistrict;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.model.dao.PostalDistrictDao;
 import no.freecode.krigsgraver.util.GeoUtils;
+import no.freecode.krigsgraver.util.WebUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
@@ -158,6 +159,18 @@ public class CemeteryController {
 
         return "redirect:/cemetery/create";
     }
+
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "merge")
+    public String merge(@RequestParam("fromId") long fromId, @RequestParam("toId") long toId, 
+                Model model, HttpSession session, Locale locale) {
+
+        WebUtils.mergeEntity(fromId, toId, Cemetery.class, "Grave", "cemetery", genericDao, messageSource,
+                session, locale);
+
+        return "redirect:/cemetery/create";
+    }
+
     
     /**
      * Get an {@link Cemetery}, e.g. in JSON.

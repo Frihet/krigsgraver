@@ -14,6 +14,7 @@
 <c:set var="editUrl"><c:url value="/rank/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/rank/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/rank/create"/></c:set>
+<c:set var="mergeUrl"><c:url value="/rank/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 

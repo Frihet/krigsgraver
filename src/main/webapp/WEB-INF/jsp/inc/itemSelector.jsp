@@ -16,17 +16,25 @@
             </c:forEach>
         </select>
 
-        <a id="editItem" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
+        <a id="editItem" tabindex="0" href="javascript:void(0)" class="button ui-state-default ui-priority-primary ui-corner-all">
             <fmt:message key="link.edit" />
         </a>
 
-        <a id="deleteItem" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
+        <c:if test="${!empty mergeUrl}">
+            <a id="mergeItem" tabindex="0" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
+                <fmt:message key="button.merge"/>
+            </a>
+        </c:if>
+
+        <a id="deleteItem" tabindex="0" href="javascript:void(0)" class="button ui-state-default ui-corner-all">
             <fmt:message key="link.delete"/>
         </a>
-        
-        &nbsp;
-    
-        <a href="${createUrl}" class="button ui-state-default ui-priority-primary ui-corner-all">
+
+<%--
+        &nbsp;-&nbsp;
+ --%>
+
+        <a href="${createUrl}" tabindex="0" class="button ui-state-default ui-corner-all" style="float: right;">
             <fmt:message key="link.addNew" />
         </a>
     </div>
@@ -45,17 +53,78 @@
     </c:choose>
 </h2>
 
+<c:if test="${!empty mergeUrl}">
+    <div id="mergeDialog" style="display: none;" class="dialog">
+        <form id="mergeForm" action="${mergeUrl}">
+            <div>
+                <fmt:message key="merge.merge"/>
+                <fmt:message key="merge.with"/>
+                <input type="hidden" id="fromId" name="fromId" />
+
+                <select id="toIdSelect" name="toId" class="medium ui-widget-content ui-corner-all">
+                    <c:forEach items="${items}" var="item">
+                        <option value="${item.id}">${item.name}</option>
+                    </c:forEach>
+                </select>
+
+                <p><fmt:message key="merge.info"/> &quot;<span id="fromIdSpan"></span>&quot;.</p>
+            </div>
+        </form>
+    </div>
+    
+    <script type="text/javascript">
+    <!--
+        $("#mergeDialog").dialog({
+            title: '<fmt:message key="merge.title"/>',
+            modal: true,
+            resizable: true,
+            closeOnEscape: true,
+            width: 500,
+    		buttons: {
+                '<fmt:message key="button.merge"/>': function() {
+                	$('#mergeForm').submit();
+    			},
+    			'<fmt:message key="button.cancel"/>': function() {
+    				$(this).dialog('close');
+    			}
+    		},
+            open: function() {
+    			$('#toIdSelect').focus();
+    		},
+            autoOpen: false
+        });
+    //-->
+    </script> 
+</c:if>
+
 <script type="text/javascript">
 <!--
+    $('#itemSelector').keyup(function(e) {
+        if (e.keyCode == 13) {
+            // Enter key was pressed
+        	$('#editItem').click();
+        }
+    });
+
+    $('a.button').focus(function() {
+    	   $(this).addClass('ui-state-focus');
+    }).blur(function() {
+           $(this).removeClass('ui-state-focus');
+    })
+
     $('#itemSelector').change(function() {
-        if ($('#itemSelector option:selected').val() == "null") {
-        	$('#editItem').addClass('ui-state-disabled');
-        	$('#editItem').unbind('click'); 
-            $('#deleteItem').addClass('ui-state-disabled');
-            $('#deleteItem').unbind('click');
+    	var selected = $('#itemSelector option:selected');
+    	var selectedValue = selected.val();
+        var selectedText = selected.text();
+        
+        if (selectedValue == "null") {
+        	$('#editItem, #deleteItem, #mergeItem')
+                .addClass('ui-state-disabled')
+                .unbind('click');
 
         } else {
-            $('#deleteItem').removeClass('ui-state-disabled');
+            $('#deleteItem, #editItem, #mergeItem').removeClass('ui-state-disabled');
+
             $('#deleteItem').click(function() {
                 var form = $('#selectorForm');
 
@@ -67,13 +136,17 @@
                 } 
             });
 
-            $('#editItem').removeClass('ui-state-disabled');
             $('#editItem').click(function() {
                 var form = $('#selectorForm');
                 form.attr('action', '${editUrl}');
                 form.submit();
             });
-            
+
+            $('#mergeItem').click(function() {
+            	$('#fromId').val(selectedValue);
+            	$('#fromIdSpan').html(selectedText);
+            	$('#mergeDialog').dialog('open');
+            });
         }
     });
 

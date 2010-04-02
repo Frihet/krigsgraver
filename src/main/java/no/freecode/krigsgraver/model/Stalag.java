@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("stalag")
-public class Stalag extends BaseEntity implements Geolocational {
+public class Stalag extends BaseEntity implements Geolocational, NamedEntity {
 
     @Column(unique = true, nullable = false)
     @Size(max = 255)

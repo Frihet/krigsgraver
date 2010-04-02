@@ -14,6 +14,7 @@
 <c:set var="editUrl"><c:url value="/camp/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/camp/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/camp/create"/></c:set>
+<c:set var="mergeUrl"><c:url value="/camp/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 <form:form id="campForm" modelAttribute="camp" method="post">

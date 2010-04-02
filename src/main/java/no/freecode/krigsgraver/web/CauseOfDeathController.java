@@ -16,9 +16,11 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.CauseOfDeath;
+import no.freecode.krigsgraver.model.NamedEntity;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -44,6 +46,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/causeOfDeath")
 public class CauseOfDeathController {
 
+    private static final Logger logger = Logger.getLogger(CauseOfDeathController.class);
+    
     @Autowired
     private GenericDao genericDao;
 
@@ -126,6 +130,37 @@ public class CauseOfDeathController {
         return "redirect:/causeOfDeath/create";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "merge")
+    public String merge(@RequestParam("fromId") long fromId, @RequestParam("toId") long toId, 
+                Model model, HttpSession session, Locale locale) {
+
+        if (fromId != toId) {
+            NamedEntity from = genericDao.get(CauseOfDeath.class, fromId);
+            String fromName = from.getName();
+            NamedEntity to = genericDao.get(CauseOfDeath.class, toId);
+            String toName = to.getName();
+
+            int affectedEntities = genericDao.replaceOccurrencesOfSQL("person_causeofdeath", "causesofdeath_id", fromId, toId);
+
+            // Should be no references left, so delete the entity.
+            genericDao.delete(from);
+
+            logger.info("CauseOfDeath - Merged " + affectedEntities + " occurrences of " + from.getName() + " (" + from.getId() + ") with " +
+                    to.getName() + " (" + to.getId() + ")");
+    
+            String message = messageSource.getMessage("info.successfullyMerged",
+                    new Object[] { affectedEntities, fromName, toName }, locale);
+            session.setAttribute("standardInfo", message);
+
+        } else {
+            logger.warn("Tried to merge entity with self");
+        }
+
+        
+        return "redirect:/causeOfDeath/create";
+    }
+    
     /**
      * Delete a {@link CauseOfDeath}.
      */

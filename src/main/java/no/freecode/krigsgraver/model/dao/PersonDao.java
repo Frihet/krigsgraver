@@ -71,6 +71,7 @@ public class PersonDao {
     @Autowired
     private GenericDao genericDao;
 
+
     /**
      * Update or create the person.
      */
@@ -323,39 +324,41 @@ public class PersonDao {
             String graveDateString = v[i++];
             Date graveDate = null;
             
-            try {
-                if (StringUtils.isNotBlank(graveDateString)) {
-                    graveDate = dateFormat.parse(graveDateString);
+            if (StringUtils.isNotBlank(cemeteryString) || StringUtils.isNotBlank(graveNumber) ||
+                    StringUtils.isNotBlank(graveDateString)) {
+                try {
+                    if (StringUtils.isNotBlank(graveDateString)) {
+                        graveDate = dateFormat.parse(graveDateString);
+                    }
+                } catch (java.text.ParseException e) {
+                    // ignore parse errors for now - this is just to get some data
+                }
+    
+                Grave grave = new Grave();
+                grave.setGraveNumber(graveNumber);
+                if (graveDate != null) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(graveDate);
+                    grave.getDateOfBurial().setDay(cal.get(Calendar.DAY_OF_MONTH));
+                    grave.getDateOfBurial().setMonth(cal.get(Calendar.MONTH) + 1);
+                    grave.getDateOfBurial().setYear(cal.get(Calendar.YEAR));
+                }
+    
+                if (StringUtils.isNotBlank(cemeteryString)) {
+                    Cemetery cemetery = genericDao.getUnique(Cemetery.class, "name", cemeteryString);
+                    if (cemetery == null) {
+                        cemetery = new Cemetery();
+                        cemetery.setName(cemeteryString);
+                        genericDao.save(cemetery);
+                    }
+    
+                    grave.setCemetery(cemetery);
                 }
                 
-            } catch (java.text.ParseException e) {
-                // ignore parse errors for now - this is just to get some data
-            }
-            
-            Grave grave = new Grave();
-            grave.setGraveNumber(graveNumber);
-            if (graveDate != null) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(graveDate);
-                grave.getDateOfBurial().setDay(cal.get(Calendar.DAY_OF_MONTH));
-                grave.getDateOfBurial().setMonth(cal.get(Calendar.MONTH) + 1);
-                grave.getDateOfBurial().setYear(cal.get(Calendar.YEAR));
+                genericDao.save(grave);
+                person.getGraves().add(grave);
             }
 
-            if (StringUtils.isNotBlank(cemeteryString)) {
-                Cemetery cemetery = genericDao.getUnique(Cemetery.class, "name", cemeteryString);
-                if (cemetery == null) {
-                    cemetery = new Cemetery();
-                    cemetery.setName(cemeteryString);
-                    genericDao.save(cemetery);
-                }
-
-                grave.setCemetery(cemetery);
-            }
-            
-            genericDao.save(grave);
-            person.getGraves().add(grave);
-            
             savePerson(person);
         }
     }

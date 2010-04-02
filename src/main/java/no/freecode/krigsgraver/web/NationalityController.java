@@ -18,7 +18,9 @@ import javax.validation.Valid;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.util.WebUtils;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -44,6 +46,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/nationality")
 public class NationalityController {
 
+    private static final Logger logger = Logger.getLogger(NationalityController.class);
+    
     @Autowired
     private GenericDao genericDao;
 
@@ -73,15 +77,6 @@ public class NationalityController {
         model.addAttribute("nationality", new Nationality());
         return "nationality/edit";
     }
-    
-//    /**
-//     * Show a {@link Mmmm}.
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = {"{id}/view"})
-//    public String getView(@PathVariable long id, Model model) {
-//        model.addAttribute("mmmm", genericDao.get(Mmmm.class, id));
-//        return "mmmm/view";
-//    }
 
     /**
      * Edit an existing {@link Nationality}.
@@ -111,12 +106,10 @@ public class NationalityController {
         }
 
         /* Database validation. */
-/* TODO: enable later
-        if (genericDao.containsEntry(Nationality.class, "name", nationality.getName())) {
+        if (nationality.getId() == null && genericDao.containsEntry(Nationality.class, "name", nationality.getName())) {
             result.rejectValue("name", "errors.entry_already_exists");
             return "nationality/edit";
         }
-*/
 
         genericDao.save(nationality);
 
@@ -124,9 +117,20 @@ public class NationalityController {
                 new Object[] { nationality.getName() }, locale);
         session.setAttribute("standardInfo", message);
 
-//        return "redirect:/nationality/" + nationality.getId() + "/edit";
         return "redirect:/nationality/create";
     }
+
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "merge")
+    public String merge(@RequestParam("fromId") long fromId, @RequestParam("toId") long toId, 
+                Model model, HttpSession session, Locale locale) {
+
+        WebUtils.mergeEntity(fromId, toId, Nationality.class, "Person", "nationality", genericDao, messageSource,
+                session, locale);
+
+        return "redirect:/nationality/create";
+    }
+    
 
     /**
      * Delete a {@link Nationality}.

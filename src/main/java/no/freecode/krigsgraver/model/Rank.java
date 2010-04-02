@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("rank")
-public class Rank extends BaseEntity {
+public class Rank extends BaseEntity implements NamedEntity {
 
     @Column(unique = true)
     @Size(max = 255)

@@ -14,6 +14,7 @@
 <c:set var="editUrl"><c:url value="/nationality/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/nationality/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/nationality/create"/></c:set>
+<c:set var="mergeUrl"><c:url value="/nationality/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 

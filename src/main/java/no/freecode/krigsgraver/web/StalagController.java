@@ -20,6 +20,7 @@ import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 import no.freecode.krigsgraver.util.GeoUtils;
+import no.freecode.krigsgraver.util.WebUtils;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,18 @@ public class StalagController {
         return "redirect:/stalag/create";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "merge")
+    public String merge(@RequestParam("fromId") long fromId, @RequestParam("toId") long toId, 
+                Model model, HttpSession session, Locale locale) {
+
+        WebUtils.mergeEntity(fromId, toId, Stalag.class, "Person", "stalag", genericDao, messageSource,
+                session, locale);
+
+        return "redirect:/stalag/create";
+    }
+
+    
     /**
      * Delete a {@link Stalag}.
      */

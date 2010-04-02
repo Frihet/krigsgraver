@@ -13,10 +13,13 @@ import java.util.List;
 
 import no.freecode.krigsgraver.model.Entity;
 import no.freecode.krigsgraver.model.IndexedEntity;
+import no.freecode.krigsgraver.model.Person;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
@@ -52,7 +55,7 @@ public class GenericDao {
      * @param entity
      * @throws org.hibernate.exception.ConstraintViolationException
      */
-    public <T> boolean delete(Entity entity) {
+    public boolean delete(Entity entity) {
         try {
             sessionFactory.getCurrentSession().delete(entity);
             
@@ -64,6 +67,39 @@ public class GenericDao {
         return true;
     }
 
+    /**
+     * Replace all occurrences of the 'from' {@link Entity} with the 'to'
+     * {@link Entity}, optionally completely removing the object from its DB
+     * table.
+     * 
+     * @param tableName The table to manipulate, e.g. 'Person' or 'Grave'.
+     * @param columnName The column name in {@link Person}, e.g. 'stalag' or 'cemetery'.
+     * @param from
+     * @param to
+     * @param deleteFrom Delete the 'from' {@link Entity}.
+     * @return The number of rows in {@link Person} that were replaced.
+     */
+    public int replaceOccurrencesOf(String tableName, String columnName, Entity from, Entity to) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query q = session.createQuery("update " + tableName + " set " + columnName + " = :newValue where " + columnName + " = :oldValue")
+                .setEntity("oldValue", from)
+                .setEntity("newValue", to);
+
+        return q.executeUpdate();
+    }
+
+    public int replaceOccurrencesOfSQL(String tableName, String columnName, long fromId, long toId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query q = session.createSQLQuery("update " + tableName + " set " + columnName + " = :newValue where " + columnName + " = :oldValue")
+                .setLong("oldValue", fromId)
+                .setLong("newValue", toId);
+
+        return q.executeUpdate();
+    }
+
+    
     /**
      * Fetch an object from the DB.
      */

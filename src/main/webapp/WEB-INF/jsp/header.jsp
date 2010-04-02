@@ -25,7 +25,7 @@
 
 <body>
 <table id="wholePage">
-<tr>
+<tr id="topHeader">
     <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'></td>
     <td id="rightHeader">
         <div id="loginData">

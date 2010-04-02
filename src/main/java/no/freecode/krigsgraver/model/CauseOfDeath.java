@@ -29,7 +29,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("causeOfDeath")
-public class CauseOfDeath extends BaseEntity {
+public class CauseOfDeath extends BaseEntity implements NamedEntity {
 
     @Size(max = 255)
     @NotEmpty

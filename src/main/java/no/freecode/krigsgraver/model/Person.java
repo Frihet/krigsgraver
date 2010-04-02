@@ -111,7 +111,6 @@ public class Person extends IndexedEntity {
     private String placeOfDeath;
 
     @ManyToMany(cascade = CascadeType.MERGE)
-//    @ManyToMany
     @Valid
     @IndexedEmbedded
     @XStreamImplicit(itemFieldName = "causeOfDeath")

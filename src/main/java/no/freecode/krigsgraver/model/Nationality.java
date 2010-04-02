@@ -9,6 +9,7 @@
  */
 package no.freecode.krigsgraver.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
@@ -24,9 +25,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @Entity
 // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @XStreamAlias("nationality")
-public class Nationality extends BaseEntity {
+public class Nationality extends BaseEntity implements NamedEntity {
 
-//    @Column(unique = true)
+    @Column(unique = true)
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
@@ -38,16 +39,10 @@ public class Nationality extends BaseEntity {
         this.name = name;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
