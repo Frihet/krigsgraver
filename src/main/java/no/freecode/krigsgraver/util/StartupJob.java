@@ -72,7 +72,7 @@ public class StartupJob {
     private void dumpSchema() {
         Configuration configuration = actualFactory.getConfiguration();
         SchemaExport export = new SchemaExport(configuration);
-//        export.setOutputFile("schema.sql");
+        export.setOutputFile("schema.sql");
         export.create(true, false);
         
 //        new org.apache.log4j.FileAppender().set
