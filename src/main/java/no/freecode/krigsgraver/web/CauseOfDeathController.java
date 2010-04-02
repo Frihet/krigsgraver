@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.CauseOfDeath;
-import no.freecode.krigsgraver.model.NamedEntity;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.dao.GenericDao;
 
@@ -136,12 +135,21 @@ public class CauseOfDeathController {
                 Model model, HttpSession session, Locale locale) {
 
         if (fromId != toId) {
-            NamedEntity from = genericDao.get(CauseOfDeath.class, fromId);
+            CauseOfDeath from = genericDao.get(CauseOfDeath.class, fromId);
             String fromName = from.getName();
-            NamedEntity to = genericDao.get(CauseOfDeath.class, toId);
+            CauseOfDeath to = genericDao.get(CauseOfDeath.class, toId);
             String toName = to.getName();
 
             int affectedEntities = genericDao.replaceOccurrencesOfSQL("person_causeofdeath", "causesofdeath_id", fromId, toId);
+
+//            List<Person> allPersons = genericDao.getAll(Person.class, Restrictions.eq("causesOfDeath", from));
+//            for (Person person : allPersons) {
+//                person.getCausesOfDeath().remove(from);
+//                person.getCausesOfDeath().add(to);
+//                genericDao.save(person);
+//            }
+//
+//            int affectedEntities = allPersons.size();
 
             // Should be no references left, so delete the entity.
             genericDao.delete(from);

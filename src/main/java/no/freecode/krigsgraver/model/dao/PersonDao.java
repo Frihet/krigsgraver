@@ -14,14 +14,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.CauseOfDeath;
+import no.freecode.krigsgraver.model.CauseOfDeathComparator;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
@@ -94,7 +95,8 @@ public class PersonDao {
         }
         person.setGraves(graves);
         
-        ArrayList<CauseOfDeath> causesOfDeath = new ArrayList<CauseOfDeath>();
+//        ArrayList<CauseOfDeath> causesOfDeath = new ArrayList<CauseOfDeath>();
+        TreeSet<CauseOfDeath> causesOfDeath = new TreeSet<CauseOfDeath>(new CauseOfDeathComparator());
         for (CauseOfDeath cause : command.getLazyCausesOfDeath()) {
             if (cause != null) {
                 causesOfDeath.add(cause);
@@ -369,14 +371,16 @@ public class PersonDao {
      * @param str
      * @return
      */
-    private List<CauseOfDeath> getCauses(String str) {
-        
+    private Set<CauseOfDeath> getCauses(String str) {
+
         if (StringUtils.isNotEmpty(str)) {
-            List<CauseOfDeath> causes = new ArrayList<CauseOfDeath>();
+//            List<CauseOfDeath> causes = new ArrayList<CauseOfDeath>();
+            Set<CauseOfDeath> causes = new TreeSet<CauseOfDeath>(new CauseOfDeathComparator());
 
             for (String s1 : StringUtils.splitByWholeSeparator(str, ", ")) {
                 for (String s2 : StringUtils.splitByWholeSeparator(s1, " und ")) {
                     for (String s3 : StringUtils.splitByWholeSeparator(s2, " u. ")) {
+                        s3 = StringUtils.capitalize(s3);
                         
                         CauseOfDeath cause = genericDao.getUnique(CauseOfDeath.class, "name", s3);
                         if (cause == null) {

@@ -34,7 +34,7 @@ create table Cemetery (id int8 not null, address varchar(255), latitude float8, 
 create table FlexibleDate (id int8 not null, approximate bool not null, day int4, month int4, year int4, primary key (id))
 create table Grave (id int8 not null, graveField varchar(255), graveNumber varchar(255), graveRow varchar(255), latitude float8, longitude float8, massGrave bool not null, moved bool not null, reference text, cemetery_id int8, dateOfBurial_id int8, primary key (id))
 create table KgUser (id int8 not null, credentialsNonExpired bool not null, enabled bool not null, name varchar(255), password varchar(255), role varchar(255), username varchar(255) unique, primary key (id))
-create table Nationality (id int8 not null, name varchar(255), primary key (id))
+create table Nationality (id int8 not null, name varchar(255) unique, primary key (id))
 create table Person (id int8 not null, causeOfDeathDescription varchar(255), createdDate timestamp default current_timestamp not null, obdNumber int8, placeOfDeath varchar(255), prisonerNumber int4, remarks text, camp_id int8, cyrillicDetails_id int8, dateOfBirth_id int8, dateOfDeath_id int8, nationality_id int8, rank_id int8, stalag_id int8, westernDetails_id int8, primary key (id))
 create table PersonDetails (id int8 not null, firstName varchar(255), lastName varchar(255), nameOfFather varchar(255), placeOfBirth varchar(255), primary key (id))
 create table Person_CauseOfDeath (Person_id int8 not null, causesOfDeath_id int8 not null)
@@ -58,4 +58,3 @@ alter table Person_CauseOfDeath add constraint FK485AEADE7808DA3B foreign key (c
 alter table Person_Grave add constraint FKF4FA909B7A4E4C31 foreign key (graves_id) references Grave
 alter table Person_Grave add constraint FKF4FA909B4FAFE35A foreign key (Person_id) references Person
 create sequence hibernate_sequence
-schema export complete

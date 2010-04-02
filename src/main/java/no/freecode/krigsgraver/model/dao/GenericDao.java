@@ -20,6 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
@@ -91,7 +92,7 @@ public class GenericDao {
 
     public int replaceOccurrencesOfSQL(String tableName, String columnName, long fromId, long toId) {
         Session session = sessionFactory.getCurrentSession();
-
+        
         Query q = session.createSQLQuery("update " + tableName + " set " + columnName + " = :newValue where " + columnName + " = :oldValue")
                 .setLong("oldValue", fromId)
                 .setLong("newValue", toId);
@@ -137,6 +138,17 @@ public class GenericDao {
             crit.addOrder(order);
         }
         
+        return crit.list();
+    }
+
+    /**
+     * Fetch a list of all objects of a given class from the DB.
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
+    public <T> List<T> getAll(Class<T> clazz, Criterion criterion) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(clazz);
+        crit.add(criterion);
         return crit.list();
     }
     
