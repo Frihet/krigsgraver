@@ -14,6 +14,7 @@
 <c:set var="editUrl"><c:url value="/stalag/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/stalag/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/stalag/create"/></c:set>
+<c:set var="mergeUrl"><c:url value="/stalag/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 

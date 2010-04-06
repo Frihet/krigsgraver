@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import no.freecode.krigsgraver.model.Camp;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Rank;
@@ -141,6 +142,7 @@ public class SearchController {
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("stalags", genericDao.getAll(Stalag.class, Order.asc("name")));
+        model.addAttribute("camps", genericDao.getAll(Camp.class, Order.asc("name")));
         return "advanced_search";
     }
 
@@ -198,8 +200,12 @@ public class SearchController {
         query.append("camp.name", camp);
         query.append("stalag.name", stalag);
         query.append("graves.cemetery.name", cemetery);
-        query.append("causeOfDeathDescription", causeOfDeath);
-        query.append("causesOfDeath.name", causeOfDeath);
+
+        query.appendOrs(new QueryPair[] {
+                new QueryPair("causeOfDeathDescription", causeOfDeath),
+                new QueryPair("causesOfDeath.name", causeOfDeath)
+        });
+
         query.append("prisonerNumber", prisonerNumber);
 
         String queryString = query.getQueryString();
@@ -212,6 +218,11 @@ public class SearchController {
         }
     }
 
+    /**
+     * Helper class for creating Lucene queries.
+     * 
+     * @author Reidar Øksnevad <reidar@oksnevad.org>
+     */
     private class QueryBuilder {
         
         GregorianCalendar calendar = new GregorianCalendar();
@@ -232,14 +243,31 @@ public class SearchController {
                 query.append(" ");
             }
             query.append("+");
-//                query.append("(");
             query.append(string);
-//                query.append(")");
         }
 
         public void append(String fieldName, String text) {
             if (StringUtils.isNotBlank(text)) {
                 appendString(QueryUtils.formatQuery(text, fieldName, fuzzyFields.contains(fieldName), beginsWithFields.contains(fieldName)));
+            }
+        }
+
+        /**
+         * Append one or more element, each separated with an " OR ".
+         * 
+         * @param pairs
+         */
+        public void appendOrs(QueryPair... pairs) {
+            StringBuilder orQuery = new StringBuilder();
+            for (int i = 0; i < pairs.length; i++) {
+                if (i > 0 && orQuery.length() > 0) {
+                    orQuery.append(" OR ");
+                }
+                orQuery.append(QueryUtils.formatQuery(pairs[i].text, pairs[i].fieldName, fuzzyFields.contains(pairs[i].fieldName), beginsWithFields.contains(pairs[i].fieldName)));
+            }
+
+            if (orQuery.length() > 0) {
+                appendString("(" + orQuery + ")");
             }
         }
 
@@ -284,6 +312,18 @@ public class SearchController {
         
         public String getQueryString() {
             return query.toString();
+        }
+
+
+    }
+    
+    public class QueryPair {
+        String fieldName;
+        String text;
+        
+        public QueryPair(String fieldName, String text) {
+            this.fieldName = fieldName;
+            this.text = text;
         }
     }
 

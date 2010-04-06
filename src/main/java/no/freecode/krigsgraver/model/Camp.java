@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @Entity
 @XStreamAlias("camp")
-public class Camp extends BaseEntity implements Geolocational {
+public class Camp extends BaseEntity implements Geolocational, NamedEntity {
 
     @Column(unique = true, nullable = false)
     @Size(max = 255)

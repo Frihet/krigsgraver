@@ -14,6 +14,7 @@
 <c:set var="editUrl"><c:url value="/cemetery/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/cemetery/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/cemetery/create"/></c:set>
+<c:set var="mergeUrl"><c:url value="/cemetery/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 <form:form id="cemeteryForm" modelAttribute="cemetery" method="post">

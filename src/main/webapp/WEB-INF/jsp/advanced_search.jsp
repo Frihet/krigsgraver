@@ -12,7 +12,7 @@
 <p><fmt:message key="search.advanced.instructions"/></p>
 
 <form method="post" class="advancedSearch">
-    <table>
+    <table style="border-collapse: separate;">
         <tr>
             <th> <fmt:message key="person.fullName"/> </th>
             <td>
@@ -69,7 +69,7 @@
                     <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
 
                     <c:forEach items="${nationalities}" var="nationality">
-                        <option value="${nationality.name}">${nationality.name}</option>
+                        <option value="&quot;${nationality.name}&quot;">${nationality.name}</option>
                     </c:forEach>
                 </select>
             </td>
@@ -82,7 +82,7 @@
                     <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
 
                     <c:forEach items="${ranks}" var="rank">
-                        <option value="${rank.name}">${rank.name}</option>
+                        <option value="&quot;${rank.name}&quot;">${rank.name}</option>
                     </c:forEach>
                 </select>
             </td>
@@ -95,16 +95,9 @@
                     <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
 
                     <c:forEach items="${stalags}" var="stalag">
-                        <option value="${stalag.name}">${stalag.name}</option>
+                        <option value="&quot;${stalag.name}&quot;">${stalag.name}</option>
                     </c:forEach>
                 </select>
-
-<%--
-                <input name="stalag" class="ui-widget-content ui-corner-all" />
-                <input type="checkbox" name="fuzzyFields" value="stalag" checked="checked" />
-                <fmt:message key="search.findSimilarWords" />
- --%>
-                
                 <span style="font-weight: bold; padding-left: 3em; padding-right: 1em;"><fmt:message key="person.prisonerNumber"/> </span><input name="prisonerNumber" class="ui-widget-content ui-corner-all" />
             </td>
         </tr>
@@ -112,9 +105,19 @@
         <tr>
             <th> <fmt:message key="camp.title"/> </th>
             <td>
+                <select name="camp" class="medium ui-widget-content ui-corner-all">
+                    <option value="">&lt;<fmt:message key="value.notSet"/>&gt;</option>
+
+                    <c:forEach items="${camps}" var="camp">
+                        <option value="&quot;${camp.name}&quot;">${camp.name}</option>
+                    </c:forEach>
+                </select>
+
+<!-- 
                 <input name="camp" class="ui-widget-content ui-corner-all" />
                 <input id="checkCamp" type="checkbox" name="fuzzyFields" value="camp" checked="checked" />
                 <label for="checkCamp"><fmt:message key="search.findSimilarWords" /></label>
+ -->
             </td>
         </tr>
 
@@ -213,7 +216,7 @@
  -->
 
     <br></br>
-    <button id="search" type="submit" class="ui-priority-primary ui-state-default ui-corner-all"><fmt:message key="button.search"/></button>
+    <button id="search" type="submit" class="ui-priority-primary ui-state-default ui-corner-all" style="margin-left: 0"><fmt:message key="button.search"/></button>
 </form>
 
 <script type="text/javascript">

@@ -15,9 +15,10 @@ import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.Person;
+import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.util.WebUtils;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +127,17 @@ public class RankController {
         return "redirect:/rank/create";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
+    @RequestMapping(method = RequestMethod.GET, value = "merge")
+    public String merge(@RequestParam("fromId") long fromId, @RequestParam("toId") long toId, 
+                Model model, HttpSession session, Locale locale) {
+
+        WebUtils.mergeEntity(fromId, toId, Rank.class, "Person", "rank", genericDao, messageSource,
+                session, locale);
+
+        return "redirect:/rank/create";
+    }
+    
     /**
      * Delete a {@link Rank}.
      */

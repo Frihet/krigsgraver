@@ -49,9 +49,11 @@ public class PersonCommandObject {
         
         getLazyGraves().addAll(person.getGraves());
 
+/*
         if (getLazyGraves().isEmpty()) {
             getLazyGraves().add(new Grave());
         }
+*/
 
         getLazyCausesOfDeath().addAll(person.getCausesOfDeath());
     }

@@ -103,15 +103,8 @@ public class PersonController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "{id}/view")
     public String getPersonView(@PathVariable long id, Model model) {
-/*
-        logger.debug("GRAVES:");
-        for (Grave grave : person.getGraves()) {
-            logger.debug("grave: " + grave);
-        }
-*/
         Person person = personDao.getPerson(id);
         model.addAttribute("person", person);
-//        model.addAttribute("person", personDao.getCompletelyLoadedPerson(id));
         return "person/view";
     }
 

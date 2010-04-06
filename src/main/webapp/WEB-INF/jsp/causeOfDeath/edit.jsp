@@ -14,6 +14,9 @@
 <c:set var="editUrl"><c:url value="/causeOfDeath/edit"/></c:set>
 <c:set var="deleteUrl"><c:url value="/causeOfDeath/delete"/></c:set>
 <c:set var="createUrl"><c:url value="/causeOfDeath/create"/></c:set>
+<%--
+ --%>
+<c:set var="mergeUrl"><c:url value="/causeOfDeath/merge"/></c:set>
 <%@ include file="../inc/itemSelector.jsp" %>
 
 <form:form id="causeOfDeathForm" modelAttribute="causeOfDeath" method="post">

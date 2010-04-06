@@ -9,9 +9,7 @@
  */
 package no.freecode.krigsgraver.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -111,11 +109,12 @@ public class Person extends IndexedEntity {
     private String placeOfDeath;
 
     @ManyToMany(cascade = CascadeType.MERGE)
-//    @ManyToMany
     @Valid
     @IndexedEmbedded
     @XStreamImplicit(itemFieldName = "causeOfDeath")
-    private List<CauseOfDeath> causesOfDeath;
+//    private List<CauseOfDeath> causesOfDeath;
+    @Sort(type = SortType.COMPARATOR, comparator = CauseOfDeathComparator.class)
+    private Set<CauseOfDeath> causesOfDeath;
 
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -226,15 +225,15 @@ public class Person extends IndexedEntity {
         this.placeOfDeath = placeOfDeath;
     }
 
-    public List<CauseOfDeath> getCausesOfDeath() {
+    public Set<CauseOfDeath> getCausesOfDeath() {
         if (causesOfDeath == null) {
-            causesOfDeath = new ArrayList<CauseOfDeath>();
+            causesOfDeath = new TreeSet<CauseOfDeath>(new CauseOfDeathComparator());
         }
         
         return causesOfDeath;
     }
 
-    public void setCausesOfDeath(List<CauseOfDeath> causesOfDeath) {
+    public void setCausesOfDeath(Set<CauseOfDeath> causesOfDeath) {
         this.causesOfDeath = causesOfDeath;
     }
 
