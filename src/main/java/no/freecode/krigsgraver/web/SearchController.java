@@ -138,7 +138,6 @@ public class SearchController {
 
     @RequestMapping(method = RequestMethod.GET, value = {"/queryBuilder"})
     public String queryBuilderGet(Model model) {
-
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("stalags", genericDao.getAll(Stalag.class, Order.asc("name")));

@@ -41,6 +41,10 @@
                     <a id="loginLink" tabindex="-1" href='<c:url value="/j_spring_security_logout" />'><fmt:message key="link.logout"/></a>
             </sec:authorize>
         </div>
+
+        <c:if test="${!empty helpPage}">
+            
+        </c:if>
     </td>
 </tr>
 <tr>

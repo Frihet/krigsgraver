@@ -90,5 +90,6 @@
     <bean id="genericDao" class="no.freecode.krigsgraver.model.dao.GenericDao" />
     <bean id="userDao" class="no.freecode.krigsgraver.model.dao.UserDaoImpl" />
     <bean id="postalDistrictDao" class="no.freecode.krigsgraver.model.dao.PostalDistrictDao" />
+    <bean id="infoPageDao" class="no.freecode.krigsgraver.model.dao.InfoPageDao" />
 
 </beans>
