@@ -23,8 +23,6 @@ import javax.persistence.Lob;
 @Entity
 public class PageInfo extends BaseEntity {
 
-    
-    
     private Locale locale;
     
     @Lob

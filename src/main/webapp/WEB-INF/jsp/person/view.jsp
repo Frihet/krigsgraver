@@ -151,7 +151,7 @@
                         <td> <c:if test="${grave.dateOfBurial.approximate}"><fmt:message key="date.approximate"/></c:if> ${grave.dateOfBurial} </td>
                     </tr>
                 </c:if>
-        
+
                 <c:if test="${!empty grave.cemetery}">
                     <tr>
                         <th> <fmt:message key="cemetery.title"/> </th>
