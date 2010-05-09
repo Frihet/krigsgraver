@@ -90,6 +90,9 @@
                     </script>
                 </c:if>
 
+                <jsp:include page="../google_maps_link.jsp">
+                    <jsp:param name="geolocational" value="${person.camp}" />
+                </jsp:include>
             </td>
         </tr>
     </c:if>
