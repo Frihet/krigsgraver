@@ -156,7 +156,9 @@ a:hover {
 img.imgLink {
     vertical-align: middle;
     cursor: pointer;
+    border: none;
 }
+
 
 /* General table stuff. */
 th {

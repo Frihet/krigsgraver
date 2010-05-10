@@ -60,6 +60,9 @@
                     //-->
                     </script>
                 </c:if>
+
+                <c:set var="geolocational" value="${person.stalag}" />
+                <%@ include file="../google_maps_link.jsp" %>
             </td>
             <c:if test="${!empty person.prisonerNumber}">
                 <th> <fmt:message key="person.prisonerNumber"/> </th>
@@ -90,9 +93,8 @@
                     </script>
                 </c:if>
 
-                <jsp:include page="../google_maps_link.jsp">
-                    <jsp:param name="geolocational" value="${person.camp}" />
-                </jsp:include>
+                <c:set var="geolocational" value="${person.camp}" />
+                <%@ include file="../google_maps_link.jsp" %>
             </td>
         </tr>
     </c:if>
@@ -158,7 +160,11 @@
                 <c:if test="${!empty grave.cemetery}">
                     <tr>
                         <th> <fmt:message key="cemetery.title"/> </th>
-                        <td> ${grave.cemetery.name} </td>
+                        <td> ${grave.cemetery.name}
+                        
+                            <c:set var="geolocational" value="${grave.cemetery}" />
+                            <%@ include file="../google_maps_link.jsp" %>
+                        </td>
                     </tr>
                 </c:if>
         
