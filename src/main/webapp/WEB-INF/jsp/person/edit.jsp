@@ -18,7 +18,6 @@
     th,td { padding-bottom: 0.5em; }
 </style>
 
-<div class="subContent">
 
 <spring:hasBindErrors name="command">
     <%@ include file="../inc/showBindErrors.jsp" %>
@@ -40,6 +39,8 @@
         </h1>
     </c:otherwise>
 </c:choose>
+
+<div class="subContent">
 
 <div class="ui-widget">
     <div>

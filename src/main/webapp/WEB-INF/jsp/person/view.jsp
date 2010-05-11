@@ -1,5 +1,6 @@
 <%@ include file="../includes.jsp"%>
 <c:set var="pageTitle" value="${person}"/>
+<c:set var="pageHeader" value="${person}"/>
 <%@ include file="../header.jsp"%>
 <%@ page session="false" %>
 
@@ -10,7 +11,6 @@
 </sec:authorize>
 
 <div class="subContent">
-<h1>${person}</h1>
 
 <table>
     <c:if test="${!empty person.placeOfBirth}">
