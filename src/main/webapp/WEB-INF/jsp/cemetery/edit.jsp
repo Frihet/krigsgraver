@@ -1,13 +1,12 @@
-<%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
+<fmt:message key="menu.elements.cemeteries" var="pageHeader" />
+<%@ include file="../header.jsp"%>
 
 <div class="subContent">
 
 <spring:hasBindErrors name="cemetery">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
-
-<h1><fmt:message key="menu.elements.cemeteries"/></h1>
 
 <c:set var="currentItem" value="${cemetery}" />
 <c:set var="items" value="${cemeteries}" />

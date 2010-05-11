@@ -1,0 +1,7 @@
+@IMPORT url("main.css");
+
+html,body {
+    margin: 1em;
+    padding: 0;
+    text-align: left;
+}

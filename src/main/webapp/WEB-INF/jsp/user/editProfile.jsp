@@ -1,13 +1,12 @@
-<%@ include file="../header.jsp"%>
 <%@ include file="../includes.jsp"%>
+<fmt:message key="editProfile" var="pageHeader" />
+<%@ include file="../header.jsp"%>
 
 <div class="subContent">
 
 <spring:hasBindErrors name="user">
     <%@ include file="../inc/showBindErrors.jsp" %>
 </spring:hasBindErrors>
-
-<h1><fmt:message key="editProfile"/></h1>
 
 <form:form id="userForm" modelAttribute="user" method="post">
     <fieldset class="main ui-corner-all">

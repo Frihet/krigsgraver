@@ -47,12 +47,11 @@ public class InfoPageController {
      * Show or edit an info page.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{pageName}")
-    public String getInfoPage(@PathVariable String pageName, Model model) {
-        model.addAttribute("infoPage", getInfoPage(pageName));
+    public String getInfoPage(@PathVariable String pageName, Model model, Locale locale) {
+        model.addAttribute("infoPage", getInfoPage(pageName, locale));
         return "infoPage/showOrEdit";
     }
 
-    
     /**
      * Submit an info page.
      */
@@ -60,11 +59,7 @@ public class InfoPageController {
     @RequestMapping(method = RequestMethod.POST, value = {"{pageName}"})
     public String save(@RequestParam(value = "pageBody", required = true) String pageBody, @PathVariable String pageName, HttpSession session, Locale locale) {
 
-//        if (result.hasErrors()) {
-//            return "infoPage/showOrEdit";
-//        }
-
-        InfoPage infoPage = getInfoPage(pageName);
+        InfoPage infoPage = getInfoPage(pageName, locale);
         infoPage.setHtml(pageBody);
 
         infoPageDao.saveInfoPage(infoPage);
@@ -81,18 +76,14 @@ public class InfoPageController {
      * @param pageName
      * @return
      */
-    private InfoPage getInfoPage(String pageName) {
-        InfoPage infoPage = infoPageDao.getInfoPage(pageName);
+    private InfoPage getInfoPage(String pageName, Locale locale) {
+        InfoPage infoPage = infoPageDao.getInfoPage(pageName, locale.getLanguage());
+
         if (infoPage == null) {
             infoPage = new InfoPage();
             infoPage.setPageName(pageName);
+            infoPage.setLanguage(locale.getLanguage());
         }
         return infoPage;
     }
-
-
-//    @InitBinder
-//    public void initBinder(WebDataBinder dataBinder) {
-//        dataBinder.registerCustomEditor(Rank.class, new EntityPropertyEditor(InfoPage.class, genericDao));
-//    }
 }

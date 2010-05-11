@@ -10,6 +10,7 @@
 package no.freecode.krigsgraver.model.dao;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import no.freecode.krigsgraver.model.InfoPage;
 
@@ -20,6 +21,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 /**
  * Data access methods for {@link InfoPage}s (help pages editable by the admin users).
@@ -38,33 +40,39 @@ public class InfoPageDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    
     /**
      * Update or create an {@link InfoPage} in the DB.
      */
     public void saveInfoPage(InfoPage infoPage) {
         sessionFactory.getCurrentSession().merge(infoPage);
-        infoPages.put(infoPage.getPageName(), infoPage);
+        infoPages.put(infoPage.getPageName() + "_" + infoPage.getLanguage(), infoPage);
     }
-
 
     /**
      * Fetch an {@link InfoPage} from the DB, or from the local cache (preferably).
      */
     @Transactional(readOnly = true)
-    public InfoPage getInfoPage(String pageName) {
+    public InfoPage getInfoPage(String pageName, String language) {
+
+        String pageId = pageName + "_" + language;
         
-        if (infoPages.containsKey(pageName)) {
-            return infoPages.get(pageName);
+        if (infoPages.containsKey(pageId)) {
+            return infoPages.get(pageId);
 
         } else {
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(InfoPage.class)
-                .add(Restrictions.eq("pageName", pageName));
+                .add(Restrictions.eq("pageName", pageName))
+                .add(Restrictions.eq("language", language));
 
             InfoPage infoPage = (InfoPage) criteria.uniqueResult();
-            infoPages.put(pageName, infoPage);
+            infoPages.put(pageId, infoPage);
             
             return infoPage;
         }
+    }
+
+    public void prepareModel(Model model, String pageName, Locale locale) {
+        model.addAttribute("infoPageName", pageName);
+        model.addAttribute("infoPage", getInfoPage(pageName, locale.getLanguage()));
     }
 }

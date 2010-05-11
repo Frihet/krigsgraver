@@ -41,10 +41,6 @@
                     <a id="loginLink" tabindex="-1" href='<c:url value="/j_spring_security_logout" />'><fmt:message key="link.logout"/></a>
             </sec:authorize>
         </div>
-
-        <c:if test="${!empty helpPage}">
-            
-        </c:if>
     </td>
 </tr>
 <tr>
@@ -52,7 +48,24 @@
         <%@ include file="menu.jsp" %>
     </td>
 
-    <td id="mainContentWrapper"><div id="mainContent">
+    <td id="mainContentWrapper">
+    <div id="mainContent">
+
+    <c:if test="${infoPageName != Null}">
+        <c:if test="${infoPage != Null}">
+            <a style="float: right;" href="<c:url value='/info/${infoPageName}'/>">
+                <img class="imgLink" src="<c:url value='/inc/img/help_smaller.png'/>" title="<fmt:message key='infoPage.linkTitle'/>" />
+            </a>
+        </c:if>
+
+        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+            <c:if test="${infoPage == Null}">
+                <a style="float: right;" href="<c:url value='/info/${infoPageName}'/>">
+                    <img class="imgLink" src="<c:url value='/inc/img/help_smaller_disabled.png'/>" title="<fmt:message key='infoPage.linkTitleCreateNew'/>" />
+                </a>
+            </c:if>
+        </sec:authorize>
+    </c:if>
 
     <%-- If a standardInfo/standardError String is present in the model,
          draw it at the top of the page. --%>
@@ -74,4 +87,8 @@
             </div>
         </div>
         <c:remove var="standardError" />
+    </c:if>
+
+    <c:if test="${pageHeader != Null}">
+        <h1>${pageHeader}</h1>
     </c:if>

@@ -1,15 +1,13 @@
 <%@ include file="includes.jsp"%>
 <fmt:message key="search.results" var="pageTitle" />
+<fmt:message key="search.title" var="pageHeader" />
 <%@ include file="header.jsp"%>
 <%@ page session="false"%>
 
 <c:set var="persons" value="${searchResult.persons}" />
 <c:set var="paginator" value="${searchResult.paginator}" />
 
-<div class="subContent">
-<h1><fmt:message key="search.title"/></h1>
-
-<div style="margin: 0 auto; padding-bottom: 1em; width: 50%;">
+<div style="margin: 0 auto; padding-bottom: 1em; padding-top: 1em; width: 50%;">
     <form style="text-align: center;">
         <%@ include file="simple_search_bar.jsp"%>
     </form>
@@ -72,7 +70,6 @@
     </tr>
 </table>
 
-</div>
 
 <%--
 <script type="text/javascript">

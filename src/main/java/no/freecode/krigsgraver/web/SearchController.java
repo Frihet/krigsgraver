@@ -29,6 +29,7 @@ import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.User.Role;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.model.dao.InfoPageDao;
 import no.freecode.krigsgraver.model.dao.Paginator;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 import no.freecode.krigsgraver.search.QueryUtils;
@@ -65,6 +66,9 @@ public class SearchController {
 
     @Autowired
     private GenericDao genericDao;
+    
+    @Autowired
+    private InfoPageDao infoPageDao;
 
     @Autowired
     private MessageSource messageSource;
@@ -84,6 +88,8 @@ public class SearchController {
                 HttpServletRequest request,
                 Locale locale,
                 Model model) throws ParseException {
+
+        infoPageDao.prepareModel(model, "search", locale);  // prepare help page
 
         if (itemsPerPage > 100) {
             itemsPerPage = 100;
@@ -137,7 +143,10 @@ public class SearchController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/queryBuilder"})
-    public String queryBuilderGet(Model model) {
+    public String queryBuilderGet(Model model, Locale locale) {
+
+        infoPageDao.prepareModel(model, "advanced", locale); // prepare help page
+        
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("stalags", genericDao.getAll(Stalag.class, Order.asc("name")));

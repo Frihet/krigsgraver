@@ -9,8 +9,6 @@
  */
 package no.freecode.krigsgraver.model;
 
-import java.util.Locale;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -28,15 +26,13 @@ public class InfoPage extends BaseEntity {
      * The pageName serves as the unique identifier, specified when loading the
      * relevant JSP pages.
      */
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String pageName;
 
-    private Locale locale;
+    private String language;
     
     @Lob
     private String html;
-
-
 
     public String getPageName() {
         return pageName;
@@ -45,13 +41,13 @@ public class InfoPage extends BaseEntity {
     public void setPageName(String pageName) {
         this.pageName = pageName;
     }
-
-    public Locale getLocale() {
-        return locale;
+    
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLocale(Locale locale) {
-        this.locale = locale;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getHtml() {

@@ -24,6 +24,7 @@ import no.freecode.krigsgraver.model.Rank;
 import no.freecode.krigsgraver.model.Stalag;
 import no.freecode.krigsgraver.model.User;
 import no.freecode.krigsgraver.model.dao.GenericDao;
+import no.freecode.krigsgraver.model.dao.InfoPageDao;
 import no.freecode.krigsgraver.model.dao.PersonDao;
 
 import org.apache.log4j.Logger;
@@ -61,15 +62,17 @@ public class PersonController {
 
     @Autowired
     private GenericDao genericDao;
+    
+    @Autowired
+    private InfoPageDao infoPageDao;
 
     @Autowired
     private MessageSource messageSource;
 
-
     /**
      * List all the people.
      */
-    @Secured({"ROLE_ADMIN", "ROLE_EDITOR", "ROLE_PARTNER"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "list")
     public String getListForm(Model model) {
         model.addAttribute("persons", personDao.getAll());
@@ -81,7 +84,8 @@ public class PersonController {
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "create")
-    public String getCreateForm(Model model) {
+    public String getCreateForm(Model model, Locale locale) {
+        infoPageDao.prepareModel(model, "person", locale);
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(new Person()));
         return "person/edit";
@@ -92,7 +96,9 @@ public class PersonController {
      */
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
-    public String getEditForm(@PathVariable long id, Model model) {
+    public String getEditForm(@PathVariable long id, Model model, Locale locale) {
+        infoPageDao.prepareModel(model, "person", locale);
+        
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(personDao.getPerson(id)));
         return "person/edit";
@@ -102,7 +108,7 @@ public class PersonController {
      * Get an existing person.
      */
     @RequestMapping(method = RequestMethod.GET, value = "{id}/view")
-    public String getPersonView(@PathVariable long id, Model model) {
+    public String getPersonView(@PathVariable long id, Model model, Locale locale) {
         Person person = personDao.getPerson(id);
         model.addAttribute("person", person);
         return "person/view";
@@ -114,6 +120,7 @@ public class PersonController {
     @Secured({"ROLE_ADMIN", "ROLE_EDITOR"})
     @RequestMapping(method = RequestMethod.POST, value = {"create", "*/edit"})
     public String save(Model model, @Valid @ModelAttribute("command") PersonCommandObject command, BindingResult result, HttpSession session, Locale locale) {
+        infoPageDao.prepareModel(model, "person", locale);
 
         // A little more validation.
         validatePerson(command.getPerson(), result);
@@ -153,7 +160,6 @@ public class PersonController {
         return "redirect:/person/create";
     }
 
-    
     /**
      * Upload a batch of people.
      * 
@@ -179,7 +185,7 @@ public class PersonController {
             errors.reject("person.error.missingName");
         }
     }
-    
+
     /**
      * @return own role, or null in the case of an anonymous user.
      */
