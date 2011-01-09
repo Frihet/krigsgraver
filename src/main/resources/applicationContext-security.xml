@@ -18,7 +18,9 @@
 
         <intercept-url pattern="/search.xml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_PARTNER')" />
         <intercept-url pattern="/search.json" access="hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_PARTNER')" />
-        
+        <intercept-url pattern="/person/**/*.json" access="hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_PARTNER')" />
+        <intercept-url pattern="/person/**/*.xml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_PARTNER')" />
+
 <!--
         <intercept-url pattern="/" access="IS_AUTHENTICATED_REMEMBERED" />
         <intercept-url pattern="/index.jsp" access="IS_AUTHENTICATED_REMEMBERED" />

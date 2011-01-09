@@ -30,6 +30,8 @@ import javax.validation.constraints.Size;
 import no.freecode.krigsgraver.util.ValidFlexibleDate;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Sort;
@@ -51,6 +53,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @Entity
 @Indexed
 @XStreamAlias("person")
+@JsonIgnoreProperties({""})
 public class Person extends IndexedEntity {
 
     /* Auto-generate timestamp. I've tested this on postgres, mysql and oracle. */
@@ -111,17 +114,18 @@ public class Person extends IndexedEntity {
     @ManyToMany(cascade = CascadeType.MERGE)
     @Valid
     @IndexedEmbedded
-    @XStreamImplicit(itemFieldName = "causeOfDeath")
-//    private List<CauseOfDeath> causesOfDeath;
+    @XStreamOmitField //    @XStreamImplicit(itemFieldName = "causeOfDeath")
     @Sort(type = SortType.COMPARATOR, comparator = CauseOfDeathComparator.class)
     private Set<CauseOfDeath> causesOfDeath;
 
     @Size(max = 255)
     @Field(index = Index.TOKENIZED, store = Store.NO)
+    @XStreamOmitField
     private String causeOfDeathDescription;
 
     @Lob
     @Field(index = Index.TOKENIZED, store = Store.NO)
+    @XStreamOmitField
     private String remarks;
 
     @OneToMany(cascade = CascadeType.MERGE)
@@ -173,6 +177,7 @@ public class Person extends IndexedEntity {
         this.nationality = nationality;
     }
 
+    @JsonIgnore
     public String getCauseOfDeathDescription() {
         return causeOfDeathDescription;
     }
@@ -225,6 +230,7 @@ public class Person extends IndexedEntity {
         this.placeOfDeath = placeOfDeath;
     }
 
+    @JsonIgnore
     public Set<CauseOfDeath> getCausesOfDeath() {
         if (causesOfDeath == null) {
             causesOfDeath = new TreeSet<CauseOfDeath>(new CauseOfDeathComparator());
@@ -237,6 +243,7 @@ public class Person extends IndexedEntity {
         this.causesOfDeath = causesOfDeath;
     }
 
+    @JsonIgnore
     public String getRemarks() {
         return remarks;
     }

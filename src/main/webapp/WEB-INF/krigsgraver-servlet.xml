@@ -46,7 +46,9 @@
 
         <property name="defaultViews">
             <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+                    
+                </bean>
 
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
                     <constructor-arg>
@@ -90,6 +92,7 @@
         </property>
 
         <property name="ignoreAcceptHeader" value="true" />
+        <property name="favorParameter" value="false" />
 
         <property name="viewResolvers">
             <list>

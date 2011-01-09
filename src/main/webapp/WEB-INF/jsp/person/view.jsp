@@ -114,6 +114,8 @@
             <td> ${person.placeOfDeath} </td>
         </tr>
     </c:if>
+
+<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EDITOR">
     <c:if test="${!empty person.causesOfDeath}">
         <tr>
             <th> <fmt:message key="person.causeOfDeath"/> </th>
@@ -128,6 +130,8 @@
                 <td> ${person.causeOfDeathDescription} </td>
         </tr>
     </c:if>
+</sec:authorize>
+    
     <c:if test="${!empty person.obdNumber}">
         <tr>
             <th> <fmt:message key="person.obdNumber"/> </th>
