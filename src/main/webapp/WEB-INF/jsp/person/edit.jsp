@@ -47,9 +47,22 @@
         <form:form method="post" id="personForm">
             <form:hidden path="person.id"/>
 
-            <p style="text-align: right; padding-top: 1em; padding-right: 2px;">
-                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all"><fmt:message key="person.button.save"/></button>
-            </p>
+            <div style="padding-top: 0.5em; padding-bottom: 1em; padding-right: 2px;">
+                <form:select path="person.category" cssClass="ui-widget-content ui-corner-all" style="float: left;">
+                    <c:forEach items="${categories}" var="category">
+                        <c:choose>
+                            <c:when test="${category.id == command.person.category.id}">
+                                <option value="${category.id}" selected="selected">${category.name}</option>
+                            </c:when> <c:otherwise>
+                                <option value="${category.id}">${category.name}</option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </form:select>
+
+                <button type="submit" class="button ui-priority-primary ui-state-default ui-corner-all" style="float: right;"><fmt:message key="person.button.save"/></button>
+                <div style="clear: both;"></div>
+            </div>
 
             <fieldset class="main ui-corner-all">
                 <legend><fmt:message key="person.title"/></legend>

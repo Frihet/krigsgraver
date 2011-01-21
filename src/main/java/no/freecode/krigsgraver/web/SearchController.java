@@ -22,6 +22,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import no.freecode.krigsgraver.model.Camp;
+import no.freecode.krigsgraver.model.Category;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.Rank;
@@ -151,6 +152,7 @@ public class SearchController {
         model.addAttribute("ranks", genericDao.getAll(Rank.class, Order.asc("name")));
         model.addAttribute("stalags", genericDao.getAll(Stalag.class, Order.asc("name")));
         model.addAttribute("camps", genericDao.getAll(Camp.class, Order.asc("name")));
+        model.addAttribute("categories", genericDao.getAll(Category.class, Order.asc("name")));
         return "advanced_search";
     }
 
@@ -181,6 +183,7 @@ public class SearchController {
 
                 @RequestParam(required = false) String rank,
                 @RequestParam(required = false) String camp,
+                @RequestParam(required = false) String category,
                 @RequestParam(required = false) String stalag,
                 @RequestParam(required = false) String cemetery,
                 @RequestParam(required = false) String causeOfDeath,
@@ -206,6 +209,7 @@ public class SearchController {
 
         query.append("rank.name", rank);
         query.append("camp.name", camp);
+        query.append("category.name", category);
         query.append("stalag.name", stalag);
         query.append("graves.cemetery.name", cemetery);
 

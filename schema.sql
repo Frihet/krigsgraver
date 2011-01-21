@@ -7,6 +7,7 @@ alter table Person drop constraint FK8E488775EF7942C
 alter table Person drop constraint FK8E48877570F3F3DA
 alter table Person drop constraint FK8E4887757DF6B27A
 alter table Person drop constraint FK8E4887758A840FFA
+alter table Person drop constraint FK8E48877580E8A6BA
 alter table Person drop constraint FK8E4887759894923A
 alter table Person drop constraint FK8E488775918DBD79
 alter table Person_CauseOfDeath drop constraint FK485AEADE4FAFE35A
@@ -14,6 +15,7 @@ alter table Person_CauseOfDeath drop constraint FK485AEADE7808DA3B
 alter table Person_Grave drop constraint FKF4FA909B7A4E4C31
 alter table Person_Grave drop constraint FKF4FA909B4FAFE35A
 drop table Camp
+drop table Category
 drop table CauseOfDeath
 drop table Cemetery
 drop table FlexibleDate
@@ -30,6 +32,7 @@ drop table Rank
 drop table Stalag
 drop sequence hibernate_sequence
 create table Camp (id int8 not null, description text, latitude float8, longitude float8, name varchar(255) not null unique, primary key (id))
+create table Category (id int8 not null, description text, name varchar(255) not null unique, primary key (id))
 create table CauseOfDeath (id int8 not null, causeGroup varchar(255), description varchar(255), name varchar(255) not null unique, primary key (id))
 create table Cemetery (id int8 not null, address varchar(255), latitude float8, longitude float8, name varchar(255) not null unique, postalDistrict_postcode int4, primary key (id))
 create table FlexibleDate (id int8 not null, approximate bool not null, day int4, month int4, year int4, primary key (id))
@@ -37,7 +40,7 @@ create table Grave (id int8 not null, graveField varchar(255), graveNumber varch
 create table InfoPage (id int8 not null, html text, language varchar(255), pageName varchar(255) not null, primary key (id))
 create table KgUser (id int8 not null, credentialsNonExpired bool not null, enabled bool not null, name varchar(255), password varchar(255), role varchar(255), username varchar(255) unique, primary key (id))
 create table Nationality (id int8 not null, name varchar(255) unique, primary key (id))
-create table Person (id int8 not null, causeOfDeathDescription varchar(255), createdDate timestamp default current_timestamp not null, obdNumber int8, placeOfDeath varchar(255), prisonerNumber int4, remarks text, camp_id int8, cyrillicDetails_id int8, dateOfBirth_id int8, dateOfDeath_id int8, nationality_id int8, rank_id int8, stalag_id int8, westernDetails_id int8, primary key (id))
+create table Person (id int8 not null, causeOfDeathDescription varchar(255), createdDate timestamp default current_timestamp not null, obdNumber int8, placeOfDeath varchar(255), prisonerNumber int4, remarks text, camp_id int8, category_id int8, cyrillicDetails_id int8, dateOfBirth_id int8, dateOfDeath_id int8, nationality_id int8, rank_id int8, stalag_id int8, westernDetails_id int8, primary key (id))
 create table PersonDetails (id int8 not null, firstName varchar(255), lastName varchar(255), nameOfFather varchar(255), placeOfBirth varchar(255), primary key (id))
 create table Person_CauseOfDeath (Person_id int8 not null, causesOfDeath_id int8 not null, primary key (Person_id, causesOfDeath_id))
 create table Person_Grave (Person_id int8 not null, graves_id int8 not null, primary key (Person_id, graves_id), unique (graves_id))
@@ -53,6 +56,7 @@ alter table Person add constraint FK8E488775EF7942C foreign key (cyrillicDetails
 alter table Person add constraint FK8E48877570F3F3DA foreign key (camp_id) references Camp
 alter table Person add constraint FK8E4887757DF6B27A foreign key (nationality_id) references Nationality
 alter table Person add constraint FK8E4887758A840FFA foreign key (rank_id) references Rank
+alter table Person add constraint FK8E48877580E8A6BA foreign key (category_id) references Category
 alter table Person add constraint FK8E4887759894923A foreign key (stalag_id) references Stalag
 alter table Person add constraint FK8E488775918DBD79 foreign key (dateOfBirth_id) references FlexibleDate
 alter table Person_CauseOfDeath add constraint FK485AEADE4FAFE35A foreign key (Person_id) references Person

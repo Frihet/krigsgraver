@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import no.freecode.krigsgraver.model.Camp;
+import no.freecode.krigsgraver.model.Category;
 import no.freecode.krigsgraver.model.CauseOfDeath;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.Nationality;
@@ -86,6 +87,7 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET, value = "create")
     public String getCreateForm(Model model, Locale locale) {
         infoPageDao.prepareModel(model, "person", locale);
+        model.addAttribute("categories", genericDao.getAll(Category.class, Order.asc("name")));
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(new Person()));
         return "person/edit";
@@ -98,7 +100,7 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET, value = "{id}/edit")
     public String getEditForm(@PathVariable long id, Model model, Locale locale) {
         infoPageDao.prepareModel(model, "person", locale);
-        
+        model.addAttribute("categories", genericDao.getAll(Category.class, Order.asc("name")));
         model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
         model.addAttribute("command", new PersonCommandObject(personDao.getPerson(id)));
         return "person/edit";
@@ -126,6 +128,7 @@ public class PersonController {
         validatePerson(command.getPerson(), result);
 
         if (result.hasErrors()) {
+            model.addAttribute("categories", genericDao.getAll(Category.class, Order.asc("name")));
             model.addAttribute("nationalities", genericDao.getAll(Nationality.class, Order.asc("name")));
             return "person/edit";
         }
@@ -205,6 +208,7 @@ public class PersonController {
 //        logger.debug("Initializing custom editors for the entities.");
         dataBinder.registerCustomEditor(Stalag.class, new EntityPropertyEditor(Stalag.class, genericDao));
         dataBinder.registerCustomEditor(Camp.class, new EntityPropertyEditor(Camp.class, genericDao));
+        dataBinder.registerCustomEditor(Category.class, new EntityPropertyEditor(Category.class, genericDao));
         dataBinder.registerCustomEditor(Nationality.class, new EntityPropertyEditor(Nationality.class, genericDao));
         dataBinder.registerCustomEditor(Rank.class, new EntityPropertyEditor(Rank.class, genericDao));
         dataBinder.registerCustomEditor(Cemetery.class, new EntityPropertyEditor(Cemetery.class, genericDao));

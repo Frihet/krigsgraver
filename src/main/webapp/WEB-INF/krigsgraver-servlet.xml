@@ -58,6 +58,7 @@
                             <property name="annotatedClasses">
                                 <array>
                                     <value>no.freecode.krigsgraver.model.Camp</value>
+                                    <value>no.freecode.krigsgraver.model.Category</value>
                                     <value>no.freecode.krigsgraver.model.CauseOfDeath</value>
                                     <value>no.freecode.krigsgraver.model.Cemetery</value>
                                     <value>no.freecode.krigsgraver.model.Grave</value>
@@ -74,6 +75,7 @@
                                 <array>
                                     <value>java.util.List</value>
                                     <value>no.freecode.krigsgraver.model.Camp</value>
+                                    <value>no.freecode.krigsgraver.model.Category</value>
                                     <value>no.freecode.krigsgraver.model.CauseOfDeath</value>
                                     <value>no.freecode.krigsgraver.model.Cemetery</value>
                                     <value>no.freecode.krigsgraver.model.Grave</value>

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Edit and display {@link Camp} objects.
+ * Edit and display {@link PostalDistrict} objects.
  * 
  * @author Reidar Øksnevad <reidar.oksnevad@freecode.no>
  */

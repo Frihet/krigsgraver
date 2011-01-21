@@ -56,6 +56,10 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @JsonIgnoreProperties({""})
 public class Person extends IndexedEntity {
 
+    @ManyToOne
+    @IndexedEmbedded
+    private Category category;
+
     /* Auto-generate timestamp. I've tested this on postgres, mysql and oracle. */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false, insertable = false, nullable = false, 
@@ -167,6 +171,14 @@ public class Person extends IndexedEntity {
 
     public void setDateOfBirth(FlexibleDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Nationality getNationality() {

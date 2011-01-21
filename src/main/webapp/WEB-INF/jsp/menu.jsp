@@ -24,6 +24,7 @@
         <fmt:message key="menu.elements"/>
     </div>
 
+    <a tabindex="-1" href='<c:url value="/category/create" />'><fmt:message key="menu.elements.categories"/></a><br/>
     <a tabindex="-1" href='<c:url value="/nationality/create" />'><fmt:message key="menu.elements.nationalities"/></a><br/>
     <a tabindex="-1" href='<c:url value="/rank/create" />'><fmt:message key="menu.elements.ranks"/></a><br/>
     <a tabindex="-1" href='<c:url value="/stalag/create" />'><fmt:message key="menu.elements.stalags"/></a><br/>
