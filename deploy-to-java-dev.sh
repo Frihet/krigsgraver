@@ -13,7 +13,7 @@ warning "Deleting work dirs and redeploying tomcat"
 
 ssh tomcat@java-dev "/etc/init.d/tomcat stop"
 
-# ssh tomcat@java-dev "rm -rf /srv/krigsgraver/lucene"
+#ssh tomcat@java-dev "rm -rf /srv/krigsgraver/lucene"
 ssh tomcat@java-dev "rm -rf /srv/tomcat/work/Catalina/localhost/krigsgraver /srv/tomcat/webapps/krigsgraver"
 
 mvn clean package
