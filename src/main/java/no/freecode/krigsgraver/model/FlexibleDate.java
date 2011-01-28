@@ -10,6 +10,7 @@
 package no.freecode.krigsgraver.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -130,7 +131,16 @@ public class FlexibleDate extends BaseEntity {
         }
     }
 
+    @Transient
+    public boolean isEmpty() {
+        if (year == null && month == null && day == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(new FlexibleDate(null, null, null));
+        System.out.println(new FlexibleDate(null, null, null).isEmpty());
     }
 }

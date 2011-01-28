@@ -1,3 +1,8 @@
 #! /bin/bash
 
-curl -u $(head -n 1 ~/.kgauth) -k -F file=@register10-01-18.csv http://localhost:8080/krigsgraver/person/upload
+if [ "$1" == "" ]; then
+  echo "Missing file parameter (e.g. 'blabla.csv')"
+  exit
+fi
+
+curl -u $(head -n 1 ~/.kgauth) -k -F file=@$1 http://localhost:8080/krigsgraver/person/upload

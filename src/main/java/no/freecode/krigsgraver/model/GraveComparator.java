@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class GraveComparator implements Comparator<Grave> {
-    
+
     private static final Logger logger = Logger.getLogger(GraveComparator.class);
 
     /* (non-Javadoc)

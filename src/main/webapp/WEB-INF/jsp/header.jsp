@@ -26,7 +26,7 @@
 <body>
 <table id="wholePage">
 <tr id="topHeader">
-    <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'></td>
+    <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'><a href="http://www.falstadsenteret.no/"></a></td>
     <td id="rightHeader">
         <div id="loginData">
             <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR,ROLE_PARTNER">

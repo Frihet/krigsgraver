@@ -63,6 +63,14 @@ td#headerLogo {
     vertical-align: top;
 }
 
+td#headerLogo a {
+    height: 98px;
+    width: 190px;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
 td#menuArea {
     font-size: 11px;
     /* padding: 2em 2em 0; */
