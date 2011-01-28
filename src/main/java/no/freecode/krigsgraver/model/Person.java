@@ -9,7 +9,9 @@
  */
 package no.freecode.krigsgraver.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -134,9 +136,10 @@ public class Person extends IndexedEntity {
 
     @OneToMany(cascade = CascadeType.MERGE)
     @IndexedEmbedded
-    @Sort(type = SortType.COMPARATOR, comparator = GraveComparator.class)
+//    @Sort(type = SortType.COMPARATOR, comparator = GraveComparator.class)
     @XStreamImplicit(itemFieldName = "grave")
-    private Set<Grave> graves;
+//    private Set<Grave> graves;
+    private List<Grave> graves;
 
 
     public PersonDetails getWesternDetails() {
@@ -272,15 +275,27 @@ public class Person extends IndexedEntity {
         this.createdDate = createdDate;
     }
 
-    public Set<Grave> getGraves() {
+//    public Set<Grave> getGraves() {
+//        if (graves == null) {
+//            graves = new TreeSet<Grave>(new GraveComparator());
+//        }
+//
+//        return graves;
+//    }
+//    
+//    public void setGraves(Set<Grave> graves) {
+//        this.graves = graves;
+//    }
+    
+    public List<Grave> getGraves() {
         if (graves == null) {
-            graves = new TreeSet<Grave>(new GraveComparator());
+            graves = new ArrayList<Grave>();
         }
 
         return graves;
     }
-    
-    public void setGraves(Set<Grave> graves) {
+
+    public void setGraves(List<Grave> graves) {
         this.graves = graves;
     }
     

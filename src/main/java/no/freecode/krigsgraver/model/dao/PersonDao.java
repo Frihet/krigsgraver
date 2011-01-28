@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,6 @@ import no.freecode.krigsgraver.model.CauseOfDeathComparator;
 import no.freecode.krigsgraver.model.Cemetery;
 import no.freecode.krigsgraver.model.FlexibleDate;
 import no.freecode.krigsgraver.model.Grave;
-import no.freecode.krigsgraver.model.GraveComparator;
 import no.freecode.krigsgraver.model.Nationality;
 import no.freecode.krigsgraver.model.Person;
 import no.freecode.krigsgraver.model.PersonDetails;
@@ -85,7 +85,8 @@ public class PersonDao {
     public void savePersonCommandObject(PersonCommandObject command) {
         Person person = command.getPerson();
 
-        TreeSet<Grave> graves = new TreeSet<Grave>(new GraveComparator());
+        List<Grave> graves = new ArrayList<Grave>();
+//        TreeSet<Grave> graves = new TreeSet<Grave>(new GraveComparator());
         for (Grave grave : command.getLazyGraves()) {
             if (!grave.isDelete()) {
                 graves.add(grave);
@@ -224,7 +225,7 @@ public class PersonDao {
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(inputStream));
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        Category category = getCategory("sovjetisk");
+        Category category = getCategory("Sovjetiske krigsgraver");
         
         String line;
         while ((line = csvReader.readLine()) != null) {

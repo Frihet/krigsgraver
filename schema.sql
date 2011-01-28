@@ -43,7 +43,7 @@ create table Nationality (id int8 not null, name varchar(255) unique, primary ke
 create table Person (id int8 not null, causeOfDeathDescription varchar(255), createdDate timestamp default current_timestamp not null, obdNumber int8, placeOfDeath varchar(255), prisonerNumber int4, remarks text, camp_id int8, category_id int8, cyrillicDetails_id int8, dateOfBirth_id int8, dateOfDeath_id int8, nationality_id int8, rank_id int8, stalag_id int8, westernDetails_id int8, primary key (id))
 create table PersonDetails (id int8 not null, firstName varchar(255), lastName varchar(255), nameOfFather varchar(255), placeOfBirth varchar(255), primary key (id))
 create table Person_CauseOfDeath (Person_id int8 not null, causesOfDeath_id int8 not null, primary key (Person_id, causesOfDeath_id))
-create table Person_Grave (Person_id int8 not null, graves_id int8 not null, primary key (Person_id, graves_id), unique (graves_id))
+create table Person_Grave (Person_id int8 not null, graves_id int8 not null, unique (graves_id))
 create table PostalDistrict (postcode int4 not null unique, countyId int4 not null, name varchar(255) not null, primary key (postcode))
 create table Rank (id int8 not null, name varchar(255) unique, primary key (id))
 create table Stalag (id int8 not null, description text, latitude float8, longitude float8, name varchar(255) not null unique, primary key (id))
