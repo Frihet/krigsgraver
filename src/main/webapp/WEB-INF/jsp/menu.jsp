@@ -6,6 +6,10 @@
 </div>
 
 <div>
+    <a tabindex="-1" href='<c:url value='/home'/>'><fmt:message key="menu.home"/></a><br />
+</div>
+
+<div>
     <a tabindex="-1" href='<c:url value='/search'/>'><fmt:message key="menu.search.simple"/></a><br />
 </div>
 

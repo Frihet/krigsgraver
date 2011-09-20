@@ -24,10 +24,12 @@
 </head>
 
 <body>
+
 <table id="wholePage">
 <tr id="topHeader">
     <td id="headerLogo" style='background-image: url(<c:url value="/inc/img/falstadlogo_bgblack.jpg" />);'><a href="http://www.falstadsenteret.no/"></a></td>
-    <td id="rightHeader">
+    <td id="rightHeader" >
+    <p class='topplogo'><fmt:message key="global.subtitle"/></p>
         <div id="loginData">
             <sec:authorize ifNotGranted="ROLE_ADMIN,ROLE_EDITOR,ROLE_PARTNER">
                 <a id="loginLink" tabindex="-1" href='<c:url value="/login" />'><fmt:message key="link.login"/></a>

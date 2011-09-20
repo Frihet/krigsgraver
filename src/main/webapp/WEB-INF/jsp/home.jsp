@@ -1,5 +1,5 @@
 <%@ include file="includes.jsp" %>
-<fmt:message var="pageTitle" key="menu.search.simple" />
+<fmt:message var="pageTitle" key="menu.home" />
 <c:set var="helpPage" value="search" />
 <%@ include file="header.jsp" %>
 <%@ page session="false" %>
@@ -12,7 +12,9 @@
 -->
 </style>
 
-<h1><fmt:message key="menu.search.simple"/></h1>
+<h1><fmt:message key="home.title"/></h1>
+
+<fmt:message key="home.info"/>
 
 <p>
     <c:url value="/queryBuilder" var="advanced" />
@@ -22,10 +24,14 @@
     </fmt:message>
 </p>
 <div class="searchContainer ui-widget">
-    <form style="text-align: center;">
+    <form action="search" style="text-align: center;">
         <%@ include file="simple_search_bar.jsp"%>
     </form>
 </div>
+
+<fmt:message key="home.help"/>
+
+
 <script type="text/javascript">
 <!--
     $(function() {

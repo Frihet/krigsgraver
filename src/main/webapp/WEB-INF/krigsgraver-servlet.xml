@@ -13,7 +13,9 @@
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven  />
 
-    <mvc:view-controller path="/" view-name="redirect:/search" />
+    <mvc:view-controller path="/" view-name="redirect:/welcome" />
+    <mvc:view-controller path="/home" view-name="home" />
+    <mvc:view-controller path="/welcome" view-name="welcome" />
     <mvc:view-controller path="/login" view-name="login" />
     <mvc:view-controller path="/krigsgraver/**" view-name="redirect:/" />
     <mvc:view-controller path="/errors/default" view-name="errors/default" />

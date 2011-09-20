@@ -5,6 +5,10 @@
 <a href="?locale=en_gb">English</a> | <a href="?locale=no_nb">Norsk</a> | <a href="?locale=ru"><fmt:message key="language.russian" /></a>
 </div>
 
+<div style="text-align: center; padding: 2em 0 1em;">
+<fmt:message key="footer.contact"/>
+</div>
+
 <script type="text/javascript">
 <!--
 $(function(){
