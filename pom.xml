@@ -361,6 +361,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
                 <configuration>
                     <!-- <warSourceDirectory>webapp</warSourceDirectory> -->
                     <packagingExcludes>WEB-INF/classes/krigsgraver.properties, WEB-INF/classes/log4j.xml</packagingExcludes>
@@ -396,6 +397,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
+                <version>3.0</version>
                 <configuration>
                     <inputEncoding>UTF-8</inputEncoding>
                     <outputEncoding>UTF-8</outputEncoding>
@@ -428,6 +430,7 @@
             <!-- Test reports -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4</version>
             </plugin>
 
             <!-- Test coverage report. -->
@@ -449,36 +452,12 @@
     </reporting>
 
     <repositories>
-
-        <!--
-                <repository>
-                    <id>ProjectRepo</id>
-                    <name>Project repository</name>
-                    <url>file:///${basedir}/maven2/</url>
-                </repository>
-                <repository>
-                    <id>FreeCode</id>
-                    <url>http://build.freecode.no/internal/maven2/</url>
-                </repository>
-                <repository>
-                    <id>people.apache.org</id>
-                    <name>Apache people's repository</name>
-                    <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-                </repository>
-
-        -->
-        <!-- For JSR 303 and Hibernate Validator. -->
-        <!--
-                <repository>
-                    <id>org.jboss.repository.maven</id>
-                    <url>http://repository.jboss.org/maven2</url>
-                    <snapshots><enabled>false</enabled></snapshots>
-                </repository>
-        -->
+        <!-- hsqldb:hsqldb:jar:1.8.0.2 -->
         <repository>
             <id>thirdparty-releases</id>
             <name>JBoss Thirdparty Releases</name>
             <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
         </repository>
+
     </repositories>
 </project>
